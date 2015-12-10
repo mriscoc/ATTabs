@@ -1,0 +1,8 @@
+was issue:
+linux: onmouseup - onmousemove don't happen if mouse out of control.
+this causes impossible to drop tabs to other attabs. even cursor don't change to "drop allow".
+made change: timer which checks IsMousePressed and does drop-
+- internal drop (inside one attabs) done on onmouseup;
+- external drop (to other attabs) done in ontimer.
+
+maybe race exists (between onmouseup/ontimer)? do check on Win. do check on D7.
