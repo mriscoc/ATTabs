@@ -1,7 +1,7 @@
 {
 ATTabs component for Delphi/Lazarus
 Copyright (c) Alexey Torgashin (UVViewSoft)
-License: MPL 2.0
+License: MPL 2.0 or LGPL
 }
 
 unit ATTabs;
@@ -24,18 +24,20 @@ uses
   {$endif}
   {$ifdef FPC}
   LCLIntf,
-  LMessages,
+  LclType,
+  LclProc,
   {$endif}
   Messages,
   Classes, Types, Graphics,
-  Controls, ExtCtrls,
+  Controls,
   {$ifdef TNT}
   TntMenus,
   {$endif}
+  ExtCtrls,
   Menus;
 
 type
-  atString = {$ifdef WIDE} WideString {$else} string {$endif};
+  atString = {$ifdef WIDE} UnicodeString {$else} string {$endif};
   TatPopupMenu = {$ifdef TNT} TTntPopupMenu {$else} TPopupMenu {$endif};
   TatMenuItem = {$ifdef TNT} TTntMenuItem {$else} TMenuItem {$endif};
 
@@ -81,6 +83,9 @@ const
   cAtArrowDown = -3;
 
 type
+
+  { TATTabs }
+
   TATTabs = class(TPanel)
   private
     //drag-drop
@@ -150,6 +155,7 @@ type
     FTabIndexDrop: Integer;
     FTabList: TList;
     FTabMenu: TatPopupMenu;
+    FTimerDrag: TTimer;
 
     FBitmap: TBitmap;
     FBitmapText: TBitmap;
@@ -173,6 +179,7 @@ type
     procedure DoPaintXTo(C: TCanvas; const R: TRect; ATabBg, ATabCloseBg,
       ATabCloseBorder, ATabCloseXMark: TColor);
     procedure DoPaintDropMark(C: TCanvas);
+    function IsMousePressed: boolean;
     procedure SetTabIndex(AIndex: Integer);
     procedure GetTabCloseColor(AIndex: Integer; const ARect: TRect; var AColorXBg,
       AColorXBorder, AColorXMark: TColor);
@@ -187,6 +194,7 @@ type
     procedure DoUpdateTabWidths;
     procedure DoTabDrop;
     procedure DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
+    procedure TimerDragTimer(Sender: TObject);
   public
     constructor Create(AOnwer: TComponent); override;
     destructor Destroy; override;
@@ -208,6 +216,7 @@ type
     function DeleteTab(AIndex: Integer; AAllowEvent, AWithCancelBtn: boolean): boolean;
     procedure ShowTabMenu;
     procedure SwitchTab(ANext: boolean);
+    procedure MoveTab(AFrom, ATo: integer; AActivateThen: boolean);
   protected
     procedure Paint; override;
     procedure Resize; override;
@@ -286,7 +295,8 @@ type
 implementation
 
 uses
-  SysUtils, StrUtils,
+  SysUtils,
+  StrUtils,
   Dialogs,
   Forms,
   Math;
@@ -549,6 +559,11 @@ begin
   FTabIndexOver:= -1;
   FTabList:= TList.Create;
   FTabMenu:= nil;
+
+  FTimerDrag:= TTimer.Create(Self);
+  FTimerDrag.Enabled:= false;
+  FTimerDrag.Interval:= 200;
+  FTimerDrag.OnTimer:= TimerDragTimer;
 
   FOnTabClick:= nil;
   FOnTabPlusClick:= nil;
@@ -1050,12 +1065,24 @@ begin
 end;
 
 procedure TATTabs.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-var
-  Pnt: TPoint;
-  Ctl: TControl;
 begin
   FMouseDown:= false;
   FMouseDownPnt:= Point(0, 0);
+  FTimerDrag.Enabled:= false;
+  Cursor:= crDefault;
+  Screen.Cursor:= crDefault;
+
+  //do drop?
+  if FMouseDrag then
+  begin
+    FMouseDrag:= false;
+    if (FTabIndexDrop>=0) then
+    begin
+      DoTabDrop;
+      Invalidate;
+      Exit
+    end;
+  end;
 
   //dbl click?
   if FMouseDownDbl then
@@ -1069,24 +1096,6 @@ begin
       if Assigned(FOnTabPlusClick) then
         FOnTabPlusClick(Self);
     Exit
-  end;
-
-  if FMouseDrag then
-  begin
-    FMouseDrag:= false;
-    Screen.Cursor:= crDefault;
-
-    //find drag-drop target: is it Self or other ATTabs?
-    Pnt:= ClientToScreen(Point(X, Y));
-    if PtInControl(Self, Pnt) then
-      DoTabDrop
-    else
-    if FTabDragOutEnabled then
-    begin
-      Ctl:= _FindControl(Pnt);
-      if Ctl<>nil then
-        DoTabDropToOtherControl(Ctl, Ctl.ScreenToClient(Pnt));
-    end;
   end;
 end;
 
@@ -1142,6 +1151,9 @@ begin
             end;
           end;
           SetTabIndex(FTabIndexOver);
+
+          if FTabDragEnabled then
+            FTimerDrag.Enabled:= true;
         end;
     end;
   end;
@@ -1153,9 +1165,6 @@ type
 procedure TATTabs.MouseMove(Shift: TShiftState; X, Y: Integer);
 const
   cDragMin = 10; //mouse must move by NN pixels to start drag
-var
-  Pnt: TPoint;
-  Ctl: TControl;
 begin
   inherited;
   FTabIndexOver:= GetTabAt(X, Y);
@@ -1170,25 +1179,7 @@ begin
        (Abs(Y-FMouseDownPnt.Y)>cDragMin) then
     begin
       FMouseDrag:= true;
-
-      //update mouse cursor: indicate drop allowed
-      Pnt:= ClientToScreen(Point(X, Y));
-      Screen.Cursor:= crNoDrop;
-      if PtInControl(Self, Pnt) then
-        Screen.Cursor:= FTabDragCursor
-      else
-      if FTabDragOutEnabled then
-      begin
-        Ctl:= _FindControl(Pnt);
-        if Ctl<>nil then
-        begin
-          if (Ctl is TATTabs) and (Ctl as TATTabs).TabDragEnabled then
-            Screen.Cursor:= FTabDragCursor
-          else
-          if Assigned(TControl2(Ctl).OnDragDrop) then
-            Screen.Cursor:= FTabDragCursor;
-        end;
-      end;
+      FTimerDrag.Enabled:= true;
     end;
   end;
 
@@ -1445,6 +1436,17 @@ begin
     FOnTabMove(Self, NFrom, NTo);
 end;
 
+procedure TATTabs.MoveTab(AFrom, ATo: integer; AActivateThen: boolean);
+begin
+  if not IsIndexOk(AFrom) then exit;
+  if not IsIndexOk(ATo) then exit;
+  if AFrom=ATo then exit;
+
+  FTabList.Move(AFrom, ATo);
+  if AActivateThen then
+    SetTabIndex(ATo);
+end;
+
 procedure TATTabs.DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
 var
   ATabs: TATTabs;
@@ -1519,6 +1521,59 @@ end;
 procedure TATTabs.DblClick;
 begin
   FMouseDownDbl:= true;
+end;
+
+function TATTabs.IsMousePressed: boolean;
+begin
+  Result:= GetKeyState(vk_lbutton)<0;
+end;
+
+procedure TATTabs.TimerDragTimer(Sender: TObject);
+var
+  Pnt: TPoint;
+  Ctl: TControl;
+begin
+  Pnt:= Mouse.CursorPos;
+
+  //mouse not pressed: stop timer, do drop
+  if not IsMousePressed then
+  begin
+    FTimerDrag.Enabled:= false;
+    FMouseDown:= false;
+    FMouseDrag:= false;
+    Cursor:= crDefault;
+    Screen.Cursor:= crDefault;
+
+    //find drag-drop target: is it Self or other ATTabs?
+    if not PtInControl(Self, Pnt) then
+    if FTabDragOutEnabled then
+    begin
+      Ctl:= _FindControl(Pnt);
+      if Ctl<>nil then
+        DoTabDropToOtherControl(Ctl, Ctl.ScreenToClient(Pnt));
+    end;
+
+    Invalidate;
+    Exit
+  end;
+
+  //update mouse cursor: indicate drop allowed
+  Screen.Cursor:= crNoDrop;
+  if PtInControl(Self, Pnt) then
+    Screen.Cursor:= FTabDragCursor
+  else
+  if FTabDragOutEnabled then
+  begin
+    Ctl:= _FindControl(Pnt);
+    if Ctl<>nil then
+    begin
+      if (Ctl is TATTabs) and (Ctl as TATTabs).TabDragEnabled then
+        Screen.Cursor:= FTabDragCursor
+      else
+      if Assigned(TControl2(Ctl).OnDragDrop) then
+        Screen.Cursor:= FTabDragCursor;
+    end;
+  end;
 end;
 
 end.
