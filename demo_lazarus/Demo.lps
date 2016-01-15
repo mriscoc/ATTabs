@@ -3,13 +3,13 @@
   <ProjectSession>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="6">
+    <Units Count="7">
       <Unit0>
         <Filename Value="Demo.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <WindowIndex Value="-1"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit0>
       <Unit1>
@@ -18,11 +18,10 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="66"/>
-        <CursorPos X="3" Y="66"/>
-        <UsageCount Value="22"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="38" Y="9"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit1>
       <Unit2>
@@ -33,7 +32,7 @@
         <TopLine Value="1520"/>
         <CursorPos X="62" Y="1520"/>
         <FoldState Value=" T0=1861E"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
@@ -43,6 +42,7 @@
         <TopLine Value="2515"/>
         <CursorPos X="3" Y="2541"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
         <Filename Value="../../lazarus/lcl/include/winapih.inc"/>
@@ -50,32 +50,30 @@
         <TopLine Value="116"/>
         <CursorPos X="10" Y="129"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit4>
       <Unit5>
         <Filename Value="../attabs_beta/attabs.pas"/>
         <UnitName Value="ATTabs"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1064"/>
         <CursorPos X="9" Y="1083"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="../attabs/attabs.pas"/>
+        <UnitName Value="ATTabs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1067"/>
+        <CursorPos X="33" Y="1074"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
     </Units>
-    <JumpHistory Count="3" HistoryIndex="2">
-      <Position1>
-        <Filename Value="DemoForm.pas"/>
-        <Caret Line="66" Column="3" TopLine="66"/>
-      </Position1>
-      <Position2>
-        <Filename Value="../attabs_beta/attabs.pas"/>
-        <Caret Line="251" Column="14" TopLine="240"/>
-      </Position2>
-      <Position3>
-        <Filename Value="../attabs_beta/attabs.pas"/>
-        <Caret Line="1081" Column="5" TopLine="1065"/>
-      </Position3>
-    </JumpHistory>
+    <General>
+      <ActiveWindowIndexAtStart Value="-1"/>
+    </General>
+    <JumpHistory HistoryIndex="-1"/>
   </ProjectSession>
 </CONFIG>

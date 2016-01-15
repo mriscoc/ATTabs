@@ -6,15 +6,17 @@ interface
 
 uses
   SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, attabs;
+  Dialogs, ExtCtrls, StdCtrls, ATTabs;
 
 type
+  { TForm1 }
   TForm1 = class(TForm)
     bAdd: TButton;
     bDel: TButton;
     bColor: TButton;
     bLeft: TButton;
     bRt: TButton;
+    BtnStress: TButton;
     Edit1: TEdit;
     chkX: TCheckBox;
     chkPlus: TCheckBox;
@@ -25,6 +27,7 @@ type
     Label2: TLabel;
     chkEntire: TCheckBox;
     Label3: TLabel;
+    procedure BtnStressClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure bAddClick(Sender: TObject);
     procedure bDelClick(Sender: TObject);
@@ -78,7 +81,8 @@ begin
   t.OnTabClose:= TabClose;
   t.OnTabMove:= TabMove;
   t.TabDoubleClickPlus:= true;
-  t.TabWidthMin:= 80; //debug
+  t.TabAngle:= 3;
+  t.TabWidthMin:= 18;
 
   t.AddTab(-1, 'Tab');
   t.AddTab(-1, 'Tab middle len', nil, false, clGreen);
@@ -150,6 +154,16 @@ begin
   t0.AddTab(-1, 'Firefox');
   t0.AddTab(-1, 'A tab _____________________________________________________', nil, false, clGreen);
   t0.AddTab(-1, 'Tab middle len', nil, false, clBlue);
+end;
+
+procedure TForm1.BtnStressClick(Sender: TObject);
+var
+  i: integer;
+begin
+  for i:= t.TabCount-1 downto 1 do
+    t.DeleteTab(i, false, false);
+  for i:= 1 to 600 do
+    t.AddTab(-1, IntToStr(i));
 end;
 
 procedure TForm1.bAddClick(Sender: TObject);
