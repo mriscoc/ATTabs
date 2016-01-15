@@ -18,8 +18,8 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
         <CursorPos X="38" Y="9"/>
         <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -64,9 +64,10 @@
       <Unit6>
         <Filename Value="../attabs/attabs.pas"/>
         <UnitName Value="ATTabs"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1067"/>
-        <CursorPos X="33" Y="1074"/>
+        <TopLine Value="609"/>
+        <CursorPos X="40" Y="617"/>
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit6>

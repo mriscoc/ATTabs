@@ -330,6 +330,7 @@ var
       resclr := Canvas.Pixels[round(y), round(x)]
     else
       resclr := Canvas.Pixels[round(x), round(y)];
+    if resclr<0 then exit; //prevent except in GetRValue
     resclr := RGB(round(GetRValue(resclr) * (1-c) + GetRValue(LineColor) * c),
                   round(GetGValue(resclr) * (1-c) + GetGValue(LineColor) * c),
                   round(GetBValue(resclr) * (1-c) + GetBValue(LineColor) * c));
@@ -612,6 +613,9 @@ var
   AInvert: Integer;
   TempCaption: atString;
 begin
+  //optimize for 200 tabs
+  if ARect.Left>=ClientWidth then exit;
+
   if FTabShowEntireColor and (ATabHilite<>clNone) then
     ATabBg:= ATabHilite;
 
