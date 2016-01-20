@@ -49,7 +49,7 @@
         <ResourceBaseClass Value="Form"/>
       </Unit1>
       <Unit2>
-        <Filename Value="../attabs.pas"/>
+        <Filename Value="../attabs/attabs.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ATTabs"/>
       </Unit2>

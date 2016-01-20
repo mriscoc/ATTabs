@@ -9,8 +9,7 @@ uses
   XPMan,
   {$endif}
   Forms,
-  DemoForm in 'DemoForm.pas' {Form1},
-  ATTabs in 'ATTabs.pas';
+  DemoForm in 'DemoForm.pas' {Form1};
 
 begin
   Application.Initialize;
