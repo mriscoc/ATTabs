@@ -1549,6 +1549,7 @@ procedure TATTabs.DragOver(Source: TObject; X, Y: Integer; State: TDragState;
 begin
   Accept:=
     (Source is TATTabs) and
+    FTabDragEnabled and
     FTabDragOutEnabled;
 end;
 
