@@ -1,4 +1,14 @@
 
+2016.07.15
++ don't use temp-bitmap to paint text (faster)
++ don't use bitmaps if DoubleBuffered off
+
+2016.03.25
++ rework of DnD between controls, now ok on Win32
+
+2016.02.02
+* del prop TabIndentText, center now
+
 1.2.0
 + prop TabShowModifiedText
 + prop TabShowEntireColor
