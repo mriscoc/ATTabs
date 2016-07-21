@@ -311,12 +311,12 @@ begin
   Result:= true;
   {$endif}
 
-  {$ifdef darwin}
-  exit(false);
+  {$ifdef linux}
+  Result:= true;
   {$endif}
 
-  {$ifdef linux}
-  exit(false);
+  {$ifdef darwin}
+  Result:= false;
   {$endif}
 end;
 
