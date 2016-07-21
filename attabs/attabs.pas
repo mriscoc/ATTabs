@@ -1333,10 +1333,13 @@ var
 begin
   if IsIndexOk(AIndex) then
   begin
-    if Assigned(FOnTabChangeQuery) then begin
+    CanChange:= true;
+    if Assigned(FOnTabChangeQuery) then
+    begin
       FOnTabChangeQuery(Self, AIndex, CanChange);
       if not CanChange then Exit;
     end;
+
     FTabIndex:= AIndex;
     Invalidate;
     if Assigned(FOnTabClick) then

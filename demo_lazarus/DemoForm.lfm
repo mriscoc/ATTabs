@@ -9,7 +9,7 @@ object Form1: TForm1
   Color = clBtnFace
   Font.Color = clBlack
   Font.Height = -13
-  Font.Name = 'MS Sans Serif'
+  Font.Name = 'Default'
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
@@ -112,7 +112,7 @@ object Form1: TForm1
     Left = 144
     Height = 24
     Top = 96
-    Width = 110
+    Width = 112
     Caption = 'show "+" tab'
     OnClick = chkPlusClick
     TabOrder = 7
