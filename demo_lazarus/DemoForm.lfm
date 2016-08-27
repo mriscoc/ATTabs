@@ -39,132 +39,123 @@ object Form1: TForm1
     ParentColor = False
   end
   object Label3: TLabel
-    Left = 344
+    Left = 312
     Height = 17
     Top = 56
     Width = 83
     Caption = 'bottom tabs:'
     ParentColor = False
   end
-  object bAdd: TButton
+  object btnAdd: TButton
     Left = 144
     Height = 25
     Top = 144
     Width = 115
     Caption = 'add after current'
-    OnClick = bAddClick
-    TabOrder = 0
+    OnClick = btnAddClick
+    TabOrder = 4
   end
-  object bDel: TButton
+  object btnDel: TButton
     Left = 264
     Height = 25
     Top = 144
     Width = 75
     Caption = 'del'
-    OnClick = bDelClick
-    TabOrder = 1
+    OnClick = btnDelClick
+    TabOrder = 5
   end
-  object bColor: TButton
+  object btnColor: TButton
     Left = 344
     Height = 25
     Top = 144
     Width = 75
     Caption = 'color'
-    OnClick = bColorClick
-    TabOrder = 2
+    OnClick = btnColorClick
+    TabOrder = 6
   end
-  object bLeft: TButton
+  object btnLeft: TButton
     Left = 264
     Height = 25
     Top = 176
     Width = 75
     Caption = '<'
-    OnClick = bLeftClick
-    TabOrder = 3
+    OnClick = btnLeftClick
+    TabOrder = 9
   end
-  object bRt: TButton
+  object btnRight: TButton
     Left = 344
     Height = 25
     Top = 176
     Width = 75
     Caption = '>'
-    OnClick = bRtClick
-    TabOrder = 4
+    OnClick = btnRightClick
+    TabOrder = 10
   end
-  object Edit1: TEdit
+  object EditInfo: TEdit
     Left = 264
     Height = 27
     Top = 208
     Width = 225
-    OnChange = Edit1Change
-    TabOrder = 5
-  end
-  object chkX: TCheckBox
-    Left = 144
-    Height = 24
-    Top = 72
-    Width = 140
-    Caption = 'show "x" buttons'
-    OnClick = chkXClick
-    TabOrder = 6
+    OnChange = EditInfoChange
+    TabOrder = 11
   end
   object chkPlus: TCheckBox
     Left = 144
     Height = 24
-    Top = 96
-    Width = 110
+    Top = 75
+    Width = 112
     Caption = 'show "+" tab'
     OnClick = chkPlusClick
-    TabOrder = 7
+    TabOrder = 0
   end
   object chkNums: TCheckBox
-    Left = 344
+    Left = 312
     Height = 24
     Top = 72
-    Width = 123
+    Width = 121
     Caption = 'show numbers'
     OnClick = chkNumsClick
-    TabOrder = 8
+    TabOrder = 2
   end
-  object bMod: TButton
+  object btnModify: TButton
     Left = 144
     Height = 25
     Top = 176
     Width = 113
     Caption = 'toggle modified'
-    OnClick = bModClick
-    TabOrder = 9
+    OnClick = btnModifyClick
+    TabOrder = 8
   end
   object chkEntire: TCheckBox
     Left = 144
     Height = 24
-    Top = 120
-    Width = 130
+    Top = 96
+    Width = 125
     Caption = 'color entire tab'
     OnClick = chkEntireClick
-    TabOrder = 10
+    TabOrder = 1
   end
-  object BtnStress: TButton
+  object btnStress: TButton
     Left = 424
     Height = 25
     Top = 144
     Width = 208
     Caption = 'stress (600 tabs)'
-    OnClick = BtnStressClick
-    TabOrder = 11
+    OnClick = btnStressClick
+    TabOrder = 7
   end
   object Label4: TLabel
-    Left = 497
+    Left = 464
     Height = 17
-    Top = 58
+    Top = 56
     Width = 115
     Caption = 'top tabs show "x"'
     ParentColor = False
   end
   object comboShowX: TComboBox
-    Left = 496
-    Height = 29
-    Top = 80
+    Left = 464
+    Height = 27
+    Top = 72
     Width = 160
     ItemHeight = 0
     Items.Strings = (
@@ -175,6 +166,6 @@ object Form1: TForm1
     )
     OnChange = comboShowXChange
     Style = csDropDownList
-    TabOrder = 12
+    TabOrder = 3
   end
 end

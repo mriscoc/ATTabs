@@ -11,38 +11,36 @@ uses
 type
   { TForm1 }
   TForm1 = class(TForm)
-    bAdd: TButton;
-    bDel: TButton;
-    bColor: TButton;
-    bLeft: TButton;
-    bRt: TButton;
-    BtnStress: TButton;
+    btnAdd: TButton;
+    btnDel: TButton;
+    btnColor: TButton;
+    btnLeft: TButton;
+    btnRight: TButton;
+    btnStress: TButton;
     comboShowX: TComboBox;
-    Edit1: TEdit;
-    chkX: TCheckBox;
+    EditInfo: TEdit;
     chkPlus: TCheckBox;
     Label1: TLabel;
     chkNums: TCheckBox;
     Label4: TLabel;
     labStatus: TLabel;
-    bMod: TButton;
+    btnModify: TButton;
     Label2: TLabel;
     chkEntire: TCheckBox;
     Label3: TLabel;
-    procedure BtnStressClick(Sender: TObject);
+    procedure btnStressClick(Sender: TObject);
     procedure comboShowXChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure bAddClick(Sender: TObject);
-    procedure bDelClick(Sender: TObject);
-    procedure bColorClick(Sender: TObject);
-    procedure bLeftClick(Sender: TObject);
-    procedure bRtClick(Sender: TObject);
-    procedure Edit1Change(Sender: TObject);
-    procedure chkXClick(Sender: TObject);
+    procedure btnAddClick(Sender: TObject);
+    procedure btnDelClick(Sender: TObject);
+    procedure btnColorClick(Sender: TObject);
+    procedure btnLeftClick(Sender: TObject);
+    procedure btnRightClick(Sender: TObject);
+    procedure EditInfoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure chkPlusClick(Sender: TObject);
     procedure chkNumsClick(Sender: TObject);
-    procedure bModClick(Sender: TObject);
+    procedure btnModifyClick(Sender: TObject);
     procedure chkEntireClick(Sender: TObject);
   private
     { Private declarations }
@@ -161,7 +159,7 @@ begin
   t0.AddTab(-1, 'Tab middle len', nil, false, clBlue);
 end;
 
-procedure TForm1.BtnStressClick(Sender: TObject);
+procedure TForm1.btnStressClick(Sender: TObject);
 var
   i: integer;
 begin
@@ -177,17 +175,17 @@ begin
   t.Invalidate;
 end;
 
-procedure TForm1.bAddClick(Sender: TObject);
+procedure TForm1.btnAddClick(Sender: TObject);
 begin
   t.AddTab(t.TabIndex+1, 'test '+StringOfChar('n', Random(20)), nil, false, Random(65000));
 end;
 
-procedure TForm1.bDelClick(Sender: TObject);
+procedure TForm1.btnDelClick(Sender: TObject);
 begin
   t.DeleteTab(1, true, false);
 end;
 
-procedure TForm1.bColorClick(Sender: TObject);
+procedure TForm1.btnColorClick(Sender: TObject);
 var
   d: TATTabData;
 begin
@@ -196,12 +194,12 @@ begin
   t.Invalidate;
 end;
 
-procedure TForm1.bLeftClick(Sender: TObject);
+procedure TForm1.btnLeftClick(Sender: TObject);
 begin
   t.tabIndex:= t.TabIndex-1;
 end;
 
-procedure TForm1.bRtClick(Sender: TObject);
+procedure TForm1.btnRightClick(Sender: TObject);
 begin
   t.tabIndex:= t.TabIndex+1;
 end;
@@ -213,15 +211,15 @@ begin
   d:= t.GetTabData(t.TabIndex);
   LockEdit:= true;
   if Assigned(d) then
-    Edit1.Text:= d.TabCaption
+    EditInfo.Text:= d.TabCaption
   else
-    Edit1.Text:= '';  
+    EditInfo.Text:= '';
   LockEdit:= false;
 end;
 
 procedure TForm1.TabPlusClick(A: TObject);
 begin
-  bAdd.Click;
+  btnAdd.Click;
 end;
 
 
@@ -242,7 +240,7 @@ begin
   ACanClose:= true;
 end;
 
-procedure TForm1.Edit1Change(Sender: TObject);
+procedure TForm1.EditInfoChange(Sender: TObject);
 var
   d: TATTabData;
 begin
@@ -250,18 +248,9 @@ begin
   if d=nil then Exit;
   if LockEdit then Exit;
 
-  d.TabCaption:= Edit1.Text;
-  t.Invalidate;
+  d.TabCaption:= EditInfo.Text;
 end;
 
-procedure TForm1.chkXClick(Sender: TObject);
-begin
-  if chkX.Checked then
-    t.TabShowClose:= tbShowAll
-  else
-    t.TabShowClose:= tbShowNone;
-  t.Invalidate;
-end;
 
 procedure TForm1.chkPlusClick(Sender: TObject);
 begin
@@ -271,7 +260,6 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
-  chkX.Checked:= t.TabShowClose=tbShowAll;
   chkPlus.Checked:= t.TabShowPlus;
 end;
 
@@ -336,7 +324,7 @@ begin
   labStatus.Caption:= 'Status: '+s;
 end;
 
-procedure TForm1.bModClick(Sender: TObject);
+procedure TForm1.btnModifyClick(Sender: TObject);
 var
   d: TATTabData;
 begin
