@@ -17,17 +17,20 @@ type
     bLeft: TButton;
     bRt: TButton;
     BtnStress: TButton;
+    comboShowX: TComboBox;
     Edit1: TEdit;
     chkX: TCheckBox;
     chkPlus: TCheckBox;
     Label1: TLabel;
     chkNums: TCheckBox;
+    Label4: TLabel;
     labStatus: TLabel;
     bMod: TButton;
     Label2: TLabel;
     chkEntire: TCheckBox;
     Label3: TLabel;
     procedure BtnStressClick(Sender: TObject);
+    procedure comboShowXChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure bAddClick(Sender: TObject);
     procedure bDelClick(Sender: TObject);
@@ -83,6 +86,8 @@ begin
   t.TabDoubleClickPlus:= true;
   t.TabAngle:= 3;
   t.TabWidthMin:= 18;
+  t.TabShowClose:= tbShowAll;
+  t.TabAngle:= 0;
 
   t.AddTab(-1, 'Tab');
   t.AddTab(-1, 'Tab middle len', nil, false, clGreen);
@@ -164,6 +169,12 @@ begin
     t.DeleteTab(i, false, false);
   for i:= 1 to 600 do
     t.AddTab(-1, IntToStr(i));
+end;
+
+procedure TForm1.comboShowXChange(Sender: TObject);
+begin
+  t.TabShowClose:= TATTabShowClose(comboShowX.ItemIndex);
+  t.Invalidate;
 end;
 
 procedure TForm1.bAddClick(Sender: TObject);

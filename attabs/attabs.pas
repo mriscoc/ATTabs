@@ -77,7 +77,7 @@ type
 
 type
   TATTriType = (triDown, triLeft, triRight);
-  TATTabShowClose = (tbShowNone, tbShowAll, tbShowActive);
+  TATTabShowClose = (tbShowNone, tbShowAll, tbShowActive, tbShowMouseOver);
 
 //int constants for GetTabAt
 const
@@ -1478,6 +1478,7 @@ begin
     tbShowNone: Result:= false;
     tbShowAll: Result:= true;
     tbShowActive: Result:= AIndex=FTabIndex;
+    tbShowMouseOver: Result:= AIndex=FTabIndexOver;
     else Result:= false;
   end;
 

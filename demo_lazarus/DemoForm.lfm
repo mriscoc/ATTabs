@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 302
   Height = 443
-  Top = 437
+  Top = 297
   Width = 716
   Caption = 'ATTabs demo'
   ClientHeight = 443
@@ -112,7 +112,7 @@ object Form1: TForm1
     Left = 144
     Height = 24
     Top = 96
-    Width = 112
+    Width = 110
     Caption = 'show "+" tab'
     OnClick = chkPlusClick
     TabOrder = 7
@@ -152,5 +152,29 @@ object Form1: TForm1
     Caption = 'stress (600 tabs)'
     OnClick = BtnStressClick
     TabOrder = 11
+  end
+  object Label4: TLabel
+    Left = 497
+    Height = 17
+    Top = 58
+    Width = 115
+    Caption = 'top tabs show "x"'
+    ParentColor = False
+  end
+  object comboShowX: TComboBox
+    Left = 496
+    Height = 29
+    Top = 80
+    Width = 160
+    ItemHeight = 0
+    Items.Strings = (
+      'none'
+      'all tabs'
+      'active tab'
+      'mouse-over tab'
+    )
+    OnChange = comboShowXChange
+    Style = csDropDownList
+    TabOrder = 12
   end
 end
