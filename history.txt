@@ -1,4 +1,8 @@
 
+2016.08.27
++ new value of TabShowClose: show "x" for mouseover tab only
++ improve demo (allow to set all vals for TabsShowClose, top tabs angle=0)
+
 2016.07.15
 + don't use temp-bitmap to paint text (faster)
 + don't use bitmaps if DoubleBuffered off

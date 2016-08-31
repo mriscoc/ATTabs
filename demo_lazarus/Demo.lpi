@@ -49,9 +49,8 @@
         <ResourceBaseClass Value="Form"/>
       </Unit1>
       <Unit2>
-        <Filename Value="../attabs/attabs.pas"/>
+        <Filename Value="../src/attabs.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="ATTabs"/>
       </Unit2>
     </Units>
   </ProjectOptions>
@@ -59,7 +58,6 @@
     <Version Value="11"/>
     <SearchPaths>
       <IncludeFiles Value="..;$(ProjOutDir)"/>
-      <OtherUnitFiles Value="../attabs"/>
       <UnitOutputDirectory Value="out"/>
     </SearchPaths>
     <Parsing>
