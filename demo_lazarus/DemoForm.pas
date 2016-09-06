@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, ATTabs;
+  Dialogs, ExtCtrls, StdCtrls, attabs, LCLProc, LCLType;
 
 type
   { TForm1 }
@@ -45,6 +45,8 @@ type
   private
     { Private declarations }
     LockEdit: boolean;
+    procedure TabCloseEvent(Sender: TObject; ATabIndex: Integer; var ACanClose,
+      ACanContinue: boolean);
     procedure TabMove(A: TObject; NFrom, NTo: Integer);
     procedure TabClick(A: TObject);
     procedure TabPlusClick(A: TObject);
@@ -86,6 +88,7 @@ begin
   t.TabWidthMin:= 18;
   t.TabShowClose:= tbShowAll;
   t.TabAngle:= 0;
+  t.OnTabClose:= TabCloseEvent;
 
   t.AddTab(-1, 'Tab');
   t.AddTab(-1, 'Tab middle len', nil, false, clGreen);
@@ -339,6 +342,13 @@ procedure TForm1.chkEntireClick(Sender: TObject);
 begin
   t.TabShowEntireColor:= not t.TabShowEntireColor;
   t.Invalidate;
+end;
+
+procedure TForm1.TabCloseEvent(Sender: TObject; ATabIndex: Integer;
+  var ACanClose, ACanContinue: boolean);
+begin
+  ACanClose:= Application.MessageBox('Close this tab?', 'Demo',
+    MB_OKCANCEL+MB_ICONQUESTION) = ID_OK;
 end;
 
 end.
