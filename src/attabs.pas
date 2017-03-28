@@ -224,7 +224,6 @@ type
   protected
     procedure Paint; override;
     procedure Resize; override;
-    procedure Click; override;
     procedure DblClick; override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
@@ -1136,7 +1135,17 @@ begin
 end;
 
 procedure TATTabs.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+const
+  cMaxMoveDuringClick = 8;
 begin
+  if FMouseDown and not FMouseDrag then
+    if (Abs(X-FMouseDownPnt.X) + Abs(Y-FMouseDownPnt.Y)) < cMaxMoveDuringClick then
+    begin
+      FMouseDown:= false;
+      DoHandleClick;
+      Exit
+    end;
+
   FMouseDown:= false;
   Cursor:= crDefault;
   Screen.Cursor:= crDefault;
@@ -1175,13 +1184,13 @@ begin
   FMouseDownPnt:= Point(X, Y);
   FMouseDownButton:= Button;
   FMouseDownShift:= Shift;
+
   FTabIndexOver:= GetTabAt(X, Y);
+  SetTabIndex(FTabIndexOver);
+
+  Invalidate;
 end;
 
-procedure TATTabs.Click;
-begin
-  DoHandleClick;
-end;
 
 procedure TATTabs.DoHandleClick;
 var
@@ -1231,7 +1240,6 @@ begin
               Exit
             end;
           end;
-          SetTabIndex(FTabIndexOver);
         end;
     end;
   end;
