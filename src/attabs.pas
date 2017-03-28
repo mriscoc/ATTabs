@@ -96,6 +96,8 @@ type
     FMouseDown: boolean;
     FMouseDownPnt: TPoint;
     FMouseDownDbl: boolean;
+    FMouseDownButton: TMouseButton;
+    FMouseDownShift: TShiftState;
     FMouseDrag: boolean;
 
     //colors
@@ -170,6 +172,7 @@ type
     FOnTabMove: TATTabMoveEvent;
     FOnTabChangeQuery: TATTabChangeQueryEvent;
 
+    procedure DoHandleClick;
     procedure DoPaintTo(C: TCanvas);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: atString;
@@ -221,6 +224,7 @@ type
   protected
     procedure Paint; override;
     procedure Resize; override;
+    procedure Click; override;
     procedure DblClick; override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
@@ -1134,7 +1138,6 @@ end;
 procedure TATTabs.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   FMouseDown:= false;
-  FMouseDownPnt:= Point(0, 0);
   Cursor:= crDefault;
   Screen.Cursor:= crDefault;
 
@@ -1165,17 +1168,26 @@ begin
   end;
 end;
 
-
 procedure TATTabs.MouseDown(Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
-var
-  R: TRect;
 begin
   FMouseDown:= true;
   FMouseDownPnt:= Point(X, Y);
+  FMouseDownButton:= Button;
+  FMouseDownShift:= Shift;
   FTabIndexOver:= GetTabAt(X, Y);
+end;
 
-  if Button=mbMiddle then
+procedure TATTabs.Click;
+begin
+  DoHandleClick;
+end;
+
+procedure TATTabs.DoHandleClick;
+var
+  R: TRect;
+begin
+  if FMouseDownButton=mbMiddle then
   begin
     if FTabMiddleClickClose then
       if FTabIndexOver>=0 then
@@ -1183,7 +1195,7 @@ begin
     Exit;
   end;
 
-  if Button=mbLeft then
+  if FMouseDownButton=mbLeft then
   begin
     case FTabIndexOver of
       cAtArrowDown:
@@ -1212,7 +1224,7 @@ begin
           begin
             R:= GetTabRect(FTabIndexOver);
             R:= GetTabRect_X(R);
-            if PtInRect(R, Point(X, Y)) then
+            if PtInRect(R, FMouseDownPnt) then
             begin
               EndDrag(false);
               DeleteTab(FTabIndexOver, true, true);
