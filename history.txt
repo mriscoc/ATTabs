@@ -1,4 +1,18 @@
 
+2017.07.24
++ prop Images (Imagelist)
++ each tab's Data has TabImageIndex: now icons can be painted on tabs, text is shifted to right
+
+2017.06.14
+- fix: middle click didn't close tabs
+- fix: double click didn't work: to close tabs, to make new tab
+
+2017.05.25
+- fix: right-click must not show drag-cursor
+
+2017.01.04
++ use LCLCapability
+
 2016.08.27
 + new value of TabShowClose: show "x" for mouseover tab only
 + improve demo (allow to set all vals for TabsShowClose, top tabs angle=0)
