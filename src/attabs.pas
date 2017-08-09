@@ -54,7 +54,7 @@ type
     TabModified: boolean;
     TabRect: TRect;
     TabImageIndex: integer;
-    TabPopupMenu : TPopupMenu;
+    TabPopupMenu: TPopupMenu;
     constructor Create; virtual;
   end;
 
@@ -1227,7 +1227,8 @@ end;
 procedure TATTabs.MouseDown(Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
 var
-  P : TPoint;
+  P: TPoint;
+  D: TATTabData;
 begin
   FMouseDown:= Button in [mbLeft, mbMiddle]; //but not mbRight
   FMouseDownPnt:= Point(X, Y);
@@ -1239,13 +1240,17 @@ begin
 
   Invalidate;
 
-  if (Button = mbRight) then // activate popupmenu of single tab if any
+  if (Button=mbRight) then // activate popupmenu of single tab if any
   begin
-    if (FTabIndex = FTabIndexOver) and Assigned(TATTabData(FTabList[FTabIndex]).TabPopupMenu) then
+    if (FTabIndex=FTabIndexOver) then // to check if click was processed as a valid click on a tab
     begin
-      P:= Point(X, Y);
-      P:= ClientToScreen(P);
-      TATTabData(FTabList[FTabIndex]).TabPopupMenu.PopUp(P.X, P.Y);
+      D:= GetTabData(FTabIndex);
+      if Assigned(D) and Assigned(D.TabPopupMenu) then
+      begin
+        P:= Point(X, Y);
+        P:= ClientToScreen(P);
+        D.TabPopupMenu.PopUp(P.X, P.Y);
+      end;
     end;
   end;
 end;
