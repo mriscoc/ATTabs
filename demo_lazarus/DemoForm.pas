@@ -116,7 +116,6 @@ begin
   t1.TabIndentTop:= 20;
   t1.TabIndentXSize:= 15;
   t1.TabIndentXInner:= 3;
-  t1.TabIndentInit:= 4;
   //t1.TabShowclose:= tbShowActive;
   //t1.TabShowplus:= false;
   //t1.TabShowMenu:= false;
@@ -142,6 +141,7 @@ begin
   t0.TabIndentXSize:= 13;
   t0.TabWidthMin:= 18;
   t0.TabDragEnabled:= false;
+  t0.TabShowScrollArrows:= false;
 
   t0.Font.Color:= clBlack;
   t0.ColorBg:= $F9EADB;
