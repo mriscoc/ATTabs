@@ -83,16 +83,15 @@ begin
   t.OnTabPlusClick:= TabPlusClick;
   t.OnTabClose:= TabClose;
   t.OnTabMove:= TabMove;
+  t.OnTabClose:= TabCloseEvent;
   t.TabDoubleClickPlus:= true;
-  t.TabAngle:= 3;
-  t.TabWidthMin:= 18;
   t.TabShowClose:= tbShowAll;
   t.TabAngle:= 0;
-  t.OnTabClose:= TabCloseEvent;
+  t.DragMode:= dmAutomatic; //enable drag-drop
 
   t.AddTab(-1, 'Tab');
   t.AddTab(-1, 'Tab middle len', nil, false, clGreen);
-  t.AddTab(-1, 'Tab ________________________________________________________', nil, false, clBlue);
+  t.AddTab(-1, 'Tab ____________', nil, false, clBlue);
   t.AddTab(-1, 'I');
   t.AddTab(-1, 'I');
   t.AddTab(-1, 'I');
@@ -119,7 +118,6 @@ begin
   //t1.TabShowclose:= tbShowActive;
   //t1.TabShowplus:= false;
   //t1.TabShowMenu:= false;
-  t1.TabIndentDropI:= 6;
   t1.TabBottom:= true;
 
   t1.AddTab(-1, 'Owner-draw', nil, false, clNone);
@@ -139,7 +137,6 @@ begin
   t0.TabIndentInit:= 2;
   t0.TabIndentTop:= 4;
   t0.TabIndentXSize:= 13;
-  t0.TabWidthMin:= 18;
   t0.TabDragEnabled:= false;
   t0.TabShowScrollArrows:= false;
 
