@@ -131,6 +131,7 @@ type
     FColorCloseXOver: TColor; //"color of "x" mark, mouseover
     FColorArrow: TColor; //color of "down" arrow (tab menu), inactive
     FColorArrowOver: TColor; //color of "down" arrow, mouse-over
+    FColorScrollbar: TColor;
 
     //spaces
     FTabNumPrefix: atString;
@@ -204,6 +205,7 @@ type
       ATabCloseBorder, ATabCloseXMark: TColor);
     procedure DoPaintDropMark(C: TCanvas);
     procedure DoScrollAnimation(APosTo: integer);
+    function GetMaxScrollPos: integer;
     procedure GetRectArrowDown(out R: TRect);
     procedure GetRectArrowLeftRight(out RL, RR: TRect);
     function GetScrollPageSize: integer;
@@ -570,6 +572,7 @@ begin
   FColorCloseXOver:= clWhite;
   FColorArrow:= $999999;
   FColorArrowOver:= $E0E0E0;
+  FColorScrollbar:= clBlue;
 
   FTabBottom:= false;
   FTabAngle:= 4;
@@ -986,12 +989,12 @@ end;
 
 procedure TATTabs.DoPaintTo(C: TCanvas);
 var
-  i: Integer;
   RBottom: TRect;
   AColorXBg, AColorXBorder, AColorXMark: TColor;
   ARect, FRectArrowDown, FRectArrowLeft, FRectArrowRight: TRect;
   AType: TATTabElemType;
   Data: TATTabData;
+  i: Integer;
 begin
   AType:= aeBackground;
   ARect:= ClientRect;
@@ -1779,6 +1782,20 @@ begin
   Result:= ClientWidth * 2 div 3;
 end;
 
+function TATTabs.GetMaxScrollPos: integer;
+var
+  RDown: TRect;
+  D: TATTabData;
+begin
+  Result:= 0;
+  GetRectArrowDown(RDown);
+  if TabCount>0 then
+  begin
+    D:= GetTabData(TabCount-1);
+    Result:= Max(0, D.TabRect.Right - RDown.Left + FTabIndentInit + 2);
+  end;
+end;
+
 procedure TATTabs.DoScrollAnimation(APosTo: integer);
 const
   cStep = 70; //pixels
@@ -1816,20 +1833,9 @@ end;
 
 procedure TATTabs.DoScrollRight;
 var
-  RDown: TRect;
-  NPos, NMaxScroll: integer;
-  D: TATTabData;
+  NPos: integer;
 begin
-  NMaxScroll:= 0;
-
-  GetRectArrowDown(RDown);
-  if TabCount>0 then
-  begin
-    D:= GetTabData(TabCount-1);
-    NMaxScroll:= Max(0, D.TabRect.Right - RDown.Left + FTabIndentInit + 2);
-  end;
-
-  NPos:= Min(NMaxScroll, FScrollPos+GetScrollPageSize);
+  NPos:= Min(GetMaxScrollPos, FScrollPos+GetScrollPageSize);
   if NPos<>FScrollPos then
     DoScrollAnimation(NPos);
 end;
