@@ -1,4 +1,7 @@
 
+2017.09.15
++ add: prop TabAngleMaxTabs: slow TabAngle will be used only until not much tabs
+
 2017.09.11
 + reworked drag-drop (was drop in MouseUp, not ok)
 - fix: crDrag cursor if mouse-up on another control
