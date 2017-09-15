@@ -592,7 +592,7 @@ begin
   FTabScrollMarkX:= 20;
   FTabScrollMarkY:= 4;
   FTabIndentInter:= 0;
-  FTabIndentInit:= 30; //big to contain scroll arrows
+  FTabIndentInit:= 30; //big for scroll arrows
   FTabIndentTop:= 5;
   FTabIndentXRight:= 10;
   FTabIndentXInner:= 3;
@@ -1563,6 +1563,8 @@ begin
   R.Top:= FTabIndentTop;
   R.Bottom:= R.Top+FTabHeight;
 
+  if FTabBottom then Inc(R.Top);
+
   R.Right:= ClientWidth;
   R.Left:= R.Right-FTabIndentArrowRight;
 end;
@@ -1571,6 +1573,8 @@ procedure TATTabs.GetRectArrowLeftRight(out RL, RR: TRect);
 begin
   RL.Top:= FTabIndentTop;
   RL.Bottom:= RL.Top+FTabHeight;
+
+  if FTabBottom then Inc(RL.Top);
 
   RR.Top:= RL.Top;
   RR.Bottom:= RL.Bottom;
