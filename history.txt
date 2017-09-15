@@ -2,7 +2,8 @@
 2017.09.15
 + add: scrolling arrows, they work when tabs painted out of right side (when lot of tabs)
 + add: scrolling mark (red on top if lot of tabs)
-+ add: prop TabShowScrollArrows (note: it uses with TabIndentInit)
++ add: prop TabShowScrollArrows (note: it uses TabIndentInit)
++ add: prop TabShowScrollMark
 + add: prop TabScrollMarkX, TabScrollMarkY
 + add: prop ColorScrollMark
 + add: prop TabAngleMaxTabs: slow TabAngle will be used only until not much tabs
