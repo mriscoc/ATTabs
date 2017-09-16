@@ -1,6 +1,6 @@
 {
 ATTabs component for Delphi/Lazarus
-Copyright (c) Alexey Torgashin (UVViewSoft)
+Copyright (c) Alexey Torgashin (UVviewsoft.com)
 License: MPL 2.0 or LGPL
 }
 
@@ -82,9 +82,9 @@ type
 
 type
   TATTabTriangle = (
-    tabTriDown,
-    tabTriLeft,
-    tabTriRight
+    ttriDown,
+    ttriLeft,
+    ttriRight
     );
 
   TATTabShowClose = (
@@ -543,19 +543,19 @@ begin
   //P1/P2: points of vert/horz line
   //P3: end point at arrow direction
   case Typ of
-    tabTriDown:
+    ttriDown:
     begin
       P1:= Point(R.Left, R.Top);
       P2:= Point(R.Right, R.Top);
       P3:= Point((R.Left+R.Right) div 2, R.Bottom);
     end;
-    tabTriRight:
+    ttriRight:
     begin
       P1:= Point(R.Left, R.Top);
       P2:= Point(R.Left, R.Bottom);
       P3:= Point(R.Right, (R.Top+R.Bottom) div 2);
     end;
-    tabTriLeft:
+    ttriLeft:
     begin
       P1:= Point(R.Right, R.Top);
       P2:= Point(R.Right, R.Bottom);
@@ -1174,7 +1174,7 @@ begin
     C.FillRect(FRectArrowDown);
 
     DoPaintArrowTo(C,
-      tabTriDown,
+      ttriDown,
       FRectArrowDown,
       IfThen((FTabIndexOver=TabIndexArrowMenu) and not DragManager.IsDragging, FColorArrowOver, FColorArrow),
       FColorBg);
@@ -1195,7 +1195,7 @@ begin
     ARect.Left:= (ARect.Left+ARect.Right) div 2;
 
     DoPaintArrowTo(C,
-      tabTriLeft,
+      ttriLeft,
       ARect,
       IfThen(FTabIndexOver=TabIndexArrowScrollLeft, FColorArrowOver, FColorArrow),
       FColorBg);
@@ -1205,7 +1205,7 @@ begin
     ARect.Right:= (ARect.Left+ARect.Right) div 2;
 
     DoPaintArrowTo(C,
-      tabTriRight,
+      ttriRight,
       ARect,
       IfThen(FTabIndexOver=TabIndexArrowScrollRight, FColorArrowOver, FColorArrow),
       FColorBg);
@@ -1588,8 +1588,8 @@ var
 begin
   N:= FOptArrowSize;
   case ATyp of
-    tabTriLeft,
-    tabTriRight:
+    ttriLeft,
+    ttriRight:
       begin
         SizeY:= N;
         SizeX:= N div 2;
