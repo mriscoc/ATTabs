@@ -1821,8 +1821,10 @@ end;
 
 
 function TATTabs.GetScrollPageSize: integer;
+const
+  cPercents = 80;
 begin
-  Result:= ClientWidth * 2 div 3;
+  Result:= ClientWidth * cPercents div 100;
 end;
 
 function TATTabs.GetMaxScrollPos: integer;
