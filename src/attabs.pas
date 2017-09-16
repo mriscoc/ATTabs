@@ -1850,15 +1850,15 @@ begin
       repeat
         FScrollPos:= Min(APosTo, FScrollPos+cStep);
         Paint;
-        Sleep(cSleepTime);
         Application.ProcessMessages;
+        Sleep(cSleepTime);
       until FScrollPos=APosTo
     else
       repeat
         FScrollPos:= Max(APosTo, FScrollPos-cStep);
         Paint;
-        Sleep(cSleepTime);
         Application.ProcessMessages;
+        Sleep(cSleepTime);
       until FScrollPos=APosTo;
   finally
     Enabled:= true;
