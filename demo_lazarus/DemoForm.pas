@@ -89,9 +89,9 @@ begin
   t.OnTabClose:= TabClose;
   t.OnTabMove:= TabMove;
   t.OnTabClose:= TabCloseEvent;
-  t.TabDoubleClickPlus:= true;
-  t.TabShowClose:= tbShowAll;
-  t.TabAngle:= 0;
+  t.OptMouseDoubleClickPlus:= true;
+  t.OptShowXButtons:= tbShowAll;
+  t.OptTabAngle:= 0;
   t.DragMode:= dmAutomatic; //enable drag-drop
 
   t.AddTab(-1, 'Tab');
@@ -114,16 +114,13 @@ begin
   t1.OnTabDrawAfter:= TabDrawAfter;
   t1.ColorBg:= $F9EADB;
 
-  t1.TabAngle:= 4;
-  t1.TabHeight:= 30;
-  t1.TabWidthMax:= 170;
-  t1.TabIndentTop:= 20;
-  t1.TabIndentXSize:= 15;
-  t1.TabIndentXInner:= 3;
-  //t1.TabShowclose:= tbShowActive;
-  //t1.TabShowplus:= false;
-  //t1.TabShowMenu:= false;
-  t1.TabBottom:= true;
+  t1.OptTabAngle:= 4;
+  t1.OptTabHeight:= 30;
+  t1.OptTabWidthNormal:= 170;
+  t1.OptSpaceOnTop:= 20;
+  t1.OptSpaceXSize:= 15;
+  t1.OptSpaceXInner:= 3;
+  t1.OptShowAtBottom:= true;
 
   t1.AddTab(-1, 'Owner-draw', nil, false, clNone);
   t1.AddTab(-1, 'Tab wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww', nil, false, clGreen);
@@ -137,13 +134,13 @@ begin
   t0.Font.Size:= 8;
 
   t0.Height:= 42;
-  t0.TabAngle:= 0;
-  t0.TabIndentInter:= 2;
-  t0.TabIndentInit:= 2;
-  t0.TabIndentTop:= 4;
-  t0.TabIndentXSize:= 13;
-  t0.TabDragEnabled:= false;
-  t0.TabShowScrollArrows:= false;
+  t0.OptTabAngle:= 0;
+  t0.OptSpaceBetweenTabs:= 2;
+  t0.OptSpaceInitial:= 2;
+  t0.OptSpaceOnTop:= 4;
+  t0.OptSpaceXSize:= 13;
+  t0.OptMouseDragEnabled:= false;
+  t0.OptShowScrollArrows:= false;
 
   t0.Font.Color:= clBlack;
   t0.ColorBg:= $F9EADB;
@@ -176,37 +173,37 @@ end;
 
 procedure TForm1.chkNumsChange(Sender: TObject);
 begin
-  t1.TabNumPrefix:= IfThen(chkNums.Checked, '%d. ', '');
+  t1.OptShowNumberPrefix:= IfThen(chkNums.Checked, '%d. ', '');
   t1.Invalidate;
 end;
 
 procedure TForm1.chkShowArrowDownChange(Sender: TObject);
 begin
-  t.TabShowMenu:= chkShowArrowDown.Checked;
+  t.OptShowArrowMenu:= chkShowArrowDown.Checked;
   t.Invalidate;
 end;
 
 procedure TForm1.chkShowFullColorChange(Sender: TObject);
 begin
-  t.TabShowEntireColor:= chkShowFullColor.Checked;
+  t.OptShowEntireColor:= chkShowFullColor.Checked;
   t.Invalidate;
 end;
 
 procedure TForm1.chkShowPlusChange(Sender: TObject);
 begin
-  t.TabShowPlus:= chkShowPlus.Checked;
+  t.OptShowPlusTab:= chkShowPlus.Checked;
   t.Invalidate;
 end;
 
 procedure TForm1.chkShowScrollChange(Sender: TObject);
 begin
-  t.TabShowScrollArrows:= chkShowScroll.Checked;
+  t.OptShowScrollArrows:= chkShowScroll.Checked;
   t.Invalidate;
 end;
 
 procedure TForm1.comboShowXChange(Sender: TObject);
 begin
-  t.TabShowClose:= TATTabShowClose(comboShowX.ItemIndex);
+  t.OptShowXButtons:= TATTabShowClose(comboShowX.ItemIndex);
   t.Invalidate;
 end;
 
@@ -289,7 +286,6 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
-  chkShowPlus.Checked:= t.TabShowPlus;
 end;
 
 procedure TForm1.TabDrawAfter(Sender: TObject;
@@ -297,8 +293,8 @@ procedure TForm1.TabDrawAfter(Sender: TObject;
   C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
 begin
   if ATabIndex<0 then Exit;
-  C.Font.Name:= 'Tahoma';
-  C.Font.Size:= 8;
+  C.Font.Name:= 'Arial';
+  C.Font.Size:= 9;
   C.Font.Color:= clBlue;
   C.TextOut((ARect.Left+ARect.Right) div 2 - 8, ARect.Top+1, Inttostr(ATabIndex));
 end;

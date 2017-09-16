@@ -1,4 +1,7 @@
 
+2017.09.16
+* changed: renamed most of options to OptNNNNNN (sorry, please fix your code)
+
 2017.09.15
 + add: scrolling arrows, they work when tabs painted out of right side (when lot of tabs)
 + add: scrolling mark (red on top if lot of tabs)
