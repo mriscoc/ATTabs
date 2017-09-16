@@ -75,6 +75,9 @@ uses
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  //avoid drag on click arrows
+  DragManager.DragImmediate:= false;
+
   //default tabs
   t:= TATTabs.Create(Self);
   t.Parent:= Self;
