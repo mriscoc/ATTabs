@@ -1360,6 +1360,7 @@ begin
   if IsClick then     
   begin
     DoHandleClick;
+    Invalidate;
     Exit
   end;
 end;
