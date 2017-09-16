@@ -17,18 +17,23 @@ type
     btnLeft: TButton;
     btnRight: TButton;
     btnStress: TButton;
+    chkShowScroll: TCheckBox;
+    chkShowArrowDown: TCheckBox;
     comboShowX: TComboBox;
     EditInfo: TEdit;
-    chkPlus: TCheckBox;
+    chkShowPlus: TCheckBox;
     Label1: TLabel;
     chkNums: TCheckBox;
     Label4: TLabel;
     labStatus: TLabel;
     btnModify: TButton;
     Label2: TLabel;
-    chkEntire: TCheckBox;
+    chkShowFullColor: TCheckBox;
     Label3: TLabel;
     procedure btnStressClick(Sender: TObject);
+    procedure chkShowArrowDownChange(Sender: TObject);
+    procedure chkShowFullColorChange(Sender: TObject);
+    procedure chkShowScrollChange(Sender: TObject);
     procedure comboShowXChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
@@ -38,10 +43,10 @@ type
     procedure btnRightClick(Sender: TObject);
     procedure EditInfoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure chkPlusClick(Sender: TObject);
+    procedure chkShowPlusClick(Sender: TObject);
     procedure chkNumsClick(Sender: TObject);
     procedure btnModifyClick(Sender: TObject);
-    procedure chkEntireClick(Sender: TObject);
+    procedure chkShowFullColorClick(Sender: TObject);
   private
     { Private declarations }
     LockEdit: boolean;
@@ -172,6 +177,24 @@ begin
     t.AddTab(-1, IntToStr(i));
 end;
 
+procedure TForm1.chkShowArrowDownChange(Sender: TObject);
+begin
+  t.TabShowMenu:= chkShowArrowDown.Checked;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkShowFullColorChange(Sender: TObject);
+begin
+  t.TabShowEntireColor:= chkShowFullColor.Checked;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkShowScrollChange(Sender: TObject);
+begin
+  t.TabShowScrollArrows:= chkShowScroll.Checked;
+  t.Invalidate;
+end;
+
 procedure TForm1.comboShowXChange(Sender: TObject);
 begin
   t.TabShowClose:= TATTabShowClose(comboShowX.ItemIndex);
@@ -255,15 +278,15 @@ begin
 end;
 
 
-procedure TForm1.chkPlusClick(Sender: TObject);
+procedure TForm1.chkShowPlusClick(Sender: TObject);
 begin
-  t.TabShowPlus:= chkPlus.Checked;
+  t.TabShowPlus:= chkShowPlus.Checked;
   t.Invalidate;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
-  chkPlus.Checked:= t.TabShowPlus;
+  chkShowPlus.Checked:= t.TabShowPlus;
 end;
 
 procedure TForm1.TabDrawAfter(Sender: TObject;
@@ -338,7 +361,7 @@ begin
   t.Invalidate;
 end;
 
-procedure TForm1.chkEntireClick(Sender: TObject);
+procedure TForm1.chkShowFullColorClick(Sender: TObject);
 begin
   t.TabShowEntireColor:= not t.TabShowEntireColor;
   t.Invalidate;

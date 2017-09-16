@@ -1,10 +1,10 @@
 object Form1: TForm1
   Left = 302
-  Height = 443
-  Top = 297
+  Height = 507
+  Top = 233
   Width = 716
   Caption = 'ATTabs demo'
-  ClientHeight = 443
+  ClientHeight = 507
   ClientWidth = 716
   Color = clBtnFace
   Font.Color = clBlack
@@ -13,43 +13,43 @@ object Form1: TForm1
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.7'
+  LCLVersion = '1.9.0.0'
   object Label1: TLabel
     Left = 144
-    Height = 17
-    Top = 240
-    Width = 350
+    Height = 14
+    Top = 280
+    Width = 325
     Caption = 'Note: enabled drag-drop from top tabs to bottom tabs'
     ParentColor = False
   end
   object labStatus: TLabel
     Left = 144
-    Height = 17
-    Top = 256
-    Width = 45
+    Height = 14
+    Top = 296
+    Width = 40
     Caption = 'Status:'
     ParentColor = False
   end
   object Label2: TLabel
     Left = 144
-    Height = 17
+    Height = 14
     Top = 56
-    Width = 57
+    Width = 53
     Caption = 'top tabs:'
     ParentColor = False
   end
   object Label3: TLabel
     Left = 312
-    Height = 17
+    Height = 14
     Top = 56
-    Width = 83
+    Width = 77
     Caption = 'bottom tabs:'
     ParentColor = False
   end
   object btnAdd: TButton
     Left = 144
     Height = 25
-    Top = 144
+    Top = 184
     Width = 115
     Caption = 'add after current'
     OnClick = btnAddClick
@@ -58,7 +58,7 @@ object Form1: TForm1
   object btnDel: TButton
     Left = 264
     Height = 25
-    Top = 144
+    Top = 184
     Width = 75
     Caption = 'del'
     OnClick = btnDelClick
@@ -67,7 +67,7 @@ object Form1: TForm1
   object btnColor: TButton
     Left = 344
     Height = 25
-    Top = 144
+    Top = 184
     Width = 75
     Caption = 'color'
     OnClick = btnColorClick
@@ -76,7 +76,7 @@ object Form1: TForm1
   object btnLeft: TButton
     Left = 264
     Height = 25
-    Top = 176
+    Top = 216
     Width = 75
     Caption = '<'
     OnClick = btnLeftClick
@@ -85,7 +85,7 @@ object Form1: TForm1
   object btnRight: TButton
     Left = 344
     Height = 25
-    Top = 176
+    Top = 216
     Width = 75
     Caption = '>'
     OnClick = btnRightClick
@@ -93,26 +93,28 @@ object Form1: TForm1
   end
   object EditInfo: TEdit
     Left = 264
-    Height = 27
-    Top = 208
+    Height = 24
+    Top = 248
     Width = 225
     OnChange = EditInfoChange
     TabOrder = 11
   end
-  object chkPlus: TCheckBox
+  object chkShowPlus: TCheckBox
     Left = 144
     Height = 24
     Top = 75
-    Width = 110
+    Width = 112
     Caption = 'show "+" tab'
-    OnClick = chkPlusClick
+    Checked = True
+    OnClick = chkShowPlusClick
+    State = cbChecked
     TabOrder = 0
   end
   object chkNums: TCheckBox
     Left = 312
     Height = 24
     Top = 72
-    Width = 123
+    Width = 127
     Caption = 'show numbers'
     OnClick = chkNumsClick
     TabOrder = 2
@@ -120,25 +122,26 @@ object Form1: TForm1
   object btnModify: TButton
     Left = 144
     Height = 25
-    Top = 176
+    Top = 216
     Width = 113
     Caption = 'toggle modified'
     OnClick = btnModifyClick
     TabOrder = 8
   end
-  object chkEntire: TCheckBox
+  object chkShowFullColor: TCheckBox
     Left = 144
     Height = 24
     Top = 96
-    Width = 130
+    Width = 131
     Caption = 'color entire tab'
-    OnClick = chkEntireClick
+    OnChange = chkShowFullColorChange
+    OnClick = chkShowFullColorClick
     TabOrder = 1
   end
   object btnStress: TButton
     Left = 424
     Height = 25
-    Top = 144
+    Top = 184
     Width = 208
     Caption = 'stress (600 tabs)'
     OnClick = btnStressClick
@@ -146,15 +149,15 @@ object Form1: TForm1
   end
   object Label4: TLabel
     Left = 464
-    Height = 17
+    Height = 14
     Top = 56
-    Width = 115
+    Width = 104
     Caption = 'top tabs show "x"'
     ParentColor = False
   end
   object comboShowX: TComboBox
     Left = 464
-    Height = 31
+    Height = 25
     Top = 72
     Width = 160
     ItemHeight = 0
@@ -167,5 +170,27 @@ object Form1: TForm1
     OnChange = comboShowXChange
     Style = csDropDownList
     TabOrder = 3
+  end
+  object chkShowScroll: TCheckBox
+    Left = 144
+    Height = 24
+    Top = 120
+    Width = 154
+    Caption = 'show scroll arrows'
+    Checked = True
+    OnChange = chkShowScrollChange
+    State = cbChecked
+    TabOrder = 12
+  end
+  object chkShowArrowDown: TCheckBox
+    Left = 144
+    Height = 24
+    Top = 144
+    Width = 149
+    Caption = 'show arrow down'
+    Checked = True
+    OnChange = chkShowArrowDownChange
+    State = cbChecked
+    TabOrder = 13
   end
 end
