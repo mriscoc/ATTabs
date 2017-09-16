@@ -106,7 +106,7 @@ const
 type
   { TATTabs }
 
-  TATTabs = class(TPanel)
+  TATTabs = class(TCustomControl)
   private
     //drag-drop
     FMouseDown: boolean;
@@ -231,6 +231,7 @@ type
     procedure DoTabDrop;
     procedure DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
     procedure DoUpdateTabRects;
+
   public
     constructor Create(AOnwer: TComponent); override;
     function CanFocus: boolean; override;
@@ -257,6 +258,7 @@ type
     procedure DragDrop(Source: TObject; X, Y: Integer); override;
     procedure DoScrollLeft;
     procedure DoScrollRight;
+
   protected
     procedure Paint; override;
     procedure Resize; override;
@@ -269,7 +271,41 @@ type
     procedure WMEraseBkgnd(var Message: TMessage); message WM_ERASEBKGND;
     {$endif}
     procedure DragOver(Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean); override;
+
   published
+    //inherited
+    property Align;
+    property Anchors;
+    property BorderSpacing;
+    property ClientHeight;
+    property ClientWidth;
+    property Constraints;
+    property DragCursor;
+    property DragKind;
+    property DragMode;
+    property Enabled;
+    property Font;
+    property ParentFont;
+    property ParentShowHint;
+    property PopupMenu;
+    property ShowHint;
+    property Visible;
+
+    property OnDragDrop;
+    property OnDragOver;
+    property OnEndDrag;
+    property OnContextPopup;
+    property OnMouseEnter;
+    property OnMouseLeave;
+    property OnMouseMove;
+    property OnMouseUp;
+    property OnMouseWheel;
+    property OnMouseWheelDown;
+    property OnMouseWheelUp;
+    property OnResize;
+    property OnStartDrag;
+
+    //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
     //colors
