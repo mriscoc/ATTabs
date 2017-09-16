@@ -47,9 +47,9 @@ type
     LockEdit: boolean;
     procedure TabCloseEvent(Sender: TObject; ATabIndex: Integer; var ACanClose,
       ACanContinue: boolean);
-    procedure TabMove(A: TObject; NFrom, NTo: Integer);
-    procedure TabClick(A: TObject);
-    procedure TabPlusClick(A: TObject);
+    procedure TabMove(Sender: TObject; NFrom, NTo: Integer);
+    procedure TabClick(Sender: TObject);
+    procedure TabPlusClick(Sender: TObject);
     procedure TabClose(Sender: TObject; ATabIndex: Integer;
       var ACanClose, ACanContinie: boolean);
     procedure TabDrawAfter(Sender: TObject;
@@ -204,7 +204,7 @@ begin
   t.tabIndex:= t.TabIndex+1;
 end;
 
-procedure TForm1.TabClick(A: TObject);
+procedure TForm1.TabClick(Sender: TObject);
 var
   d: TATTabData;
 begin
@@ -217,7 +217,7 @@ begin
   LockEdit:= false;
 end;
 
-procedure TForm1.TabPlusClick(A: TObject);
+procedure TForm1.TabPlusClick(Sender: TObject);
 begin
   btnAdd.Click;
 end;
@@ -315,7 +315,7 @@ begin
   t1.Invalidate;
 end;
 
-procedure TForm1.TabMove(A: TObject; NFrom, NTo: Integer);
+procedure TForm1.TabMove(Sender: TObject; NFrom, NTo: Integer);
 var s: string;
 begin
   if NFrom=-1 then s:= 'add at index '+IntToStr(NTo) else
