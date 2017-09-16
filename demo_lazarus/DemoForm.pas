@@ -1,7 +1,5 @@
 unit DemoForm;
 
-{$mode delphi}
-  
 interface
 
 uses
@@ -31,8 +29,10 @@ type
     chkShowFullColor: TCheckBox;
     Label3: TLabel;
     procedure btnStressClick(Sender: TObject);
+    procedure chkNumsChange(Sender: TObject);
     procedure chkShowArrowDownChange(Sender: TObject);
     procedure chkShowFullColorChange(Sender: TObject);
+    procedure chkShowPlusChange(Sender: TObject);
     procedure chkShowScrollChange(Sender: TObject);
     procedure comboShowXChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -43,10 +43,7 @@ type
     procedure btnRightClick(Sender: TObject);
     procedure EditInfoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure chkShowPlusClick(Sender: TObject);
-    procedure chkNumsClick(Sender: TObject);
     procedure btnModifyClick(Sender: TObject);
-    procedure chkShowFullColorClick(Sender: TObject);
   private
     { Private declarations }
     LockEdit: boolean;
@@ -177,6 +174,12 @@ begin
     t.AddTab(-1, IntToStr(i));
 end;
 
+procedure TForm1.chkNumsChange(Sender: TObject);
+begin
+  t1.TabNumPrefix:= IfThen(chkNums.Checked, '%d. ', '');
+  t1.Invalidate;
+end;
+
 procedure TForm1.chkShowArrowDownChange(Sender: TObject);
 begin
   t.TabShowMenu:= chkShowArrowDown.Checked;
@@ -186,6 +189,12 @@ end;
 procedure TForm1.chkShowFullColorChange(Sender: TObject);
 begin
   t.TabShowEntireColor:= chkShowFullColor.Checked;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkShowPlusChange(Sender: TObject);
+begin
+  t.TabShowPlus:= chkShowPlus.Checked;
   t.Invalidate;
 end;
 
@@ -278,12 +287,6 @@ begin
 end;
 
 
-procedure TForm1.chkShowPlusClick(Sender: TObject);
-begin
-  t.TabShowPlus:= chkShowPlus.Checked;
-  t.Invalidate;
-end;
-
 procedure TForm1.FormShow(Sender: TObject);
 begin
   chkShowPlus.Checked:= t.TabShowPlus;
@@ -335,12 +338,6 @@ begin
   end;  
 end;
 
-procedure TForm1.chkNumsClick(Sender: TObject);
-begin
-  t1.TabNumPrefix:= IfThen(chkNums.Checked, '%d. ', '');
-  t1.Invalidate;
-end;
-
 procedure TForm1.TabMove(Sender: TObject; NFrom, NTo: Integer);
 var s: string;
 begin
@@ -358,12 +355,6 @@ begin
   if d=nil then Exit;
 
   d.TabModified:= not d.TabModified;
-  t.Invalidate;
-end;
-
-procedure TForm1.chkShowFullColorClick(Sender: TObject);
-begin
-  t.TabShowEntireColor:= not t.TabShowEntireColor;
   t.Invalidate;
 end;
 
