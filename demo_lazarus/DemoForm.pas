@@ -159,6 +159,9 @@ begin
   t0.AddTab(-1, 'Firefox');
   t0.AddTab(-1, 'A tab _____________________________________________________', nil, false, clGreen);
   t0.AddTab(-1, 'Tab middle len', nil, false, clBlue);
+
+  t.Font.Color:= $E0E0E0;
+  t1.Font.Color:= $E0E0E0;
 end;
 
 procedure TForm1.btnStressClick(Sender: TObject);

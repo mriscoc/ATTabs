@@ -102,6 +102,46 @@ const
   TabIndexArrowScrollLeft = -4;
   TabIndexArrowScrollRight = -5;
 
+const
+  _InitOptTabAngle = 4;
+  _InitOptUseAngleForMaxTabs = 10;
+  _InitOptTabHeight = 24;
+  _InitOptTabWidthMinimal = 40;
+  _InitOptTabWidthNormal = 130;
+  _InitOptTabWidthMinimalHidesX = 55;
+  _InitOptSpaceInitial = 30; //big for scroll arrows
+  _InitOptSpaceBeforeText = 6;
+  _InitOptSpaceBetweenTabs = 0;
+  _InitOptSpaceOnTop = 5;
+  _InitOptSpaceXRight = 10;
+  _InitOptSpaceXInner = 3;
+  _InitOptSpaceXSize = 12;
+  _InitOptArrowSize = 4;
+  _InitOptArrowSpaceLeft = 4;
+  _InitOptArrowSpaceRight = 20;
+  _InitOptColoredBandSize = 3;
+  _InitOptScrollMarkSizeX = 20;
+  _InitOptScrollMarkSizeY = 3;
+  _InitOptDropMarkSize = 6;
+
+  _InitOptShowAtBottom = false;
+  _InitOptShowNumberPrefix = '';
+  _InitOptShowScrollArrows = true;
+  _InitOptShowScrollMark = true;
+  _InitOptShowDropMark = true;
+  _InitOptShowXButtons = tbShowAll;
+  _InitOptShowPlusTab = true;
+  _InitOptShowPlusText = ' + ';
+  _InitOptShowModifiedText = '*';
+  _InitOptShowArrowMenu = true;
+  _InitOptShowBorderActiveLow = false;
+  _InitOptShowEntireColor = false;
+  _InitOptMouseMiddleClickClose = true;
+  _InitOptMouseDoubleClickClose = true;
+  _InitOptMouseDoubleClickPlus = false;
+  _InitOptMouseDragEnabled = true;
+  _InitOptMouseDragOutEnabled = true;
+
 type
   { TATTabs }
 
@@ -325,45 +365,46 @@ type
     property ColorArrow: TColor read FColorArrow write FColorArrow;
     property ColorArrowOver: TColor read FColorArrowOver write FColorArrowOver;
     property ColorScrollMark: TColor read FColorScrollMark write FColorScrollMark;
-    //spaces
-    property OptTabHeight: integer read FOptTabHeight write FOptTabHeight;
-    property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal;
-    property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal;
-    property OptTabWidthMinimalHidesX: integer read FOptTabWidthMinimalHidesX write FOptTabWidthMinimalHidesX;
-    property OptTabAngle: integer read FOptTabAngle write FOptTabAngle;
-    property OptUseAngleForMaxTabs: integer read FOptUseAngleForMaxTabs write FOptUseAngleForMaxTabs;
-    property OptDropMarkSize: integer read FOptDropMarkSize write FOptDropMarkSize;
-    property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs;
-    property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial;
-    property OptSpaceBeforeText: integer read FOptSpaceBeforeText write FOptSpaceBeforeText;
-    property OptSpaceOnTop: integer read FOptSpaceOnTop write FOptSpaceOnTop;
-    property OptSpaceXRight: integer read FOptSpaceXRight write FOptSpaceXRight;
-    property OptSpaceXInner: integer read FOptSpaceXInner write FOptSpaceXInner;
-    property OptSpaceXSize: integer read FOptSpaceXSize write FOptSpaceXSize;
-    property OptColoredBandSize: integer read FOptColoredBandSize write FOptColoredBandSize;
-    property OptArrowSize: integer read FOptArrowSize write FOptArrowSize;
-    property OptArrowSpaceLeft: integer read FOptArrowSpaceLeft write FOptArrowSpaceLeft;
-    property OptArrowSpaceRight: integer read FOptArrowSpaceRight write FOptArrowSpaceRight;
-    property OptScrollMarkSizeX: integer read FOptScrollMarkSizeX write FOptScrollMarkSizeX;
-    property OptScrollMarkSizeY: integer read FOptScrollMarkSizeY write FOptScrollMarkSizeY;
 
-    property OptShowAtBottom: boolean read FOptShowAtBottom write FOptShowAtBottom;
-    property OptShowScrollArrows: boolean read FOptShowScrollArrows write FOptShowScrollArrows;
-    property OptShowScrollMark: boolean read FOptShowScrollMark write FOptShowScrollMark;
-    property OptShowDropMark: boolean read FOptShowDropMark write FOptShowDropMark;
-    property OptShowXButtons: TATTabShowClose read FOptShowXButtons write FOptShowXButtons;
-    property OptShowPlusTab: boolean read FOptShowPlusTab write FOptShowPlusTab;
+    //options
+    property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
+    property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
+    property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal default _InitOptTabWidthMinimal;
+    property OptTabWidthMinimalHidesX: integer read FOptTabWidthMinimalHidesX write FOptTabWidthMinimalHidesX default _InitOptTabWidthMinimalHidesX;
+    property OptTabAngle: integer read FOptTabAngle write FOptTabAngle default _InitOptTabAngle;
+    property OptUseAngleForMaxTabs: integer read FOptUseAngleForMaxTabs write FOptUseAngleForMaxTabs default _InitOptUseAngleForMaxTabs;
+    property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
+    property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
+    property OptSpaceBeforeText: integer read FOptSpaceBeforeText write FOptSpaceBeforeText default _InitOptSpaceBeforeText;
+    property OptSpaceOnTop: integer read FOptSpaceOnTop write FOptSpaceOnTop default _InitOptSpaceOnTop;
+    property OptSpaceXRight: integer read FOptSpaceXRight write FOptSpaceXRight default _InitOptSpaceXRight;
+    property OptSpaceXInner: integer read FOptSpaceXInner write FOptSpaceXInner default _InitOptSpaceXInner;
+    property OptSpaceXSize: integer read FOptSpaceXSize write FOptSpaceXSize default _InitOptSpaceXSize;
+    property OptColoredBandSize: integer read FOptColoredBandSize write FOptColoredBandSize default _InitOptColoredBandSize;
+    property OptArrowSize: integer read FOptArrowSize write FOptArrowSize default _InitOptArrowSize;
+    property OptArrowSpaceLeft: integer read FOptArrowSpaceLeft write FOptArrowSpaceLeft default _InitOptArrowSpaceLeft;
+    property OptArrowSpaceRight: integer read FOptArrowSpaceRight write FOptArrowSpaceRight default _InitOptArrowSpaceRight;
+    property OptScrollMarkSizeX: integer read FOptScrollMarkSizeX write FOptScrollMarkSizeX default _InitOptScrollMarkSizeX;
+    property OptScrollMarkSizeY: integer read FOptScrollMarkSizeY write FOptScrollMarkSizeY default _InitOptScrollMarkSizeY;
+    property OptDropMarkSize: integer read FOptDropMarkSize write FOptDropMarkSize default _InitOptDropMarkSize;
+
+    property OptShowAtBottom: boolean read FOptShowAtBottom write FOptShowAtBottom default _InitOptShowAtBottom;
+    property OptShowScrollArrows: boolean read FOptShowScrollArrows write FOptShowScrollArrows default _InitOptShowScrollArrows;
+    property OptShowScrollMark: boolean read FOptShowScrollMark write FOptShowScrollMark default _InitOptShowScrollMark;
+    property OptShowDropMark: boolean read FOptShowDropMark write FOptShowDropMark default _InitOptShowDropMark;
+    property OptShowXButtons: TATTabShowClose read FOptShowXButtons write FOptShowXButtons default _InitOptShowXButtons;
+    property OptShowPlusTab: boolean read FOptShowPlusTab write FOptShowPlusTab default _InitOptShowPlusTab;
     property OptShowPlusText: TATTabString read FOptShowPlusText write FOptShowPlusText;
     property OptShowModifiedText: TATTabString read FOptShowModifiedText write FOptShowModifiedText;
-    property OptShowArrowMenu: boolean read FOptShowArrowMenu write FOptShowArrowMenu;
-    property OptShowBorderActiveLow: boolean read FOptShowBorderActiveLow write FOptShowBorderActiveLow;
-    property OptShowEntireColor: boolean read FOptShowEntireColor write FOptShowEntireColor;
+    property OptShowArrowMenu: boolean read FOptShowArrowMenu write FOptShowArrowMenu default _InitOptShowArrowMenu;
+    property OptShowBorderActiveLow: boolean read FOptShowBorderActiveLow write FOptShowBorderActiveLow default _InitOptShowBorderActiveLow;
+    property OptShowEntireColor: boolean read FOptShowEntireColor write FOptShowEntireColor default _InitOptShowEntireColor;
     property OptShowNumberPrefix: TATTabString read FOptShowNumberPrefix write FOptShowNumberPrefix;
-    property OptMouseMiddleClickClose: boolean read FOptMouseMiddleClickClose write FOptMouseMiddleClickClose;
-    property OptMouseDoubleClickClose: boolean read FOptMouseDoubleClickClose write FOptMouseDoubleClickClose;
-    property OptMouseDoubleClickPlus: boolean read FOptMouseDoubleClickPlus write FOptMouseDoubleClickPlus;
-    property OptMouseDragEnabled: boolean read FOptMouseDragEnabled write FOptMouseDragEnabled;
-    property OptMouseDragOutEnabled: boolean read FOptMouseDragOutEnabled write FOptMouseDragOutEnabled;
+    property OptMouseMiddleClickClose: boolean read FOptMouseMiddleClickClose write FOptMouseMiddleClickClose default _InitOptMouseMiddleClickClose;
+    property OptMouseDoubleClickClose: boolean read FOptMouseDoubleClickClose write FOptMouseDoubleClickClose default _InitOptMouseDoubleClickClose;
+    property OptMouseDoubleClickPlus: boolean read FOptMouseDoubleClickPlus write FOptMouseDoubleClickPlus default _InitOptMouseDoubleClickPlus;
+    property OptMouseDragEnabled: boolean read FOptMouseDragEnabled write FOptMouseDragEnabled default _InitOptMouseDragEnabled;
+    property OptMouseDragOutEnabled: boolean read FOptMouseDragOutEnabled write FOptMouseDragOutEnabled default _InitOptMouseDragOutEnabled;
 
     //events
     property OnTabClick: TNotifyEvent read FOnTabClick write FOnTabClick;
@@ -620,54 +661,49 @@ begin
   FColorArrowOver:= $E0E0E0;
   FColorScrollMark:= FColorDropMark;
 
-  FOptTabAngle:= 4;
-  FOptUseAngleForMaxTabs:= 10;
-  FOptTabHeight:= 24;
-  FOptTabWidthMinimal:= 40;
-  FOptTabWidthNormal:= 130;
-  FOptTabWidthMinimalHidesX:= 55;
-  FOptSpaceInitial:= 30; //big for scroll arrows
-  FOptSpaceBeforeText:= 6;
-  FOptSpaceBetweenTabs:= 0;
-  FOptSpaceOnTop:= 5;
-  FOptSpaceXRight:= 10;
-  FOptSpaceXInner:= 3;
-  FOptSpaceXSize:= 12;
-  FOptArrowSize:= 4;
-  FOptArrowSpaceLeft:= 4;
-  FOptArrowSpaceRight:= 20;
-  FOptColoredBandSize:= 3;
-  FOptScrollMarkSizeX:= 20;
-  FOptScrollMarkSizeY:= 3;
-  FOptDropMarkSize:= 6;
+  FOptTabAngle:= _InitOptTabAngle;
+  FOptUseAngleForMaxTabs:= _InitOptUseAngleForMaxTabs;
+  FOptTabHeight:= _InitOptTabHeight;
+  FOptTabWidthMinimal:= _InitOptTabWidthMinimal;
+  FOptTabWidthNormal:= _InitOptTabWidthNormal;
+  FOptTabWidthMinimalHidesX:= _InitOptTabWidthMinimalHidesX;
+  FOptSpaceInitial:= _InitOptSpaceInitial;
+  FOptSpaceBeforeText:= _InitOptSpaceBeforeText;
+  FOptSpaceBetweenTabs:= _InitOptSpaceBetweenTabs;
+  FOptSpaceOnTop:= _InitOptSpaceOnTop;
+  FOptSpaceXRight:= _InitOptSpaceXRight;
+  FOptSpaceXInner:= _InitOptSpaceXInner;
+  FOptSpaceXSize:= _InitOptSpaceXSize;
+  FOptArrowSize:= _InitOptArrowSize;
+  FOptArrowSpaceLeft:= _InitOptArrowSpaceLeft;
+  FOptArrowSpaceRight:= _InitOptArrowSpaceRight;
+  FOptColoredBandSize:= _InitOptColoredBandSize;
+  FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
+  FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
+  FOptDropMarkSize:= _InitOptDropMarkSize;
 
-  FOptShowAtBottom:= false;
-  FOptShowNumberPrefix:= '';
-  FOptShowScrollArrows:= true;
-  FOptShowScrollMark:= true;
-  FOptShowDropMark:= true;
-  FOptShowXButtons:= tbShowAll;
-  FOptShowPlusTab:= true;
-  FOptShowPlusText:= ' + ';
-  FOptShowModifiedText:= '*';
-  FOptShowArrowMenu:= true;
-  FOptShowBorderActiveLow:= false;
-  FOptShowEntireColor:= false;
-
-  FOptMouseMiddleClickClose:= true;
-  FOptMouseDoubleClickClose:= true;
-  FOptMouseDoubleClickPlus:= false;
-  FOptMouseDragEnabled:= true;
-  FOptMouseDragOutEnabled:= true;
+  FOptShowAtBottom:= _InitOptShowAtBottom;
+  FOptShowNumberPrefix:= _InitOptShowNumberPrefix;
+  FOptShowScrollArrows:= _InitOptShowScrollArrows;
+  FOptShowScrollMark:= _InitOptShowScrollMark;
+  FOptShowDropMark:= _InitOptShowDropMark;
+  FOptShowXButtons:= _InitOptShowXButtons;
+  FOptShowPlusTab:= _InitOptShowPlusTab;
+  FOptShowPlusText:= _InitOptShowPlusText;
+  FOptShowModifiedText:= _InitOptShowModifiedText;
+  FOptShowArrowMenu:= _InitOptShowArrowMenu;
+  FOptShowBorderActiveLow:= _InitOptShowBorderActiveLow;
+  FOptShowEntireColor:= _InitOptShowEntireColor;
+  FOptMouseMiddleClickClose:= _InitOptMouseMiddleClickClose;
+  FOptMouseDoubleClickClose:= _InitOptMouseDoubleClickClose;
+  FOptMouseDoubleClickPlus:= _InitOptMouseDoubleClickPlus;
+  FOptMouseDragEnabled:= _InitOptMouseDragEnabled;
+  FOptMouseDragOutEnabled:= _InitOptMouseDragOutEnabled;
 
   FBitmap:= TBitmap.Create;
   FBitmap.PixelFormat:= pf24bit;
   FBitmap.Width:= 1600;
   FBitmap.Height:= 60;
-
-  Font.Name:= 'Tahoma';
-  Font.Color:= $E0E0E0;
-  Font.Size:= 8;
 
   FTabIndex:= 0;
   FTabIndexOver:= -1;
