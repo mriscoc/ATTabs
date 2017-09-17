@@ -103,6 +103,24 @@ const
   TabIndexArrowScrollRight = -5;
 
 const
+  _InitTabColorBg = clBlack;
+  _InitTabColorTabActive = $808080;
+  _InitTabColorTabPassive = $786868;
+  _InitTabColorTabOver = $A08080;
+  _InitTabColorFontModified = $A00000;
+  _InitTabColorBorderActive = $A0A0A0;
+  _InitTabColorBorderPassive = $A07070;
+  _InitTabColorCloseBg = clNone;
+  _InitTabColorCloseBgOver = $6060E0;
+  _InitTabColorCloseBorderOver = _InitTabColorCloseBgOver;
+  _InitTabColorCloseX = clLtGray;
+  _InitTabColorCloseXOver = clWhite;
+  _InitTabColorArrow = $999999;
+  _InitTabColorArrowOver = $E0E0E0;
+  _InitTabColorDropMark = $6060E0;
+  _InitTabColorScrollMark = _InitTabColorDropMark;
+
+const
   _InitOptTabAngle = 4;
   _InitOptUseAngleForMaxTabs = 10;
   _InitOptTabHeight = 24;
@@ -156,7 +174,6 @@ type
 
     //colors
     FColorBg: TColor; //color of background (visible at top and between tabs)
-    FColorDropMark: TColor;
     FColorBorderActive: TColor; //color of 1px border of active tab
     FColorBorderPassive: TColor; //color of 1px border of inactive tabs
     FColorTabActive: TColor; //color of active tab
@@ -170,6 +187,7 @@ type
     FColorCloseXOver: TColor; //"color of "x" mark, mouseover
     FColorArrow: TColor; //color of "down" arrow (tab menu), inactive
     FColorArrowOver: TColor; //color of "down" arrow, mouse-over
+    FColorDropMark: TColor;
     FColorScrollMark: TColor;
 
     //opts
@@ -348,23 +366,24 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
+
     //colors
-    property ColorBg: TColor read FColorBg write FColorBg;
-    property ColorDropMark: TColor read FColorDropMark write FColorDropMark;
-    property ColorBorderActive: TColor read FColorBorderActive write FColorBorderActive;
-    property ColorBorderPassive: TColor read FColorBorderPassive write FColorBorderPassive;
-    property ColorTabActive: TColor read FColorTabActive write FColorTabActive;
-    property ColorTabPassive: TColor read FColorTabPassive write FColorTabPassive;
-    property ColorTabOver: TColor read FColorTabOver write FColorTabOver;
-    property ColorFontModified: TColor read FColorFontModified write FColorFontModified;
-    property ColorCloseBg: TColor read FColorCloseBg write FColorCloseBg;
-    property ColorCloseBgOver: TColor read FColorCloseBgOver write FColorCloseBgOver;
-    property ColorCloseBorderOver: TColor read FColorCloseBorderOver write FColorCloseBorderOver;
-    property ColorCloseX: TColor read FColorCloseX write FColorCloseX;
-    property ColorCloseXOver: TColor read FColorCloseXOver write FColorCloseXOver;
-    property ColorArrow: TColor read FColorArrow write FColorArrow;
-    property ColorArrowOver: TColor read FColorArrowOver write FColorArrowOver;
-    property ColorScrollMark: TColor read FColorScrollMark write FColorScrollMark;
+    property ColorBg: TColor read FColorBg write FColorBg default _InitTabColorBg;
+    property ColorBorderActive: TColor read FColorBorderActive write FColorBorderActive default _InitTabColorBorderActive;
+    property ColorBorderPassive: TColor read FColorBorderPassive write FColorBorderPassive default _InitTabColorBorderPassive;
+    property ColorTabActive: TColor read FColorTabActive write FColorTabActive default _InitTabColorTabActive;
+    property ColorTabPassive: TColor read FColorTabPassive write FColorTabPassive default _InitTabColorTabPassive;
+    property ColorTabOver: TColor read FColorTabOver write FColorTabOver default _InitTabColorTabOver;
+    property ColorFontModified: TColor read FColorFontModified write FColorFontModified default _InitTabColorFontModified;
+    property ColorCloseBg: TColor read FColorCloseBg write FColorCloseBg default _InitTabColorCloseBg;
+    property ColorCloseBgOver: TColor read FColorCloseBgOver write FColorCloseBgOver default _InitTabColorCloseBgOver;
+    property ColorCloseBorderOver: TColor read FColorCloseBorderOver write FColorCloseBorderOver default _InitTabColorCloseBorderOver;
+    property ColorCloseX: TColor read FColorCloseX write FColorCloseX default _InitTabColorCloseX;
+    property ColorCloseXOver: TColor read FColorCloseXOver write FColorCloseXOver default _InitTabColorCloseXOver;
+    property ColorArrow: TColor read FColorArrow write FColorArrow default _InitTabColorArrow;
+    property ColorArrowOver: TColor read FColorArrowOver write FColorArrowOver default _InitTabColorArrowOver;
+    property ColorDropMark: TColor read FColorDropMark write FColorDropMark default _InitTabColorDropMark;
+    property ColorScrollMark: TColor read FColorScrollMark write FColorScrollMark default _InitTabColorScrollMark;
 
     //options
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
@@ -644,22 +663,22 @@ begin
   FMouseDownPnt:= Point(0, 0);
   FMouseDownDbl:= false;
 
-  FColorBg:= clBlack;
-  FColorDropMark:= $6060E0;
-  FColorTabActive:= $808080;
-  FColorTabPassive:= $786868;
-  FColorTabOver:= $A08080;
-  FColorFontModified:= $A00000;
-  FColorBorderActive:= $A0A0A0;
-  FColorBorderPassive:= $A07070;
-  FColorCloseBg:= clNone;
-  FColorCloseBgOver:= $6060E0;
-  FColorCloseBorderOver:= FColorCloseBgOver;
-  FColorCloseX:= clLtGray;
-  FColorCloseXOver:= clWhite;
-  FColorArrow:= $999999;
-  FColorArrowOver:= $E0E0E0;
-  FColorScrollMark:= FColorDropMark;
+  FColorBg:= _InitTabColorBg;
+  FColorTabActive:= _InitTabColorTabActive;
+  FColorTabPassive:= _InitTabColorTabPassive;
+  FColorTabOver:= _InitTabColorTabOver;
+  FColorFontModified:= _InitTabColorFontModified;
+  FColorBorderActive:= _InitTabColorBorderActive;
+  FColorBorderPassive:= _InitTabColorBorderPassive;
+  FColorCloseBg:= _InitTabColorCloseBg;
+  FColorCloseBgOver:= _InitTabColorCloseBgOver;
+  FColorCloseBorderOver:= _InitTabColorCloseBorderOver;
+  FColorCloseX:= _InitTabColorCloseX;
+  FColorCloseXOver:= _InitTabColorCloseXOver;
+  FColorArrow:= _InitTabColorArrow;
+  FColorArrowOver:= _InitTabColorArrowOver;
+  FColorDropMark:= _InitTabColorDropMark;
+  FColorScrollMark:= _InitTabColorScrollMark;
 
   FOptTabAngle:= _InitOptTabAngle;
   FOptUseAngleForMaxTabs:= _InitOptUseAngleForMaxTabs;
