@@ -142,7 +142,7 @@ object Form1: TForm1
     Height = 25
     Top = 184
     Width = 208
-    Caption = 'stress (600 tabs)'
+    Caption = 'stress (300 tabs)'
     OnClick = btnStressClick
     TabOrder = 7
   end

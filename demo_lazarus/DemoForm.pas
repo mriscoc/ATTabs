@@ -167,7 +167,7 @@ var
 begin
   for i:= t.TabCount-1 downto 1 do
     t.DeleteTab(i, false, false);
-  for i:= 1 to 600 do
+  for i:= 1 to 300 do
     t.AddTab(-1, IntToStr(i));
 end;
 
