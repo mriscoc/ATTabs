@@ -70,13 +70,14 @@ type
 
 type
   TATTabButton = (
-    tabBtnDropdownMenu,
+    tabBtnNone,
     tabBtnScrollLeft,
     tabBtnScrollRight,
-    tabBtnPlus
+    tabBtnPlus,
+    tabBtnDropdownMenu
     );
 
-  TATTabButtons = set of TATTabButton;
+  TATTabButtons = array[0..3] of TATTabButton;
 
 type
   TATTabOverEvent = procedure (Sender: TObject; ATabIndex: integer) of object;
@@ -131,16 +132,14 @@ const
   _InitTabColorScrollMark = _InitTabColorDropMark;
 
 const
-  _InitOptButtonsLeft = [tabBtnScrollLeft, tabBtnScrollRight];
-  _InitOptButtonsRight = [tabBtnPlus, tabBtnDropdownMenu];
-  _InitOptButtonSize = 15;
+  _InitOptButtonSize = 18;
   _InitOptTabAngle = 4;
   _InitOptUseAngleForMaxTabs = 10;
   _InitOptTabHeight = 24;
   _InitOptTabWidthMinimal = 40;
   _InitOptTabWidthNormal = 130;
   _InitOptTabWidthMinimalHidesX = 55;
-  _InitOptSpaceInitial = 30; //big for scroll arrows
+  //_InitOptSpaceInitial = 30; //big for scroll arrows
   _InitOptSpaceBeforeText = 6;
   _InitOptSpaceBetweenTabs = 0;
   _InitOptSpaceOnTop = 5;
@@ -149,7 +148,6 @@ const
   _InitOptSpaceXSize = 12;
   _InitOptArrowSize = 4;
   _InitOptArrowSpaceLeft = 4;
-  _InitOptArrowSpaceRight = 20;
   _InitOptColoredBandSize = 3;
   _InitOptScrollMarkSizeX = 20;
   _InitOptScrollMarkSizeY = 3;
@@ -157,14 +155,12 @@ const
 
   _InitOptShowAtBottom = false;
   _InitOptShowNumberPrefix = '';
-  _InitOptShowScrollArrows = true;
   _InitOptShowScrollMark = true;
   _InitOptShowDropMark = true;
   _InitOptShowXButtons = tbShowAll;
   _InitOptShowPlusTab = true;
   _InitOptShowPlusText = ' + ';
   _InitOptShowModifiedText = '*';
-  _InitOptShowArrowMenu = true;
   _InitOptShowBorderActiveLow = false;
   _InitOptShowEntireColor = false;
   _InitOptMouseMiddleClickClose = true;
@@ -204,8 +200,8 @@ type
     FColorScrollMark: TColor;
 
     //opts
-    FOptButtonsLeft: TATTabButtons;
-    FOptButtonsRight: TATTabButtons;
+    FButtonsLeft: TATTabButtons;
+    FButtonsRight: TATTabButtons;
     FOptButtonSize: integer;
     FOptTabAngle: integer; //angle of tab border: from 0 (vertcal border) to any size
     FOptUseAngleForMaxTabs: integer; //maximal tab count, for which TabAngle is used (else used 0)
@@ -214,7 +210,7 @@ type
     FOptTabWidthNormal: integer; //tab maximal width (used when only few tabs)
     FOptTabWidthMinimalHidesX: integer; //tab minimal width, after which "x" mark hides for inactive tabs
     FOptSpaceBetweenTabs: integer; //space between nearest tabs (no need for angled tabs)
-    FOptSpaceInitial: integer; //space between first tab and left control edge
+    //FOptSpaceInitial: integer; //space between first tab and left control edge
     FOptSpaceBeforeText: integer; //space between text and tab left edge
     FOptSpaceOnTop: integer; //height of top empty space (colored with bg)
     FOptSpaceXRight: integer; //space from "x" btn to right tab edge
@@ -223,7 +219,6 @@ type
     FOptColoredBandSize: integer; //height of "misc color" line
     FOptArrowSize: integer; //half-size of "arrow" mark
     FOptArrowSpaceLeft: integer; //space from scroll-arrows to left control edge
-    FOptArrowSpaceRight: integer; //width of down-arrow area at right
     FOptDropMarkSize: integer;
     FOptScrollMarkSizeX: integer;
     FOptScrollMarkSizeY: integer;
@@ -233,11 +228,9 @@ type
     FOptShowPlusTab: boolean; //show "plus" tab
     FOptShowPlusText: TATTabString; //text of "plus" tab
     FOptShowModifiedText: TATTabString;
-    FOptShowArrowMenu: boolean; //show down arrow (menu of tabs)
     FOptShowBorderActiveLow: boolean; //show border line below active tab (like Firefox)
     FOptShowEntireColor: boolean;
     FOptShowNumberPrefix: TATTabString;
-    FOptShowScrollArrows: boolean;
     FOptShowScrollMark: boolean;
     FOptShowDropMark: boolean;
 
@@ -254,6 +247,10 @@ type
     FTabIndexDrop: integer;
     FTabList: TList;
     FTabMenu: TATTabPopupMenu;
+
+    FRectButtons: array[TATTabButton] of TRect;
+    FRealIndentLeft: integer;
+    FRealIndentRight: integer;
 
     FScrollPos: integer;
     FImages: TImageList;
@@ -285,9 +282,11 @@ type
     procedure DoPaintDropMark(C: TCanvas);
     procedure DoPaintScrollMark(C: TCanvas);
     procedure DoScrollAnimation(APosTo: integer);
+    function GetIndexOfButtonInArray(AData: TATTabButtons; ABtn: TATTabButton): integer;
     function GetMaxScrollPos: integer;
     procedure GetRectArrowDown(out R: TRect);
     procedure GetRectArrowLeftRight(out R1, R2: TRect);
+    function GetRectOfButton(AIndex: integer; AtLeft: boolean): TRect;
     function GetScrollPageSize: integer;
     function RealTabAngle: integer;
     procedure SetTabIndex(AIndex: integer);
@@ -402,8 +401,6 @@ type
     property ColorScrollMark: TColor read FColorScrollMark write FColorScrollMark default _InitTabColorScrollMark;
 
     //options
-    property OptButtonsLeft: TATTabButtons read FOptButtonsLeft write FOptButtonsLeft default _InitOptButtonsLeft;
-    property OptButtonsRight: TATTabButtons read FOptButtonsRight write FOptButtonsRight default _InitOptButtonsRight;
     property OptButtonSize: integer read FOptButtonSize write FOptButtonSize default _InitOptButtonSize;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
@@ -412,7 +409,7 @@ type
     property OptTabAngle: integer read FOptTabAngle write FOptTabAngle default _InitOptTabAngle;
     property OptUseAngleForMaxTabs: integer read FOptUseAngleForMaxTabs write FOptUseAngleForMaxTabs default _InitOptUseAngleForMaxTabs;
     property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
-    property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
+    //property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
     property OptSpaceBeforeText: integer read FOptSpaceBeforeText write FOptSpaceBeforeText default _InitOptSpaceBeforeText;
     property OptSpaceOnTop: integer read FOptSpaceOnTop write FOptSpaceOnTop default _InitOptSpaceOnTop;
     property OptSpaceXRight: integer read FOptSpaceXRight write FOptSpaceXRight default _InitOptSpaceXRight;
@@ -421,20 +418,17 @@ type
     property OptColoredBandSize: integer read FOptColoredBandSize write FOptColoredBandSize default _InitOptColoredBandSize;
     property OptArrowSize: integer read FOptArrowSize write FOptArrowSize default _InitOptArrowSize;
     property OptArrowSpaceLeft: integer read FOptArrowSpaceLeft write FOptArrowSpaceLeft default _InitOptArrowSpaceLeft;
-    property OptArrowSpaceRight: integer read FOptArrowSpaceRight write FOptArrowSpaceRight default _InitOptArrowSpaceRight;
     property OptScrollMarkSizeX: integer read FOptScrollMarkSizeX write FOptScrollMarkSizeX default _InitOptScrollMarkSizeX;
     property OptScrollMarkSizeY: integer read FOptScrollMarkSizeY write FOptScrollMarkSizeY default _InitOptScrollMarkSizeY;
     property OptDropMarkSize: integer read FOptDropMarkSize write FOptDropMarkSize default _InitOptDropMarkSize;
 
     property OptShowAtBottom: boolean read FOptShowAtBottom write FOptShowAtBottom default _InitOptShowAtBottom;
-    property OptShowScrollArrows: boolean read FOptShowScrollArrows write FOptShowScrollArrows default _InitOptShowScrollArrows;
     property OptShowScrollMark: boolean read FOptShowScrollMark write FOptShowScrollMark default _InitOptShowScrollMark;
     property OptShowDropMark: boolean read FOptShowDropMark write FOptShowDropMark default _InitOptShowDropMark;
     property OptShowXButtons: TATTabShowClose read FOptShowXButtons write FOptShowXButtons default _InitOptShowXButtons;
     property OptShowPlusTab: boolean read FOptShowPlusTab write FOptShowPlusTab default _InitOptShowPlusTab;
     property OptShowPlusText: TATTabString read FOptShowPlusText write FOptShowPlusText;
     property OptShowModifiedText: TATTabString read FOptShowModifiedText write FOptShowModifiedText;
-    property OptShowArrowMenu: boolean read FOptShowArrowMenu write FOptShowArrowMenu default _InitOptShowArrowMenu;
     property OptShowBorderActiveLow: boolean read FOptShowBorderActiveLow write FOptShowBorderActiveLow default _InitOptShowBorderActiveLow;
     property OptShowEntireColor: boolean read FOptShowEntireColor write FOptShowEntireColor default _InitOptShowEntireColor;
     property OptShowNumberPrefix: TATTabString read FOptShowNumberPrefix write FOptShowNumberPrefix;
@@ -699,8 +693,20 @@ begin
   FColorDropMark:= _InitTabColorDropMark;
   FColorScrollMark:= _InitTabColorScrollMark;
 
-  FOptButtonsLeft:= _InitOptButtonsLeft;
-  FOptButtonsRight:= _InitOptButtonsRight;
+  FillChar(FButtonsLeft, SizeOf(TATTabButtons), 0);
+  FillChar(FButtonsRight, SizeOf(TATTabButtons), 0);
+
+  //good config for CudaText
+  FButtonsLeft[0]:= tabBtnScrollLeft;
+  FButtonsLeft[1]:= tabBtnScrollRight;
+  FButtonsRight[0]:= tabBtnDropdownMenu;
+  {
+  //also good config
+  FButtonsLeft[0]:= tabBtnScrollLeft;
+  FButtonsRight[1]:= tabBtnScrollRight;
+  FButtonsRight[0]:= tabBtnDropdownMenu;
+  }
+
   FOptButtonSize:= _InitOptButtonSize;
   FOptTabAngle:= _InitOptTabAngle;
   FOptUseAngleForMaxTabs:= _InitOptUseAngleForMaxTabs;
@@ -708,7 +714,7 @@ begin
   FOptTabWidthMinimal:= _InitOptTabWidthMinimal;
   FOptTabWidthNormal:= _InitOptTabWidthNormal;
   FOptTabWidthMinimalHidesX:= _InitOptTabWidthMinimalHidesX;
-  FOptSpaceInitial:= _InitOptSpaceInitial;
+  //FOptSpaceInitial:= _InitOptSpaceInitial;
   FOptSpaceBeforeText:= _InitOptSpaceBeforeText;
   FOptSpaceBetweenTabs:= _InitOptSpaceBetweenTabs;
   FOptSpaceOnTop:= _InitOptSpaceOnTop;
@@ -717,7 +723,6 @@ begin
   FOptSpaceXSize:= _InitOptSpaceXSize;
   FOptArrowSize:= _InitOptArrowSize;
   FOptArrowSpaceLeft:= _InitOptArrowSpaceLeft;
-  FOptArrowSpaceRight:= _InitOptArrowSpaceRight;
   FOptColoredBandSize:= _InitOptColoredBandSize;
   FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
@@ -725,14 +730,12 @@ begin
 
   FOptShowAtBottom:= _InitOptShowAtBottom;
   FOptShowNumberPrefix:= _InitOptShowNumberPrefix;
-  FOptShowScrollArrows:= _InitOptShowScrollArrows;
   FOptShowScrollMark:= _InitOptShowScrollMark;
   FOptShowDropMark:= _InitOptShowDropMark;
   FOptShowXButtons:= _InitOptShowXButtons;
   FOptShowPlusTab:= _InitOptShowPlusTab;
   FOptShowPlusText:= _InitOptShowPlusText;
   FOptShowModifiedText:= _InitOptShowModifiedText;
-  FOptShowArrowMenu:= _InitOptShowArrowMenu;
   FOptShowBorderActiveLow:= _InitOptShowBorderActiveLow;
   FOptShowEntireColor:= _InitOptShowEntireColor;
   FOptMouseMiddleClickClose:= _InitOptMouseMiddleClickClose;
@@ -1020,7 +1023,7 @@ var
   Data: TATTabData;
   R: TRect;
 begin
-  R.Left:= FOptSpaceInitial+RealTabAngle;
+  R.Left:= FRealIndentLeft+RealTabAngle;
   R.Right:= R.Left;
   R.Top:= FOptSpaceOnTop;
   R.Bottom:= R.Top+FOptTabHeight;
@@ -1047,7 +1050,7 @@ begin
   begin
     Result.Top:= FOptSpaceOnTop;
     Result.Bottom:= Result.Top + FOptTabHeight;
-    Result.Left:= FOptSpaceInitial + RealTabAngle;
+    Result.Left:= FRealIndentLeft + RealTabAngle;
     Result.Right:= Result.Left + GetTabRectWidth(true);
   end;
 end;
@@ -1126,6 +1129,15 @@ var
 begin
   AType:= aeBackground;
   ARect:= ClientRect;
+
+  FRealIndentLeft:= 0;
+  FRealIndentRight:= 0;
+  for i:= 0 to High(TATTabButtons) do
+    if FButtonsLeft[i]<>tabBtnNone then
+      Inc(FRealIndentLeft, FOptButtonSize);
+  for i:= 0 to High(TATTabButtons) do
+    if FButtonsRight[i]<>tabBtnNone then
+      Inc(FRealIndentRight, FOptButtonSize);
 
   //painting of BG is little different then other elements:
   //paint fillrect anyway, then maybe paint ownerdraw
@@ -1244,9 +1256,8 @@ begin
   GetRectArrowDown(FRectArrowDown);
   GetRectArrowLeftRight(FRectArrowLeft, FRectArrowRight);
 
-  if FOptShowArrowMenu then
+  if FRectArrowDown.Right<>0 then
   begin
-    //paint blank
     C.Brush.Color:= FColorBg;
     C.FillRect(FRectArrowDown);
 
@@ -1257,29 +1268,30 @@ begin
       FColorBg);
   end;
 
-  if FOptShowScrollArrows then
+  if FRectArrowLeft.Right<>0 then
   begin
-    //paint blank over scrolled tabs
     C.Brush.Color:= FColorBg;
-    C.FillRect(Rect(
-      FRectArrowLeft.Left,
-      FRectArrowLeft.Top,
-      FRectArrowRight.Right,
-      FRectArrowRight.Bottom));
+    C.FillRect(FRectArrowLeft);
 
     //shift < righter
     ARect:= FRectArrowLeft;
-    ARect.Left:= (ARect.Left+ARect.Right) div 2;
+    //ARect.Left:= (ARect.Left+ARect.Right) div 2;
 
     DoPaintArrowTo(C,
       ttriLeft,
       ARect,
       IfThen(FTabIndexOver=TabIndexArrowScrollLeft, FColorArrowOver, FColorArrow),
       FColorBg);
+  end;
+
+  if FRectArrowRight.Right<>0 then
+  begin
+    C.Brush.Color:= FColorBg;
+    C.FillRect(FRectArrowRight);
 
     //shift > lefter
     ARect:= FRectArrowRight;
-    ARect.Right:= (ARect.Left+ARect.Right) div 2;
+    //ARect.Right:= (ARect.Left+ARect.Right) div 2;
 
     DoPaintArrowTo(C,
       ttriRight,
@@ -1318,20 +1330,19 @@ end;
 procedure TATTabs.DoPaintScrollMark(C: TCanvas);
 var
   NPos, NSize: integer;
-  R, RDown: TRect;
+  R: TRect;
 begin
   if (FTabWidth<=FOptTabWidthMinimal) or (FScrollPos>0) then
   begin
-    GetRectArrowDown(RDown);
     NPos:= GetMaxScrollPos;
-    NSize:= ClientWidth - FOptSpaceInitial - (RDown.Right-RDown.Left);
+    NSize:= ClientWidth - FRealIndentLeft - FRealIndentRight;
 
     if NPos>0 then
     begin
       R.Top:= IfThen(FOptShowAtBottom, FOptTabHeight, 0);
       R.Bottom:= R.Top + FOptScrollMarkSizeY;
 
-      R.Left:= FOptSpaceInitial +
+      R.Left:= FRealIndentLeft +
         Max(0, Min(
           NSize-FOptScrollMarkSizeX,
           Int64(FScrollPos) * (NSize-FOptScrollMarkSizeX) div NPos
@@ -1371,27 +1382,23 @@ begin
   GetRectArrowDown(RDown);
   GetRectArrowLeftRight(RScrollL, RScrollR);
 
-  if FOptShowScrollArrows then
+  if PtInRect(RScrollL, Pnt) then
   begin
-    if PtInRect(RScrollL, Pnt) then
-    begin
-      Result:= TabIndexArrowScrollLeft;
-      Exit
-    end;
-
-    if PtInRect(RScrollR, Pnt) then
-    begin
-      Result:= TabIndexArrowScrollRight;
-      Exit
-    end;
+    Result:= TabIndexArrowScrollLeft;
+    Exit
   end;
 
-  if FOptShowArrowMenu then
-    if PtInRect(RDown, Pnt) then
-    begin
-      Result:= TabIndexArrowMenu;
-      Exit
-    end;
+  if PtInRect(RScrollR, Pnt) then
+  begin
+    Result:= TabIndexArrowScrollRight;
+    Exit
+  end;
+
+  if PtInRect(RDown, Pnt) then
+  begin
+    Result:= TabIndexArrowMenu;
+    Exit
+  end;
 
   //normal tab?
   for i:= 0 to TabCount-1 do
@@ -1690,42 +1697,76 @@ begin
 end;
 
 
-procedure TATTabs.GetRectArrowDown(out R: TRect);
+function TATTabs.GetIndexOfButtonInArray(AData: TATTabButtons; ABtn: TATTabButton): integer;
+var
+  i: integer;
 begin
-  R.Top:= FOptSpaceOnTop;
-  R.Bottom:= R.Top+FOptTabHeight;
+  Result:= -1;
+  for i:= 0 to High(AData) do
+    if AData[i]=ABtn then exit(i);
+end;
 
-  if FOptShowAtBottom then Inc(R.Top);
-
-  R.Right:= ClientWidth;
-  if FOptShowArrowMenu then
-    R.Left:= R.Right-FOptArrowSpaceRight
+function TATTAbs.GetRectOfButton(AIndex: integer; AtLeft: boolean): TRect;
+begin
+  if AtLeft then
+  begin
+    Result.Left:= AIndex*FOptButtonSize;
+    Result.Right:= Result.Left+FOptButtonSize;
+  end
   else
-    R.Left:= R.Right;
+  begin
+    Result.Right:= ClientWidth-AIndex*FOptButtonSize;
+    Result.Left:= Result.Right-FOptButtonSize;
+  end;
+
+  Result.Top:= FOptSpaceOnTop;
+  Result.Bottom:= Result.Top+FOptTabHeight;
+  if FOptShowAtBottom then Inc(Result.Top);
+end;
+
+procedure TATTabs.GetRectArrowDown(out R: TRect);
+var
+  N: integer;
+begin
+  R:= Rect(0, 0, 0, 0);
+
+  N:= GetIndexOfButtonInArray(FButtonsLeft, tabBtnDropdownMenu);
+  if N>=0 then
+    R:= GetRectOfButton(N, true)
+  else
+  begin
+    N:= GetIndexOfButtonInArray(FButtonsRight, tabBtnDropdownMenu);
+    if N>=0 then
+      R:= GetRectOfButton(N, false);
+  end;
 end;
 
 procedure TATTabs.GetRectArrowLeftRight(out R1, R2: TRect);
+var
+  N: integer;
 begin
-  R1.Top:= FOptSpaceOnTop;
-  R1.Bottom:= R1.Top+FOptTabHeight;
+  R1:= Rect(0, 0, 0, 0);
+  R2:= Rect(0, 0, 0, 0);
 
-  if FOptShowAtBottom then Inc(R1.Top);
-
-  R2.Top:= R1.Top;
-  R2.Bottom:= R1.Bottom;
-
-  //place arrows inside OptSpaceInitial
-  R1.Left:= 0;
-  if FOptShowScrollArrows then
-    R1.Right:= R1.Left + FOptSpaceInitial div 2
+  N:= GetIndexOfButtonInArray(FButtonsLeft, tabBtnScrollLeft);
+  if N>=0 then
+    R1:= GetRectOfButton(N, true)
   else
-    R1.Right:= R1.Left;
+  begin
+    N:= GetIndexOfButtonInArray(FButtonsRight, tabBtnScrollLeft);
+    if N>=0 then
+      R1:= GetRectOfButton(N, false);
+  end;
 
-  R2.Left:= R1.Right;
-  if FOptShowScrollArrows then
-    R2.Right:= R2.Left + FOptSpaceInitial div 2
+  N:= GetIndexOfButtonInArray(FButtonsLeft, tabBtnScrollRight);
+  if N>=0 then
+    R2:= GetRectOfButton(N, true)
   else
-    R2.Right:= R2.Left;
+  begin
+    N:= GetIndexOfButtonInArray(FButtonsRight, tabBtnScrollRight);
+    if N>=0 then
+      R2:= GetRectOfButton(N, false);
+  end;
 end;
 
 procedure TATTabs.ShowTabMenu;
@@ -1782,8 +1823,8 @@ begin
     - IfThen(FOptShowPlusTab, GetTabWidth_Plus_Raw + 2*FOptSpaceBeforeText + 1*NAngle)
     - NAngle*2
     - FOptSpaceBetweenTabs
-    - FOptSpaceInitial
-    - IfThen(FOptShowArrowMenu, FOptArrowSpaceRight)) div Count
+    - FRealIndentLeft
+    - FRealIndentRight) div Count
       - FOptSpaceBetweenTabs;
 
   if Value<FOptTabWidthMinimal then
@@ -1954,16 +1995,14 @@ end;
 
 function TATTabs.GetMaxScrollPos: integer;
 var
-  RDown: TRect;
   D: TATTabData;
 begin
   Result:= 0;
-  GetRectArrowDown(RDown);
   if TabCount>0 then
   begin
     D:= GetTabData(TabCount-1);
     Result:= Max(0,
-      D.TabRect.Right - RDown.Left +
+      D.TabRect.Right - ClientWidth + FRealIndentRight +
       IfThen(FOptShowPlusTab, GetTabRectWidth(true))
       );
   end;
@@ -2009,7 +2048,8 @@ procedure TATTabs.DoScrollRight;
 var
   NPos: integer;
 begin
-  NPos:= Min(GetMaxScrollPos, FScrollPos+GetScrollPageSize);
+  NPos:= GetMaxScrollPos;
+  NPos:= Min(NPos, FScrollPos+GetScrollPageSize);
   if NPos<>FScrollPos then
     DoScrollAnimation(NPos);
 end;

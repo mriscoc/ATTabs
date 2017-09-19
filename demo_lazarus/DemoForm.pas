@@ -30,10 +30,8 @@ type
     Label3: TLabel;
     procedure btnStressClick(Sender: TObject);
     procedure chkNumsChange(Sender: TObject);
-    procedure chkShowArrowDownChange(Sender: TObject);
     procedure chkShowFullColorChange(Sender: TObject);
     procedure chkShowPlusChange(Sender: TObject);
-    procedure chkShowScrollChange(Sender: TObject);
     procedure comboShowXChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
@@ -136,11 +134,10 @@ begin
   t0.Height:= 42;
   t0.OptTabAngle:= 0;
   t0.OptSpaceBetweenTabs:= 2;
-  t0.OptSpaceInitial:= 2;
+  //t0.OptSpaceInitial:= 2;
   t0.OptSpaceOnTop:= 4;
   t0.OptSpaceXSize:= 13;
   t0.OptMouseDragEnabled:= false;
-  t0.OptShowScrollArrows:= false;
 
   t0.Font.Color:= clBlack;
   t0.ColorBg:= $F9EADB;
@@ -180,12 +177,6 @@ begin
   t1.Invalidate;
 end;
 
-procedure TForm1.chkShowArrowDownChange(Sender: TObject);
-begin
-  t.OptShowArrowMenu:= chkShowArrowDown.Checked;
-  t.Invalidate;
-end;
-
 procedure TForm1.chkShowFullColorChange(Sender: TObject);
 begin
   t.OptShowEntireColor:= chkShowFullColor.Checked;
@@ -195,12 +186,6 @@ end;
 procedure TForm1.chkShowPlusChange(Sender: TObject);
 begin
   t.OptShowPlusTab:= chkShowPlus.Checked;
-  t.Invalidate;
-end;
-
-procedure TForm1.chkShowScrollChange(Sender: TObject);
-begin
-  t.OptShowScrollArrows:= chkShowScroll.Checked;
   t.Invalidate;
 end;
 

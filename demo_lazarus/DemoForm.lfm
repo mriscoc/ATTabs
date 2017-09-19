@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 302
+  Left = 229
   Height = 507
-  Top = 233
+  Top = 141
   Width = 716
   Caption = 'ATTabs demo'
   ClientHeight = 507
@@ -177,7 +177,6 @@ object Form1: TForm1
     Width = 154
     Caption = 'show scroll arrows'
     Checked = True
-    OnChange = chkShowScrollChange
     State = cbChecked
     TabOrder = 12
   end
@@ -188,7 +187,6 @@ object Form1: TForm1
     Width = 149
     Caption = 'show arrow down'
     Checked = True
-    OnChange = chkShowArrowDownChange
     State = cbChecked
     TabOrder = 13
   end
