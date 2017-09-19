@@ -69,6 +69,16 @@ type
     );
 
 type
+  TATTabButton = (
+    tabBtnDropdownMenu,
+    tabBtnScrollLeft,
+    tabBtnScrollRight,
+    tabBtnPlus
+    );
+
+  TATTabButtons = set of TATTabButton;
+
+type
   TATTabOverEvent = procedure (Sender: TObject; ATabIndex: integer) of object;
   TATTabCloseEvent = procedure (Sender: TObject; ATabIndex: integer;
     var ACanClose, ACanContinue: boolean) of object;
@@ -121,6 +131,9 @@ const
   _InitTabColorScrollMark = _InitTabColorDropMark;
 
 const
+  _InitOptButtonsLeft = [tabBtnScrollLeft, tabBtnScrollRight];
+  _InitOptButtonsRight = [tabBtnPlus, tabBtnDropdownMenu];
+  _InitOptButtonSize = 15;
   _InitOptTabAngle = 4;
   _InitOptUseAngleForMaxTabs = 10;
   _InitOptTabHeight = 24;
@@ -191,6 +204,9 @@ type
     FColorScrollMark: TColor;
 
     //opts
+    FOptButtonsLeft: TATTabButtons;
+    FOptButtonsRight: TATTabButtons;
+    FOptButtonSize: integer;
     FOptTabAngle: integer; //angle of tab border: from 0 (vertcal border) to any size
     FOptUseAngleForMaxTabs: integer; //maximal tab count, for which TabAngle is used (else used 0)
     FOptTabHeight: integer;
@@ -386,6 +402,9 @@ type
     property ColorScrollMark: TColor read FColorScrollMark write FColorScrollMark default _InitTabColorScrollMark;
 
     //options
+    property OptButtonsLeft: TATTabButtons read FOptButtonsLeft write FOptButtonsLeft default _InitOptButtonsLeft;
+    property OptButtonsRight: TATTabButtons read FOptButtonsRight write FOptButtonsRight default _InitOptButtonsRight;
+    property OptButtonSize: integer read FOptButtonSize write FOptButtonSize default _InitOptButtonSize;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
     property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal default _InitOptTabWidthMinimal;
@@ -680,6 +699,9 @@ begin
   FColorDropMark:= _InitTabColorDropMark;
   FColorScrollMark:= _InitTabColorScrollMark;
 
+  FOptButtonsLeft:= _InitOptButtonsLeft;
+  FOptButtonsRight:= _InitOptButtonsRight;
+  FOptButtonSize:= _InitOptButtonSize;
   FOptTabAngle:= _InitOptTabAngle;
   FOptUseAngleForMaxTabs:= _InitOptUseAngleForMaxTabs;
   FOptTabHeight:= _InitOptTabHeight;
