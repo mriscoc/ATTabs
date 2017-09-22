@@ -284,8 +284,9 @@ type
     procedure DoScrollAnimation(APosTo: integer);
     function GetIndexOfButtonInArray(AData: TATTabButtons; ABtn: TATTabButton): integer;
     function GetMaxScrollPos: integer;
-    procedure GetRectArrowDown(out R: TRect);
-    procedure GetRectArrowLeftRight(out R1, R2: TRect);
+    function GetRectArrowDown: TRect;
+    function GetRectArrowLeft: TRect;
+    function GetRectArrowRight: TRect;
     function GetRectOfButton(AIndex: integer; AtLeft: boolean): TRect;
     function GetScrollPageSize: integer;
     function RealTabAngle: integer;
@@ -1253,8 +1254,9 @@ begin
   end;
 
   //paint arrows
-  GetRectArrowDown(FRectArrowDown);
-  GetRectArrowLeftRight(FRectArrowLeft, FRectArrowRight);
+  FRectArrowDown:= GetRectArrowDown;
+  FRectArrowLeft:= GetRectArrowLeft;
+  FRectArrowRight:= GetRectArrowRight;
 
   if FRectArrowDown.Right<>0 then
   begin
@@ -1379,8 +1381,9 @@ begin
   Pnt:= Point(X, Y);
 
   //arrows?
-  GetRectArrowDown(RDown);
-  GetRectArrowLeftRight(RScrollL, RScrollR);
+  RDown:= GetRectArrowDown;
+  RScrollL:= GetRectArrowLeft;
+  RScrollR:= GetRectArrowRight;
 
   if PtInRect(RScrollL, Pnt) then
   begin
@@ -1724,48 +1727,54 @@ begin
   if FOptShowAtBottom then Inc(Result.Top);
 end;
 
-procedure TATTabs.GetRectArrowDown(out R: TRect);
+function TATTabs.GetRectArrowDown: TRect;
 var
   N: integer;
 begin
-  R:= Rect(0, 0, 0, 0);
+  Result:= Rect(0, 0, 0, 0);
 
   N:= GetIndexOfButtonInArray(FButtonsLeft, tabBtnDropdownMenu);
   if N>=0 then
-    R:= GetRectOfButton(N, true)
+    Result:= GetRectOfButton(N, true)
   else
   begin
     N:= GetIndexOfButtonInArray(FButtonsRight, tabBtnDropdownMenu);
     if N>=0 then
-      R:= GetRectOfButton(N, false);
+      Result:= GetRectOfButton(N, false);
   end;
 end;
 
-procedure TATTabs.GetRectArrowLeftRight(out R1, R2: TRect);
+function TATTabs.GetRectArrowLeft: TRect;
 var
   N: integer;
 begin
-  R1:= Rect(0, 0, 0, 0);
-  R2:= Rect(0, 0, 0, 0);
+  Result:= Rect(0, 0, 0, 0);
 
   N:= GetIndexOfButtonInArray(FButtonsLeft, tabBtnScrollLeft);
   if N>=0 then
-    R1:= GetRectOfButton(N, true)
+    Result:= GetRectOfButton(N, true)
   else
   begin
     N:= GetIndexOfButtonInArray(FButtonsRight, tabBtnScrollLeft);
     if N>=0 then
-      R1:= GetRectOfButton(N, false);
+      Result:= GetRectOfButton(N, false);
   end;
+end;
+
+function TATTabs.GetRectArrowRight: TRect;
+var
+  N: integer;
+begin
+  Result:= Rect(0, 0, 0, 0);
 
   N:= GetIndexOfButtonInArray(FButtonsLeft, tabBtnScrollRight);
   if N>=0 then
-    R2:= GetRectOfButton(N, true)
+    Result:= GetRectOfButton(N, true)
   else
   begin
     N:= GetIndexOfButtonInArray(FButtonsRight, tabBtnScrollRight);
     if N>=0 then
-      R2:= GetRectOfButton(N, false);
+      Result:= GetRectOfButton(N, false);
   end;
 end;
 
@@ -1799,7 +1808,7 @@ begin
     FTabMenu.Items.Add(mi);
   end;
 
-  GetRectArrowDown(RDown);
+  RDown:= GetRectArrowDown;
   P:= Point(RDown.Left, RDown.Bottom);
   P:= ClientToScreen(P);
   FTabMenu.Popup(P.X, P.Y);
