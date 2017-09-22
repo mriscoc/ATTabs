@@ -290,12 +290,10 @@ type
     procedure DoPaintDropMark(C: TCanvas);
     procedure DoPaintScrollMark(C: TCanvas);
     procedure DoScrollAnimation(APosTo: integer);
-    function GetIndexOfButtonInArray(AData: TATTabButtons; ABtn: TATTabButton): integer;
+    function GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
     function GetMaxScrollPos: integer;
-    function GetRectArrowDown: TRect;
-    function GetRectArrowLeft: TRect;
-    function GetRectArrowRight: TRect;
-    function GetRectOfButton(AIndex: integer; AtLeft: boolean): TRect;
+    function GetRectOfButton(AButton: TATTabButton): TRect;
+    function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
     function GetScrollPageSize: integer;
     function RealTabAngle: integer;
     procedure SetTabIndex(AIndex: integer);
@@ -1150,9 +1148,9 @@ begin
     if FButtonsRight[i]<>tabBtnNone then
       Inc(FRealIndentRight, FOptButtonSize);
 
-  FRectArrowDown:= GetRectArrowDown;
-  FRectArrowLeft:= GetRectArrowLeft;
-  FRectArrowRight:= GetRectArrowRight;
+  FRectArrowDown:= GetRectOfButton(tabBtnDropdownMenu);
+  FRectArrowLeft:= GetRectOfButton(tabBtnScrollLeft);
+  FRectArrowRight:= GetRectOfButton(tabBtnScrollRight);
 
   //painting of BG is little different then other elements:
   //paint fillrect anyway, then maybe paint ownerdraw
@@ -1665,7 +1663,7 @@ begin
 end;
 
 
-function TATTabs.GetIndexOfButtonInArray(AData: TATTabButtons; ABtn: TATTabButton): integer;
+function TATTabs.GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
 var
   i: integer;
 begin
@@ -1674,7 +1672,7 @@ begin
     if AData[i]=ABtn then exit(i);
 end;
 
-function TATTAbs.GetRectOfButton(AIndex: integer; AtLeft: boolean): TRect;
+function TATTAbs.GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
 begin
   if AtLeft then
   begin
@@ -1692,56 +1690,23 @@ begin
   if FOptShowAtBottom then Inc(Result.Top);
 end;
 
-function TATTabs.GetRectArrowDown: TRect;
+function TATTabs.GetRectOfButton(AButton: TATTabButton): TRect;
 var
   N: integer;
 begin
   Result:= Rect(0, 0, 0, 0);
 
-  N:= GetIndexOfButtonInArray(FButtonsLeft, tabBtnDropdownMenu);
+  N:= GetIndexOfButton(FButtonsLeft, AButton);
   if N>=0 then
-    Result:= GetRectOfButton(N, true)
+    Result:= GetRectOfButtonIndex(N, true)
   else
   begin
-    N:= GetIndexOfButtonInArray(FButtonsRight, tabBtnDropdownMenu);
+    N:= GetIndexOfButton(FButtonsRight, AButton);
     if N>=0 then
-      Result:= GetRectOfButton(N, false);
+      Result:= GetRectOfButtonIndex(N, false);
   end;
 end;
 
-function TATTabs.GetRectArrowLeft: TRect;
-var
-  N: integer;
-begin
-  Result:= Rect(0, 0, 0, 0);
-
-  N:= GetIndexOfButtonInArray(FButtonsLeft, tabBtnScrollLeft);
-  if N>=0 then
-    Result:= GetRectOfButton(N, true)
-  else
-  begin
-    N:= GetIndexOfButtonInArray(FButtonsRight, tabBtnScrollLeft);
-    if N>=0 then
-      Result:= GetRectOfButton(N, false);
-  end;
-end;
-
-function TATTabs.GetRectArrowRight: TRect;
-var
-  N: integer;
-begin
-  Result:= Rect(0, 0, 0, 0);
-
-  N:= GetIndexOfButtonInArray(FButtonsLeft, tabBtnScrollRight);
-  if N>=0 then
-    Result:= GetRectOfButton(N, true)
-  else
-  begin
-    N:= GetIndexOfButtonInArray(FButtonsRight, tabBtnScrollRight);
-    if N>=0 then
-      Result:= GetRectOfButton(N, false);
-  end;
-end;
 
 procedure TATTabs.ShowTabMenu;
 var
