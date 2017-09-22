@@ -132,7 +132,8 @@ const
   _InitTabColorScrollMark = _InitTabColorDropMark;
 
 const
-  _InitOptButtonSize = 18;
+  _InitOptButtonLayout = '<>,v';
+  _InitOptButtonSize = 16;
   _InitOptTabAngle = 4;
   _InitOptUseAngleForMaxTabs = 10;
   _InitOptTabHeight = 24;
@@ -204,6 +205,8 @@ type
     FButtonsLeft: TATTabButtons;
     FButtonsRight: TATTabButtons;
     FOptButtonSize: integer;
+    FOptButtonLayout: string;
+
     FOptTabAngle: integer; //angle of tab border: from 0 (vertcal border) to any size
     FOptUseAngleForMaxTabs: integer; //maximal tab count, for which TabAngle is used (else used 0)
     FOptTabHeight: integer;
@@ -273,6 +276,7 @@ type
     FOnTabMove: TATTabMoveEvent;
     FOnTabChangeQuery: TATTabChangeQueryEvent;
 
+    procedure ApplyButtonLayout;
     procedure DoHandleClick;
     procedure DoPaintArrowDown(C: TCanvas);
     procedure DoPaintArrowLeft(C: TCanvas);
@@ -408,6 +412,7 @@ type
     property ColorScrollMark: TColor read FColorScrollMark write FColorScrollMark default _InitTabColorScrollMark;
 
     //options
+    property OptButtonLayout: string read FOptButtonLayout write FOptButtonLayout;
     property OptButtonSize: integer read FOptButtonSize write FOptButtonSize default _InitOptButtonSize;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
@@ -704,17 +709,7 @@ begin
   FillChar(FButtonsLeft, SizeOf(TATTabButtons), 0);
   FillChar(FButtonsRight, SizeOf(TATTabButtons), 0);
 
-  //good config for CudaText
-  FButtonsLeft[0]:= tabBtnScrollLeft;
-  FButtonsLeft[1]:= tabBtnScrollRight;
-  FButtonsRight[0]:= tabBtnDropdownMenu;
-  {
-  //also good config
-  FButtonsLeft[0]:= tabBtnScrollLeft;
-  FButtonsRight[1]:= tabBtnScrollRight;
-  FButtonsRight[0]:= tabBtnDropdownMenu;
-  }
-
+  FOptButtonLayout:= _InitOptButtonLayout;
   FOptButtonSize:= _InitOptButtonSize;
   FOptTabAngle:= _InitOptTabAngle;
   FOptUseAngleForMaxTabs:= _InitOptUseAngleForMaxTabs;
@@ -1137,6 +1132,8 @@ var
 begin
   ElemType:= aeBackground;
   RRect:= ClientRect;
+
+  ApplyButtonLayout;
 
   FRealIndentLeft:= 0;
   FRealIndentRight:= 0;
@@ -2050,6 +2047,37 @@ begin
       IfThen(FTabIndexOver=TabIndexArrowScrollRight, FColorArrowOver, FColorArrow),
       FColorBg);
   end;
+end;
+
+procedure TATTabs.ApplyButtonLayout;
+  //
+  procedure ApplySide(var Side: TATTabButtons; const S: string);
+  var
+    N, i: integer;
+  begin
+    N:= 0;
+    FillChar(Side, SizeOf(Side), 0);
+    for i:= 1 to Length(S) do
+      case S[i] of
+        '<': begin Side[N]:= tabBtnScrollLeft; Inc(N) end;
+        '>': begin Side[N]:= tabBtnScrollRight; Inc(N) end;
+        'v': begin Side[N]:= tabBtnDropdownMenu; Inc(N) end;
+        '+': begin Side[N]:= tabBtnPlus; Inc(N) end;
+      end;
+  end;
+  //
+var
+  S, SL, SR: string;
+  N: integer;
+begin
+  S:= FOptButtonLayout;
+  N:= Pos(',', S);
+  if N=0 then N:= 200;
+  SL:= Copy(S, 1, N-1);
+  SR:= Copy(S, N+1, MaxInt);
+
+  ApplySide(FButtonsLeft, SL);
+  ApplySide(FButtonsRight, SR);
 end;
 
 end.
