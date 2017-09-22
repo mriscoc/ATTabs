@@ -272,12 +272,15 @@ type
     FOnTabChangeQuery: TATTabChangeQueryEvent;
 
     procedure DoHandleClick;
+    procedure DoPaintArrowDown(C: TCanvas);
+    procedure DoPaintArrowLeft(C: TCanvas);
+    procedure DoPaintArrowRight(C: TCanvas);
     procedure DoPaintTo(C: TCanvas);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
       ATabBg, ATabBorder, ATabBorderLow, ATabHilite, ATabCloseBg,
-  ATabCloseBorder, ATabCloseXMark: TColor; ACloseBtn, AModified: boolean;
-  AImageIndex: integer);
+      ATabCloseBorder, ATabCloseXMark: TColor; ACloseBtn, AModified: boolean;
+      AImageIndex: integer);
     procedure DoPaintArrowTo(C: TCanvas; ATyp: TATTabTriangle; ARect: TRect;
       AColorArr, AColorBg: TColor);
     procedure DoPaintXTo(C: TCanvas; const R: TRect; ATabBg, ATabCloseBg,
@@ -1260,50 +1263,9 @@ begin
     end;  
   end;
 
-  //paint arrows
-  if FRectArrowDown.Right<>0 then
-  begin
-    C.Brush.Color:= FColorBg;
-    C.FillRect(FRectArrowDown);
-
-    DoPaintArrowTo(C,
-      ttriDown,
-      FRectArrowDown,
-      IfThen((FTabIndexOver=TabIndexArrowMenu) and not DragManager.IsDragging, FColorArrowOver, FColorArrow),
-      FColorBg);
-  end;
-
-  if FRectArrowLeft.Right<>0 then
-  begin
-    C.Brush.Color:= FColorBg;
-    C.FillRect(FRectArrowLeft);
-
-    //shift < righter
-    ARect:= FRectArrowLeft;
-    //ARect.Left:= (ARect.Left+ARect.Right) div 2;
-
-    DoPaintArrowTo(C,
-      ttriLeft,
-      ARect,
-      IfThen(FTabIndexOver=TabIndexArrowScrollLeft, FColorArrowOver, FColorArrow),
-      FColorBg);
-  end;
-
-  if FRectArrowRight.Right<>0 then
-  begin
-    C.Brush.Color:= FColorBg;
-    C.FillRect(FRectArrowRight);
-
-    //shift > lefter
-    ARect:= FRectArrowRight;
-    //ARect.Right:= (ARect.Left+ARect.Right) div 2;
-
-    DoPaintArrowTo(C,
-      ttriRight,
-      ARect,
-      IfThen(FTabIndexOver=TabIndexArrowScrollRight, FColorArrowOver, FColorArrow),
-      FColorBg);
-  end;
+  DoPaintArrowLeft(C);
+  DoPaintArrowRight(C);
+  DoPaintArrowDown(C);
 
   if FOptShowDropMark then
     if DragManager.IsDragging then
@@ -2060,6 +2022,65 @@ begin
     DoScrollAnimation(NPos);
 end;
 
+procedure TATTabs.DoPaintArrowDown(C: TCanvas);
+begin
+  if FRectArrowDown.Right>0 then
+  begin
+    C.Brush.Color:= FColorBg;
+    C.FillRect(FRectArrowDown);
+
+    DoPaintArrowTo(C,
+      ttriDown,
+      FRectArrowDown,
+      IfThen(
+        (FTabIndexOver=TabIndexArrowMenu) and not DragManager.IsDragging,
+        FColorArrowOver,
+        FColorArrow),
+      FColorBg);
+  end;
+end;
+
+procedure TATTabs.DoPaintArrowLeft(C: TCanvas);
+var
+  R: TRect;
+begin
+  if FRectArrowLeft.Right>0 then
+  begin
+    C.Brush.Color:= FColorBg;
+    C.FillRect(FRectArrowLeft);
+
+    //shift < righter
+    R:= FRectArrowLeft;
+    //ARect.Left:= (ARect.Left+ARect.Right) div 2;
+
+    DoPaintArrowTo(C,
+      ttriLeft,
+      R,
+      IfThen(FTabIndexOver=TabIndexArrowScrollLeft, FColorArrowOver, FColorArrow),
+      FColorBg);
+  end;
+end;
+
+procedure TATTabs.DoPaintArrowRight(C: TCanvas);
+var
+  R: TRect;
+begin
+  if FRectArrowRight.Right<>0 then
+  begin
+    C.Brush.Color:= FColorBg;
+    C.FillRect(FRectArrowRight);
+
+    //shift > lefter
+    R:= FRectArrowRight;
+    //ARect.Right:= (ARect.Left+ARect.Right) div 2;
+
+    DoPaintArrowTo(C,
+      ttriRight,
+      R,
+      IfThen(FTabIndexOver=TabIndexArrowScrollRight, FColorArrowOver, FColorArrow),
+      FColorBg);
+  end;
+end;
 
 end.
 
