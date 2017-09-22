@@ -15,8 +15,6 @@ type
     btnLeft: TButton;
     btnRight: TButton;
     btnStress: TButton;
-    chkShowScroll: TCheckBox;
-    chkShowArrowDown: TCheckBox;
     comboShowX: TComboBox;
     EditInfo: TEdit;
     chkShowPlus: TCheckBox;
