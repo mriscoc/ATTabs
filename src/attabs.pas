@@ -157,6 +157,7 @@ const
   _InitOptShowNumberPrefix = '';
   _InitOptShowScrollMark = true;
   _InitOptShowDropMark = true;
+  _InitOptShowArrowsNear = true;
   _InitOptShowXButtons = tbShowAll;
   _InitOptShowPlusTab = true;
   _InitOptShowPlusText = ' + ';
@@ -225,6 +226,7 @@ type
 
     FOptShowAtBottom: boolean;
     FOptShowXButtons: TATTabShowClose; //show mode for "x" buttons
+    FOptShowArrowsNear: boolean;
     FOptShowPlusTab: boolean; //show "plus" tab
     FOptShowPlusText: TATTabString; //text of "plus" tab
     FOptShowModifiedText: TATTabString;
@@ -435,6 +437,7 @@ type
     property OptShowXButtons: TATTabShowClose read FOptShowXButtons write FOptShowXButtons default _InitOptShowXButtons;
     property OptShowPlusTab: boolean read FOptShowPlusTab write FOptShowPlusTab default _InitOptShowPlusTab;
     property OptShowPlusText: TATTabString read FOptShowPlusText write FOptShowPlusText;
+    property OptShowArrowsNear: boolean read FOptShowArrowsNear write FOptShowArrowsNear default _InitOptShowArrowsNear;
     property OptShowModifiedText: TATTabString read FOptShowModifiedText write FOptShowModifiedText;
     property OptShowBorderActiveLow: boolean read FOptShowBorderActiveLow write FOptShowBorderActiveLow default _InitOptShowBorderActiveLow;
     property OptShowEntireColor: boolean read FOptShowEntireColor write FOptShowEntireColor default _InitOptShowEntireColor;
@@ -742,6 +745,7 @@ begin
   FOptShowXButtons:= _InitOptShowXButtons;
   FOptShowPlusTab:= _InitOptShowPlusTab;
   FOptShowPlusText:= _InitOptShowPlusText;
+  FOptShowArrowsNear:= _InitOptShowArrowsNear;
   FOptShowModifiedText:= _InitOptShowModifiedText;
   FOptShowBorderActiveLow:= _InitOptShowBorderActiveLow;
   FOptShowEntireColor:= _InitOptShowEntireColor;
@@ -2051,7 +2055,8 @@ begin
 
     //shift < righter
     R:= FRectArrowLeft;
-    //ARect.Left:= (ARect.Left+ARect.Right) div 2;
+    if FOptShowArrowsNear then
+      R.Left:= (R.Left+R.Right) div 2;
 
     DoPaintArrowTo(C,
       ttriLeft,
@@ -2072,7 +2077,8 @@ begin
 
     //shift > lefter
     R:= FRectArrowRight;
-    //ARect.Right:= (ARect.Left+ARect.Right) div 2;
+    if FOptShowArrowsNear then
+      R.Right:= (R.Left+R.Right) div 2;
 
     DoPaintArrowTo(C,
       ttriRight,
