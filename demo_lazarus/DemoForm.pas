@@ -112,6 +112,8 @@ begin
   t1.OnTabDrawAfter:= TabDrawAfter;
   t1.ColorBg:= $F9EADB;
 
+  t1.OptButtonLayout:= '<,>';
+  t1.OptShowArrowsNear:= false;
   t1.OptTabAngle:= 4;
   t1.OptTabHeight:= 30;
   t1.OptTabWidthNormal:= 170;
@@ -132,6 +134,7 @@ begin
   t0.Font.Size:= 8;
 
   t0.Height:= 42;
+  t0.OptButtonLayout:= ',v';
   t0.OptTabAngle:= 0;
   t0.OptSpaceBetweenTabs:= 2;
   //t0.OptSpaceInitial:= 2;
