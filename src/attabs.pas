@@ -704,9 +704,6 @@ begin
   FColorDropMark:= _InitTabColorDropMark;
   FColorScrollMark:= _InitTabColorScrollMark;
 
-  FillChar(FButtonsLeft, SizeOf(TATTabButtons), 0);
-  FillChar(FButtonsRight, SizeOf(TATTabButtons), 0);
-
   FOptButtonLayout:= _InitOptButtonLayout;
   FOptButtonSize:= _InitOptButtonSize;
   FOptTabAngle:= _InitOptTabAngle;
@@ -2081,10 +2078,10 @@ begin
   N:= Pos(',', S);
   if N=0 then N:= 200;
   SL:= Copy(S, 1, N-1);
-  SR:= SwapString(Copy(S, N+1, MaxInt));
+  SR:= Copy(S, N+1, MaxInt);
 
   ApplySide(FButtonsLeft, SL);
-  ApplySide(FButtonsRight, SR);
+  ApplySide(FButtonsRight, SwapString(SR));
 end;
 
 end.
