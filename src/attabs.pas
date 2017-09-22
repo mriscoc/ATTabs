@@ -248,13 +248,16 @@ type
     FTabList: TList;
     FTabMenu: TATTabPopupMenu;
 
-    FRectButtons: array[TATTabButton] of TRect;
     FRealIndentLeft: integer;
     FRealIndentRight: integer;
 
     FScrollPos: integer;
     FImages: TImageList;
     FBitmap: TBitmap;
+
+    FRectArrowDown: TRect;
+    FRectArrowLeft: TRect;
+    FRectArrowRight: TRect;
 
     //events    
     FOnTabClick: TNotifyEvent;
@@ -1123,7 +1126,7 @@ procedure TATTabs.DoPaintTo(C: TCanvas);
 var
   RBottom: TRect;
   AColorXBg, AColorXBorder, AColorXMark: TColor;
-  ARect, FRectArrowDown, FRectArrowLeft, FRectArrowRight: TRect;
+  ARect: TRect;
   AType: TATTabElemType;
   Data: TATTabData;
   i: integer;
@@ -1139,6 +1142,10 @@ begin
   for i:= 0 to High(TATTabButtons) do
     if FButtonsRight[i]<>tabBtnNone then
       Inc(FRealIndentRight, FOptButtonSize);
+
+  FRectArrowDown:= GetRectArrowDown;
+  FRectArrowLeft:= GetRectArrowLeft;
+  FRectArrowRight:= GetRectArrowRight;
 
   //painting of BG is little different then other elements:
   //paint fillrect anyway, then maybe paint ownerdraw
@@ -1254,10 +1261,6 @@ begin
   end;
 
   //paint arrows
-  FRectArrowDown:= GetRectArrowDown;
-  FRectArrowLeft:= GetRectArrowLeft;
-  FRectArrowRight:= GetRectArrowRight;
-
   if FRectArrowDown.Right<>0 then
   begin
     C.Brush.Color:= FColorBg;
@@ -1375,29 +1378,25 @@ function TATTabs.GetTabAt(X, Y: integer): integer;
 var
   i: integer;
   Pnt: TPoint;
-  R1, RDown, RScrollL, RScrollR: TRect;
+  R1: TRect;
 begin
   Result:= -1;
   Pnt:= Point(X, Y);
 
-  //arrows?
-  RDown:= GetRectArrowDown;
-  RScrollL:= GetRectArrowLeft;
-  RScrollR:= GetRectArrowRight;
 
-  if PtInRect(RScrollL, Pnt) then
+  if PtInRect(FRectArrowLeft, Pnt) then
   begin
     Result:= TabIndexArrowScrollLeft;
     Exit
   end;
 
-  if PtInRect(RScrollR, Pnt) then
+  if PtInRect(FRectArrowRight, Pnt) then
   begin
     Result:= TabIndexArrowScrollRight;
     Exit
   end;
 
-  if PtInRect(RDown, Pnt) then
+  if PtInRect(FRectArrowDown, Pnt) then
   begin
     Result:= TabIndexArrowMenu;
     Exit
@@ -1782,7 +1781,6 @@ procedure TATTabs.ShowTabMenu;
 var
   i: integer;
   mi: TATTabMenuItem;
-  RDown: TRect;
   P: TPoint;
   bShow: boolean;
 begin
@@ -1808,8 +1806,7 @@ begin
     FTabMenu.Items.Add(mi);
   end;
 
-  RDown:= GetRectArrowDown;
-  P:= Point(RDown.Left, RDown.Bottom);
+  P:= Point(FRectArrowDown.Left, FRectArrowDown.Bottom);
   P:= ClientToScreen(P);
   FTabMenu.Popup(P.X, P.Y);
 end;
