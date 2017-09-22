@@ -222,7 +222,6 @@ type
     FOptSpaceXSize: integer; //size of "x" mark
     FOptColoredBandSize: integer; //height of "misc color" line
     FOptArrowSize: integer; //half-size of "arrow" mark
-    FOptArrowSpaceLeft: integer; //space from scroll-arrows to left control edge
     FOptDropMarkSize: integer;
     FOptScrollMarkSizeX: integer;
     FOptScrollMarkSizeY: integer;
@@ -429,7 +428,6 @@ type
     property OptSpaceXSize: integer read FOptSpaceXSize write FOptSpaceXSize default _InitOptSpaceXSize;
     property OptColoredBandSize: integer read FOptColoredBandSize write FOptColoredBandSize default _InitOptColoredBandSize;
     property OptArrowSize: integer read FOptArrowSize write FOptArrowSize default _InitOptArrowSize;
-    property OptArrowSpaceLeft: integer read FOptArrowSpaceLeft write FOptArrowSpaceLeft default _InitOptArrowSpaceLeft;
     property OptScrollMarkSizeX: integer read FOptScrollMarkSizeX write FOptScrollMarkSizeX default _InitOptScrollMarkSizeX;
     property OptScrollMarkSizeY: integer read FOptScrollMarkSizeY write FOptScrollMarkSizeY default _InitOptScrollMarkSizeY;
     property OptDropMarkSize: integer read FOptDropMarkSize write FOptDropMarkSize default _InitOptDropMarkSize;
@@ -725,7 +723,6 @@ begin
   FOptSpaceXInner:= _InitOptSpaceXInner;
   FOptSpaceXSize:= _InitOptSpaceXSize;
   FOptArrowSize:= _InitOptArrowSize;
-  FOptArrowSpaceLeft:= _InitOptArrowSpaceLeft;
   FOptColoredBandSize:= _InitOptColoredBandSize;
   FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
