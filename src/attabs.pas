@@ -1129,15 +1129,14 @@ end;
 
 procedure TATTabs.DoPaintTo(C: TCanvas);
 var
-  RBottom: TRect;
-  AColorXBg, AColorXBorder, AColorXMark: TColor;
-  ARect: TRect;
-  AType: TATTabElemType;
+  RRect, RBottom: TRect;
+  NColorXBg, NColorXBorder, NColorXMark: TColor;
+  ElemType: TATTabElemType;
   Data: TATTabData;
   i: integer;
 begin
-  AType:= aeBackground;
-  ARect:= ClientRect;
+  ElemType:= aeBackground;
+  RRect:= ClientRect;
 
   FRealIndentLeft:= 0;
   FRealIndentRight:= 0;
@@ -1154,10 +1153,10 @@ begin
 
   //painting of BG is little different then other elements:
   //paint fillrect anyway, then maybe paint ownerdraw
-  DoPaintBgTo(C, ARect);
-  if IsPaintNeeded(AType, -1, C, ARect) then
+  DoPaintBgTo(C, RRect);
+  if IsPaintNeeded(ElemType, -1, C, RRect) then
   begin
-    DoPaintAfter(AType, -1, C, ARect);
+    DoPaintAfter(ElemType, -1, C, RRect);
   end;
 
   DoUpdateTabWidths;
@@ -1182,30 +1181,30 @@ begin
   //paint "plus" tab
   if FOptShowPlusTab then
   begin
-    ARect:= GetTabRect_Plus;
-    AColorXBg:= clNone;
-    AColorXBorder:= clNone;
-    AColorXMark:= clWhite;
+    RRect:= GetTabRect_Plus;
+    NColorXBg:= clNone;
+    NColorXBorder:= clNone;
+    NColorXMark:= clWhite;
     if FTabIndexOver=TabIndexPlus then
-      AType:= aeTabPlusOver
+      ElemType:= aeTabPlusOver
     else
-      AType:= aeTabPlus;
-    if IsPaintNeeded(AType, -1, C, ARect) then
+      ElemType:= aeTabPlus;
+    if IsPaintNeeded(ElemType, -1, C, RRect) then
     begin
-      DoPaintTabTo(C, ARect,
+      DoPaintTabTo(C, RRect,
         FOptShowPlusText,
         IfThen((FTabIndexOver=TabIndexPlus) and not DragManager.IsDragging, FColorTabOver, FColorTabPassive),
         FColorBorderPassive,
         FColorBorderActive,
         clNone,
-        AColorXBg,
-        AColorXBorder,
-        AColorXMark,
+        NColorXBg,
+        NColorXBorder,
+        NColorXMark,
         false,
         false,
         -1 //no icon
         );
-      DoPaintAfter(AType, -1, C, ARect);
+      DoPaintAfter(ElemType, -1, C, RRect);
     end;    
   end;
 
@@ -1213,29 +1212,29 @@ begin
   for i:= TabCount-1 downto 0 do
     if i<>FTabIndex then
     begin
-      ARect:= GetTabRect(i);
-      GetTabCloseColor(i, ARect, AColorXBg, AColorXBorder, AColorXMark);
+      RRect:= GetTabRect(i);
+      GetTabCloseColor(i, RRect, NColorXBg, NColorXBorder, NColorXMark);
       if i=FTabIndexOver then
-        AType:= aeTabPassiveOver
+        ElemType:= aeTabPassiveOver
       else
-        AType:= aeTabPassive;
-      if IsPaintNeeded(AType, i, C, ARect) then
+        ElemType:= aeTabPassive;
+      if IsPaintNeeded(ElemType, i, C, RRect) then
       begin
         Data:= TATTabData(FTabList[i]);
-        DoPaintTabTo(C, ARect,
+        DoPaintTabTo(C, RRect,
           Format(FOptShowNumberPrefix, [i+1]) + Data.TabCaption,
           IfThen((i=FTabIndexOver) and not DragManager.IsDragging, FColorTabOver, FColorTabPassive),
           FColorBorderPassive,
           FColorBorderActive,
           Data.TabColor,
-          AColorXBg,
-          AColorXBorder,
-          AColorXMark,
+          NColorXBg,
+          NColorXBorder,
+          NColorXMark,
           IsShowX(i),
           Data.TabModified,
           Data.TabImageIndex
           );
-        DoPaintAfter(AType, i, C, ARect);
+        DoPaintAfter(ElemType, i, C, RRect);
       end;
     end;
 
@@ -1243,25 +1242,25 @@ begin
   i:= FTabIndex;
   if IsIndexOk(i) then
   begin
-    ARect:= GetTabRect(i);
-    GetTabCloseColor(i, ARect, AColorXBg, AColorXBorder, AColorXMark);
-    if IsPaintNeeded(aeTabActive, i, C, ARect) then
+    RRect:= GetTabRect(i);
+    GetTabCloseColor(i, RRect, NColorXBg, NColorXBorder, NColorXMark);
+    if IsPaintNeeded(aeTabActive, i, C, RRect) then
     begin
       Data:= TATTabData(FTabList[i]);
-      DoPaintTabTo(C, ARect,
+      DoPaintTabTo(C, RRect,
         Format(FOptShowNumberPrefix, [i+1]) + Data.TabCaption,
         FColorTabActive,
         FColorBorderActive,
         IfThen(FOptShowBorderActiveLow, FColorBorderActive, clNone),
         Data.TabColor,
-        AColorXBg,
-        AColorXBorder,
-        AColorXMark,
+        NColorXBg,
+        NColorXBorder,
+        NColorXMark,
         IsShowX(i),
         Data.TabModified,
         Data.TabImageIndex
         );
-      DoPaintAfter(aeTabActive, i, C, ARect);
+      DoPaintAfter(aeTabActive, i, C, RRect);
     end;  
   end;
 
