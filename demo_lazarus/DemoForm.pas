@@ -132,7 +132,7 @@ begin
   t0.Font.Size:= 8;
 
   t0.Height:= 42;
-  t0.OptButtonLayout:= ',v';
+  t0.OptButtonLayout:= ',<>v';
   t0.OptTabAngle:= 0;
   t0.OptSpaceBetweenTabs:= 2;
   //t0.OptSpaceInitial:= 2;

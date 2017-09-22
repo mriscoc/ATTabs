@@ -2046,6 +2046,16 @@ begin
   end;
 end;
 
+
+function SwapString(const S: string): string;
+var
+  i: integer;
+begin
+  SetLength(Result, Length(S));
+  for i:= 1 to Length(S) do
+    Result[Length(S)+1-i]:= S[i];
+end;
+
 procedure TATTabs.ApplyButtonLayout;
   //
   procedure ApplySide(var Side: TATTabButtons; const S: string);
@@ -2071,7 +2081,7 @@ begin
   N:= Pos(',', S);
   if N=0 then N:= 200;
   SL:= Copy(S, 1, N-1);
-  SR:= Copy(S, N+1, MaxInt);
+  SR:= SwapString(Copy(S, N+1, MaxInt));
 
   ApplySide(FButtonsLeft, SL);
   ApplySide(FButtonsRight, SR);
