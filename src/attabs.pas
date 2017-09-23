@@ -2134,8 +2134,7 @@ begin
   R:= FRectButtonPlus;
   if R.Right>0 then
   begin
-    C.Brush.Color:= FColorBg;
-    C.FillRect(R);
+    DoPaintBgTo(C, R);
 
     NColor:= IfThen(
       (FTabIndexOver=TabIndexPlusBtn) and not DragManager.IsDragging,
@@ -2151,9 +2150,7 @@ procedure TATTabs.DoPaintArrowDown(C: TCanvas);
 begin
   if FRectArrowDown.Right>0 then
   begin
-    C.Brush.Color:= FColorBg;
-    C.FillRect(FRectArrowDown);
-
+    DoPaintBgTo(C, FRectArrowDown);
     DoPaintArrowTo(C,
       ttriDown,
       FRectArrowDown,
@@ -2171,8 +2168,7 @@ var
 begin
   if FRectArrowLeft.Right>0 then
   begin
-    C.Brush.Color:= FColorBg;
-    C.FillRect(FRectArrowLeft);
+    DoPaintBgTo(C, FRectArrowLeft);
 
     //shift < righter
     R:= FRectArrowLeft;
@@ -2193,8 +2189,7 @@ var
 begin
   if FRectArrowRight.Right<>0 then
   begin
-    C.Brush.Color:= FColorBg;
-    C.FillRect(FRectArrowRight);
+    DoPaintBgTo(C, FRectArrowRight);
 
     //shift > lefter
     R:= FRectArrowRight;
@@ -2279,6 +2274,7 @@ begin
     end;
 
     if R.Right=0 then Continue;
+    DoPaintBgTo(C, R);
 
     if FTabIndexOver=NIndex then
       ElemType:= aeUserButtonOver
