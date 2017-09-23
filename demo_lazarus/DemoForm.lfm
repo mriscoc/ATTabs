@@ -170,4 +170,31 @@ object Form1: TForm1
     Style = csDropDownList
     TabOrder = 3
   end
+  object Label5: TLabel
+    Left = 467
+    Height = 14
+    Top = 104
+    Width = 83
+    Caption = 'button layout:'
+    ParentColor = False
+  end
+  object comboLayout: TComboBox
+    Left = 468
+    Height = 25
+    Top = 120
+    Width = 156
+    ItemHeight = 0
+    Items.Strings = (
+      '<>,v'
+      '<>v,'
+      ',<>v'
+      ',v<>'
+      '<,>'
+      '<,>v'
+      'v<,>'
+    )
+    OnChange = comboLayoutChange
+    Style = csDropDownList
+    TabOrder = 12
+  end
 end

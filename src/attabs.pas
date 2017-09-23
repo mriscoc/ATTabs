@@ -299,6 +299,7 @@ type
     function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
     function GetScrollPageSize: integer;
     function RealTabAngle: integer;
+    procedure SetOptButtonLayout(const AValue: string);
     procedure SetTabIndex(AIndex: integer);
     procedure GetTabCloseColor(AIndex: integer; const ARect: TRect; var AColorXBg,
       AColorXBorder, AColorXMark: TColor);
@@ -411,7 +412,7 @@ type
     property ColorScrollMark: TColor read FColorScrollMark write FColorScrollMark default _InitTabColorScrollMark;
 
     //options
-    property OptButtonLayout: string read FOptButtonLayout write FOptButtonLayout;
+    property OptButtonLayout: string read FOptButtonLayout write SetOptButtonLayout;
     property OptButtonSize: integer read FOptButtonSize write FOptButtonSize default _InitOptButtonSize;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
@@ -705,6 +706,7 @@ begin
   FColorScrollMark:= _InitTabColorScrollMark;
 
   FOptButtonLayout:= _InitOptButtonLayout;
+  ApplyButtonLayout;
   FOptButtonSize:= _InitOptButtonSize;
   FOptTabAngle:= _InitOptTabAngle;
   FOptUseAngleForMaxTabs:= _InitOptUseAngleForMaxTabs;
@@ -1127,8 +1129,6 @@ begin
   ElemType:= aeBackground;
   RRect:= ClientRect;
 
-  ApplyButtonLayout;
-
   FRealIndentLeft:= 0;
   FRealIndentRight:= 0;
   for i:= 0 to High(TATTabButtons) do
@@ -1325,6 +1325,13 @@ begin
     Result:= 0
   else
     Result:= FOptTabAngle;
+end;
+
+procedure TATTabs.SetOptButtonLayout(const AValue: string);
+begin
+  if FOptButtonLayout=AValue then Exit;
+  FOptButtonLayout:= AValue;
+  ApplyButtonLayout;
 end;
 
 
@@ -1662,7 +1669,7 @@ begin
     if AData[i]=ABtn then exit(i);
 end;
 
-function TATTAbs.GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
+function TATTabs.GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
 begin
   if AtLeft then
   begin
