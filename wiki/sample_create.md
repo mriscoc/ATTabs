@@ -1,4 +1,4 @@
-Sample code which creates tabcontrol with two tabs:
+Sample code which creates control with two tabs:
 
     t:= TATTabs.Create(Self);
     t.Parent:= Self;
