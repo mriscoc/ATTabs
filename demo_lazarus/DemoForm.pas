@@ -46,6 +46,7 @@ type
   private
     { Private declarations }
     LockEdit: boolean;
+    procedure TabClickUserButton(Sender: TObject; AIndex: integer);
     procedure TabCloseEvent(Sender: TObject; ATabIndex: Integer; var ACanClose,
       ACanContinue: boolean);
     procedure TabMove(Sender: TObject; NFrom, NTo: Integer);
@@ -53,10 +54,13 @@ type
     procedure TabPlusClick(Sender: TObject);
     procedure TabClose(Sender: TObject; ATabIndex: Integer;
       var ACanClose, ACanContinie: boolean);
-    procedure TabDrawAfter(Sender: TObject;
+    procedure TabDrawAfter_Bottom(Sender: TObject;
       AType: TATTabElemType; ATabIndex: Integer;
       C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
-    procedure TabDrawBefore(Sender: TObject;
+    procedure TabDrawAfter_Top(Sender: TObject;
+      AType: TATTabElemType; ATabIndex: Integer;
+      C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
+    procedure TabDrawBefore_Bottom(Sender: TObject;
       AType: TATTabElemType; ATabIndex: Integer;
       C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
   public
@@ -88,6 +92,8 @@ begin
   t.OnTabClose:= TabClose;
   t.OnTabMove:= TabMove;
   t.OnTabClose:= TabCloseEvent;
+  t.OnTabDrawAfter:= TabDrawAfter_Top;
+  t.OnTabClickUserButton:=TabClickUserButton;
   t.OptMouseDoubleClickPlus:= true;
   t.OptShowXButtons:= tbShowAll;
   t.OptTabAngle:= 0;
@@ -109,8 +115,8 @@ begin
   t1.Align:= alBottom;
   t1.Font.Size:= 12;
   t1.Height:= 56;
-  t1.OnTabDrawBefore:= TabDrawBefore;
-  t1.OnTabDrawAfter:= TabDrawAfter;
+  t1.OnTabDrawBefore:= TabDrawBefore_Bottom;
+  t1.OnTabDrawAfter:= TabDrawAfter_Bottom;
   t1.ColorBg:= $F9EADB;
 
   t1.OptButtonLayout:= '<,>';
@@ -287,7 +293,7 @@ procedure TForm1.FormShow(Sender: TObject);
 begin
 end;
 
-procedure TForm1.TabDrawAfter(Sender: TObject;
+procedure TForm1.TabDrawAfter_Bottom(Sender: TObject;
   AType: TATTabElemType; ATabIndex: Integer;
   C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
 begin
@@ -298,7 +304,21 @@ begin
   C.TextOut((ARect.Left+ARect.Right) div 2 - 8, ARect.Top+1, Inttostr(ATabIndex));
 end;
 
-procedure TForm1.TabDrawBefore(Sender: TObject;
+procedure TForm1.TabDrawAfter_Top(Sender: TObject; AType: TATTabElemType;
+  ATabIndex: Integer; C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
+begin
+  case AType of
+    aeUserButton,
+    aeUserButtonOver:
+      begin
+        C.Font.Color:= clYellow;
+        C.Brush.Color:= IfThen(AType=aeUserButtonOver, clRed, clBlue);
+        C.TextOut(ARect.Left, ARect.Top+3, '_'+IntToStr(ATabIndex));
+      end;
+  end;
+end;
+
+procedure TForm1.TabDrawBefore_Bottom(Sender: TObject;
   AType: TATTabElemType; ATabIndex: Integer;
   C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
 var
@@ -358,6 +378,11 @@ procedure TForm1.TabCloseEvent(Sender: TObject; ATabIndex: Integer;
 begin
   ACanClose:= Application.MessageBox('Close this tab?', 'Demo',
     MB_OKCANCEL+MB_ICONQUESTION) = ID_OK;
+end;
+
+procedure TForm1.TabClickUserButton(Sender: TObject; AIndex: integer);
+begin
+  ShowMessage('User button '+IntToStr(AIndex));
 end;
 
 end.

@@ -66,7 +66,9 @@ type
     aeTabPlus,
     aeTabPlusOver,
     aeXButton,
-    aeXButtonOver
+    aeXButtonOver,
+    aeUserButton,
+    aeUserButtonOver
     );
 
 type
@@ -96,6 +98,7 @@ type
   TATTabMoveEvent = procedure (Sender: TObject; NFrom, NTo: integer) of object;  
   TATTabChangeQueryEvent = procedure (Sender: TObject; ANewTabIndex: integer;
     var ACanChange: boolean) of object;
+  TATTabClickUserButton = procedure (Sender: TObject; AIndex: integer) of object;
 
 type
   TATTabTriangle = (
@@ -283,6 +286,7 @@ type
     //events    
     FOnTabClick: TNotifyEvent;
     FOnTabPlusClick: TNotifyEvent;
+    FOnTabClickUserButton: TATTabClickUserButton;
     FOnTabClose: TATTabCloseEvent;
     FOnTabMenu: TATTabMenuEvent;
     FOnTabDrawBefore: TATTabDrawEvent;
@@ -293,6 +297,7 @@ type
     FOnTabChangeQuery: TATTabChangeQueryEvent;
 
     procedure ApplyButtonLayout;
+    procedure DoClickUser(AIndex: integer);
     procedure DoHandleClick;
     procedure DoHandleRightClick;
     procedure DoPaintArrowDown(C: TCanvas);
@@ -307,6 +312,7 @@ type
       AImageIndex: integer);
     procedure DoPaintArrowTo(C: TCanvas; ATyp: TATTabTriangle; ARect: TRect;
       AColorArr, AColorBg: TColor);
+    procedure DoPaintUserButtons(C: TCanvas);
     procedure DoPaintXTo(C: TCanvas; const R: TRect; ATabBg, ATabCloseBg,
       ATabCloseBorder, ATabCloseXMark: TColor);
     procedure DoPaintDropMark(C: TCanvas);
@@ -472,6 +478,7 @@ type
     //events
     property OnTabClick: TNotifyEvent read FOnTabClick write FOnTabClick;
     property OnTabPlusClick: TNotifyEvent read FOnTabPlusClick write FOnTabPlusClick;
+    property OnTabClickUserButton: TATTabClickUserButton read FOnTabClickUserButton write FOnTabClickUserButton;
     property OnTabClose: TATTabCloseEvent read FOnTabClose write FOnTabClose;
     property OnTabMenu: TATTabMenuEvent read FOnTabMenu write FOnTabMenu;
     property OnTabDrawBefore: TATTabDrawEvent read FOnTabDrawBefore write FOnTabDrawBefore;
@@ -1314,6 +1321,7 @@ begin
   DoPaintArrowRight(C);
   DoPaintArrowDown(C);
   DoPaintButtonPlus(C);
+  DoPaintUserButtons(C);
 
   if FOptShowDropMark then
     if DragManager.IsDragging then
@@ -1425,6 +1433,36 @@ begin
     Exit
   end;
 
+  if PtInRect(FRectButtonUser0, Pnt) then
+  begin
+    Result:= TabIndexUser0;
+    Exit
+  end;
+
+  if PtInRect(FRectButtonUser1, Pnt) then
+  begin
+    Result:= TabIndexUser1;
+    Exit
+  end;
+
+  if PtInRect(FRectButtonUser2, Pnt) then
+  begin
+    Result:= TabIndexUser2;
+    Exit
+  end;
+
+  if PtInRect(FRectButtonUser3, Pnt) then
+  begin
+    Result:= TabIndexUser3;
+    Exit
+  end;
+
+  if PtInRect(FRectButtonUser4, Pnt) then
+  begin
+    Result:= TabIndexUser4;
+    Exit
+  end;
+
   //normal tab?
   for i:= 0 to TabCount-1 do
   begin
@@ -1529,14 +1567,21 @@ begin
         end;
 
       TabIndexArrowScrollLeft:
-        begin
-          DoScrollLeft;
-        end;
+        DoScrollLeft;
 
       TabIndexArrowScrollRight:
-        begin
-          DoScrollRight;
-        end;
+        DoScrollRight;
+
+      TabIndexUser0:
+        DoClickUser(0);
+      TabIndexUser1:
+        DoClickUser(1);
+      TabIndexUser2:
+        DoClickUser(2);
+      TabIndexUser3:
+        DoClickUser(3);
+      TabIndexUser4:
+        DoClickUser(4);
 
       TabIndexPlus,
       TabIndexPlusBtn:
@@ -2208,6 +2253,40 @@ begin
 
   ApplySide(FButtonsLeft, SL);
   ApplySide(FButtonsRight, SwapString(SR));
+end;
+
+procedure TATTabs.DoClickUser(AIndex: integer);
+begin
+  if Assigned(FOnTabClickUserButton) then
+    FOnTabClickUserButton(Self, AIndex);
+end;
+
+procedure TATTabs.DoPaintUserButtons(C: TCanvas);
+var
+  ElemType: TATTabElemType;
+  R: TRect;
+  NIndex, i: integer;
+begin
+  for i:= 0 to 4 do
+  begin
+    case i of
+      0: begin NIndex:= TabIndexUser0; R:= FRectButtonUser0; end;
+      1: begin NIndex:= TabIndexUser1; R:= FRectButtonUser1; end;
+      2: begin NIndex:= TabIndexUser2; R:= FRectButtonUser2; end;
+      3: begin NIndex:= TabIndexUser3; R:= FRectButtonUser3; end;
+      4: begin NIndex:= TabIndexUser4; R:= FRectButtonUser4; end;
+      else Break;
+    end;
+
+    if R.Right=0 then Continue;
+
+    if FTabIndexOver=NIndex then
+      ElemType:= aeUserButtonOver
+    else
+      ElemType:= aeUserButton;
+
+    DoPaintAfter(ElemType, i, C, R);
+  end;
 end;
 
 end.
