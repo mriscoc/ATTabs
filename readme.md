@@ -8,9 +8,10 @@ OS independant, fully custom drawn.
 - can show plus pseudo-tab
 - can show scroll arrows if lot of tabs
 - can show colored tabs
+- can show dropdown tab menu
+- can show numbers on tabs
 - can confirm tab closing
 - can use tab owner-draw
-- can show numbers on tabs
 - can drag-drop tabs, also to another control
 - etc.
 
