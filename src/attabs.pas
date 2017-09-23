@@ -53,6 +53,7 @@ type
     TabModified: boolean;
     TabRect: TRect;
     TabImageIndex: integer;
+    TabPopupMenu: TPopupMenu;
     constructor Create; virtual;
   end;
 
@@ -182,6 +183,7 @@ type
     FMouseDownDbl: boolean;
     FMouseDownButton: TMouseButton;
     FMouseDownShift: TShiftState;
+    FMouseDownRightBtn: boolean;
 
     //colors
     FColorBg: TColor; //color of background (visible at top and between tabs)
@@ -277,6 +279,7 @@ type
 
     procedure ApplyButtonLayout;
     procedure DoHandleClick;
+    procedure DoHandleRightClick;
     procedure DoPaintArrowDown(C: TCanvas);
     procedure DoPaintArrowLeft(C: TCanvas);
     procedure DoPaintArrowRight(C: TCanvas);
@@ -334,7 +337,8 @@ type
       AObject: TObject = nil;
       AModified: boolean = false;
       AColor: TColor = clNone;
-      AImageIndex: integer = -1);
+      AImageIndex: integer = -1;
+      APopupMenu: TPopupMenu = nil);
     function DeleteTab(AIndex: integer; AAllowEvent, AWithCancelBtn: boolean): boolean;
     procedure ShowTabMenu;
     procedure SwitchTab(ANext: boolean);
@@ -658,6 +662,7 @@ begin
   inherited;
   TabColor:= clNone;
   TabImageIndex:= -1;
+  TabPopupMenu:= nil;
 end;
 
 { TATTabs }
@@ -687,6 +692,7 @@ begin
   FMouseDown:= false;
   FMouseDownPnt:= Point(0, 0);
   FMouseDownDbl:= false;
+  FMouseDownRightBtn:=false;
 
   FColorBg:= _InitTabColorBg;
   FColorTabActive:= _InitTabColorTabActive;
@@ -1386,15 +1392,19 @@ end;
 
 procedure TATTabs.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 var
-  IsClick, IsDblClick: boolean;
+  IsClick, IsDblClick, IsRightClick: boolean;
 begin
   IsClick:= FMouseDown and
     (Abs(X-FMouseDownPnt.X) < cTabsMouseMaxDistanceToClick) and
     (Abs(Y-FMouseDownPnt.Y) < cTabsMouseMaxDistanceToClick);
   IsDblClick:= IsClick and FMouseDownDbl;
+  IsRightClick:= FMouseDownRightBtn and
+    (Abs(X-FMouseDownPnt.X) < cTabsMouseMaxDistanceToClick) and
+    (Abs(Y-FMouseDownPnt.Y) < cTabsMouseMaxDistanceToClick);
        
   FMouseDown:= false;
   FMouseDownDbl:= false;
+  FMouseDownRightBtn:= false;
   Cursor:= crDefault;
   Screen.Cursor:= crDefault;
   
@@ -1415,12 +1425,19 @@ begin
     Invalidate;
     Exit
   end;
+
+  if IsRightClick then
+  begin
+    DoHandleRightClick;
+    Exit;
+  end;
 end;
 
 procedure TATTabs.MouseDown(Button: TMouseButton; Shift: TShiftState;
   X, Y: integer);
 begin
   FMouseDown:= Button in [mbLeft, mbMiddle]; //but not mbRight
+  FMouseDownRightBtn:= (Button = mbRight);
   FMouseDownPnt:= Point(X, Y);
   FMouseDownButton:= Button;
   FMouseDownShift:= Shift;
@@ -1490,6 +1507,22 @@ begin
   end;
 end;
 
+procedure TATTabs.DoHandleRightClick;
+var
+  P: TPoint;
+  D: TATTabData;
+begin
+  if (FTabIndex=FTabIndexOver) then // to check if click was processed as a valid click on a tab
+  begin
+    D:= GetTabData(FTabIndex);
+    if Assigned(D) and Assigned(D.TabPopupMenu) then
+    begin
+      P:= ClientToScreen(FMouseDownPnt);
+      D.TabPopupMenu.PopUp(P.X, P.Y);
+    end;
+  end;
+end;
+
 type
   TControl2 = class(TControl);
 
@@ -1522,7 +1555,8 @@ procedure TATTabs.AddTab(
   AObject: TObject = nil;
   AModified: boolean = false;
   AColor: TColor = clNone;
-  AImageIndex: integer = -1);
+  AImageIndex: integer = -1;
+  APopupMenu: TPopupMenu = nil);
 var
   Data: TATTabData;
 begin
@@ -1532,6 +1566,7 @@ begin
   Data.TabModified:= AModified;
   Data.TabColor:= AColor;
   Data.TabImageIndex:= AImageIndex;
+  Data.TabPopupMenu:= APopupMenu;
 
   if IsIndexOk(AIndex) then
     FTabList.Insert(AIndex, Data)
