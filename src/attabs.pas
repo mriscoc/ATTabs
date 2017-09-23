@@ -110,10 +110,10 @@ type
 const
   TabIndexNone = -1; //none tab
   TabIndexPlus = -2;
-  TabIndexArrowMenu = -3;
-  TabIndexArrowScrollLeft = -4;
-  TabIndexArrowScrollRight = -5;
-  TabIndexPlusBtn = -6;
+  TabIndexPlusBtn = -3;
+  TabIndexArrowMenu = -5;
+  TabIndexArrowScrollLeft = -6;
+  TabIndexArrowScrollRight = -7;
 
 const
   _InitTabColorBg = clBlack;
