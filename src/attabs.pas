@@ -1328,7 +1328,7 @@ begin
 
     if NPos>0 then
     begin
-      R.Top:= IfThen(FOptShowAtBottom, FOptTabHeight, 0);
+      R.Top:= IfThen(FOptShowAtBottom, FOptTabHeight + FOptSpaceOnTop, 0);
       R.Bottom:= R.Top + FOptScrollMarkSizeY;
 
       R.Left:= FRealIndentLeft +
