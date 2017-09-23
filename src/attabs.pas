@@ -72,10 +72,15 @@ type
 type
   TATTabButton = (
     tabBtnNone,
+    tabBtnPlus,
     tabBtnScrollLeft,
     tabBtnScrollRight,
-    tabBtnPlus,
-    tabBtnDropdownMenu
+    tabBtnDropdownMenu,
+    tabBtnUser0,
+    tabBtnUser1,
+    tabBtnUser2,
+    tabBtnUser3,
+    tabBtnUser4
     );
 
   TATTabButtons = array[0..3] of TATTabButton;
@@ -114,6 +119,11 @@ const
   TabIndexArrowMenu = -5;
   TabIndexArrowScrollLeft = -6;
   TabIndexArrowScrollRight = -7;
+  TabIndexUser0 = -10;
+  TabIndexUser1 = -11;
+  TabIndexUser2 = -12;
+  TabIndexUser3 = -13;
+  TabIndexUser4 = -14;
 
 const
   _InitTabColorBg = clBlack;
@@ -264,6 +274,11 @@ type
     FRectArrowLeft: TRect;
     FRectArrowRight: TRect;
     FRectButtonPlus: TRect;
+    FRectButtonUser0: TRect;
+    FRectButtonUser1: TRect;
+    FRectButtonUser2: TRect;
+    FRectButtonUser3: TRect;
+    FRectButtonUser4: TRect;
 
     //events    
     FOnTabClick: TNotifyEvent;
@@ -1175,6 +1190,11 @@ begin
   FRectArrowRight:= GetRectOfButton(tabBtnScrollRight);
   FRectArrowDown:= GetRectOfButton(tabBtnDropdownMenu);
   FRectButtonPlus:= GetRectOfButton(tabBtnPlus);
+  FRectButtonUser0:= GetRectOfButton(tabBtnUser0);
+  FRectButtonUser1:= GetRectOfButton(tabBtnUser1);
+  FRectButtonUser2:= GetRectOfButton(tabBtnUser2);
+  FRectButtonUser3:= GetRectOfButton(tabBtnUser3);
+  FRectButtonUser4:= GetRectOfButton(tabBtnUser4);
 
   //painting of BG is little different then other elements:
   //paint fillrect anyway, then maybe paint ownerdraw
@@ -2168,6 +2188,11 @@ procedure TATTabs.ApplyButtonLayout;
         '>': begin Side[N]:= tabBtnScrollRight; Inc(N) end;
         'v': begin Side[N]:= tabBtnDropdownMenu; Inc(N) end;
         '+': begin Side[N]:= tabBtnPlus; Inc(N) end;
+        '0': begin Side[N]:= tabBtnUser0; Inc(N) end;
+        '1': begin Side[N]:= tabBtnUser1; Inc(N) end;
+        '2': begin Side[N]:= tabBtnUser2; Inc(N) end;
+        '3': begin Side[N]:= tabBtnUser3; Inc(N) end;
+        '4': begin Side[N]:= tabBtnUser4; Inc(N) end;
       end;
   end;
   //
