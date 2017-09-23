@@ -53,7 +53,7 @@ object Form1: TForm1
     Width = 115
     Caption = 'add after current'
     OnClick = btnAddClick
-    TabOrder = 4
+    TabOrder = 5
   end
   object btnDel: TButton
     Left = 264
@@ -62,7 +62,7 @@ object Form1: TForm1
     Width = 75
     Caption = 'del'
     OnClick = btnDelClick
-    TabOrder = 5
+    TabOrder = 6
   end
   object btnColor: TButton
     Left = 344
@@ -71,7 +71,7 @@ object Form1: TForm1
     Width = 75
     Caption = 'color'
     OnClick = btnColorClick
-    TabOrder = 6
+    TabOrder = 7
   end
   object btnLeft: TButton
     Left = 264
@@ -80,7 +80,7 @@ object Form1: TForm1
     Width = 75
     Caption = '<'
     OnClick = btnLeftClick
-    TabOrder = 9
+    TabOrder = 10
   end
   object btnRight: TButton
     Left = 344
@@ -89,7 +89,7 @@ object Form1: TForm1
     Width = 75
     Caption = '>'
     OnClick = btnRightClick
-    TabOrder = 10
+    TabOrder = 11
   end
   object EditInfo: TEdit
     Left = 264
@@ -97,7 +97,7 @@ object Form1: TForm1
     Top = 248
     Width = 225
     OnChange = EditInfoChange
-    TabOrder = 11
+    TabOrder = 12
   end
   object chkShowPlus: TCheckBox
     Left = 144
@@ -126,7 +126,7 @@ object Form1: TForm1
     Width = 113
     Caption = 'toggle modified'
     OnClick = btnModifyClick
-    TabOrder = 8
+    TabOrder = 9
   end
   object chkShowFullColor: TCheckBox
     Left = 144
@@ -144,14 +144,14 @@ object Form1: TForm1
     Width = 208
     Caption = 'stress (300 tabs)'
     OnClick = btnStressClick
-    TabOrder = 7
+    TabOrder = 8
   end
   object Label4: TLabel
     Left = 464
     Height = 14
     Top = 56
-    Width = 104
-    Caption = 'top tabs show "x"'
+    Width = 109
+    Caption = 'top tabs: "x" icons:'
     ParentColor = False
   end
   object comboShowX: TComboBox
@@ -183,6 +183,7 @@ object Form1: TForm1
     Height = 25
     Top = 120
     Width = 160
+    DropDownCount = 20
     ItemHeight = 0
     Items.Strings = (
       ''
@@ -197,6 +198,6 @@ object Form1: TForm1
     )
     OnChange = comboLayoutChange
     Style = csDropDownList
-    TabOrder = 12
+    TabOrder = 4
   end
 end
