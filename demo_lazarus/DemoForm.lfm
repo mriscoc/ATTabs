@@ -171,7 +171,7 @@ object Form1: TForm1
     TabOrder = 3
   end
   object Label5: TLabel
-    Left = 467
+    Left = 464
     Height = 14
     Top = 104
     Width = 83
@@ -179,12 +179,14 @@ object Form1: TForm1
     ParentColor = False
   end
   object comboLayout: TComboBox
-    Left = 468
+    Left = 464
     Height = 25
     Top = 120
-    Width = 156
+    Width = 160
     ItemHeight = 0
     Items.Strings = (
+      ''
+      ',v'
       '<>,v'
       '<>v,'
       ',<>v'

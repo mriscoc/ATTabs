@@ -140,7 +140,7 @@ const
   _InitOptTabWidthMinimal = 40;
   _InitOptTabWidthNormal = 130;
   _InitOptTabWidthMinimalHidesX = 55;
-  //_InitOptSpaceInitial = 30; //big for scroll arrows
+  _InitOptSpaceInitial = 4;
   _InitOptSpaceBeforeText = 6;
   _InitOptSpaceBetweenTabs = 0;
   _InitOptSpaceOnTop = 5;
@@ -214,7 +214,7 @@ type
     FOptTabWidthNormal: integer; //tab maximal width (used when only few tabs)
     FOptTabWidthMinimalHidesX: integer; //tab minimal width, after which "x" mark hides for inactive tabs
     FOptSpaceBetweenTabs: integer; //space between nearest tabs (no need for angled tabs)
-    //FOptSpaceInitial: integer; //space between first tab and left control edge
+    FOptSpaceInitial: integer; //space between first tab and left control edge
     FOptSpaceBeforeText: integer; //space between text and tab left edge
     FOptSpaceOnTop: integer; //height of top empty space (colored with bg)
     FOptSpaceXRight: integer; //space from "x" btn to right tab edge
@@ -421,7 +421,7 @@ type
     property OptTabAngle: integer read FOptTabAngle write FOptTabAngle default _InitOptTabAngle;
     property OptUseAngleForMaxTabs: integer read FOptUseAngleForMaxTabs write FOptUseAngleForMaxTabs default _InitOptUseAngleForMaxTabs;
     property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
-    //property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
+    property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
     property OptSpaceBeforeText: integer read FOptSpaceBeforeText write FOptSpaceBeforeText default _InitOptSpaceBeforeText;
     property OptSpaceOnTop: integer read FOptSpaceOnTop write FOptSpaceOnTop default _InitOptSpaceOnTop;
     property OptSpaceXRight: integer read FOptSpaceXRight write FOptSpaceXRight default _InitOptSpaceXRight;
@@ -714,7 +714,7 @@ begin
   FOptTabWidthMinimal:= _InitOptTabWidthMinimal;
   FOptTabWidthNormal:= _InitOptTabWidthNormal;
   FOptTabWidthMinimalHidesX:= _InitOptTabWidthMinimalHidesX;
-  //FOptSpaceInitial:= _InitOptSpaceInitial;
+  FOptSpaceInitial:= _InitOptSpaceInitial;
   FOptSpaceBeforeText:= _InitOptSpaceBeforeText;
   FOptSpaceBetweenTabs:= _InitOptSpaceBetweenTabs;
   FOptSpaceOnTop:= _InitOptSpaceOnTop;
@@ -1129,7 +1129,7 @@ begin
   ElemType:= aeBackground;
   RRect:= ClientRect;
 
-  FRealIndentLeft:= 0;
+  FRealIndentLeft:= FOptSpaceInitial;
   FRealIndentRight:= 0;
   for i:= 0 to High(TATTabButtons) do
     if FButtonsLeft[i]<>tabBtnNone then
