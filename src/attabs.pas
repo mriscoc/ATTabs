@@ -162,7 +162,6 @@ const
   _InitOptShowArrowsNear = true;
   _InitOptShowXButtons = tbShowAll;
   _InitOptShowPlusTab = true;
-  _InitOptShowPlusText = ' + ';
   _InitOptShowModifiedText = '*';
   _InitOptShowBorderActiveLow = false;
   _InitOptShowEntireColor = false;
@@ -231,7 +230,6 @@ type
     FOptShowXButtons: TATTabShowClose; //show mode for "x" buttons
     FOptShowArrowsNear: boolean;
     FOptShowPlusTab: boolean; //show "plus" tab
-    FOptShowPlusText: TATTabString; //text of "plus" tab
     FOptShowModifiedText: TATTabString;
     FOptShowBorderActiveLow: boolean; //show border line below active tab (like Firefox)
     FOptShowEntireColor: boolean;
@@ -441,7 +439,6 @@ type
     property OptShowDropMark: boolean read FOptShowDropMark write FOptShowDropMark default _InitOptShowDropMark;
     property OptShowXButtons: TATTabShowClose read FOptShowXButtons write FOptShowXButtons default _InitOptShowXButtons;
     property OptShowPlusTab: boolean read FOptShowPlusTab write FOptShowPlusTab default _InitOptShowPlusTab;
-    property OptShowPlusText: TATTabString read FOptShowPlusText write FOptShowPlusText;
     property OptShowArrowsNear: boolean read FOptShowArrowsNear write FOptShowArrowsNear default _InitOptShowArrowsNear;
     property OptShowModifiedText: TATTabString read FOptShowModifiedText write FOptShowModifiedText;
     property OptShowBorderActiveLow: boolean read FOptShowBorderActiveLow write FOptShowBorderActiveLow default _InitOptShowBorderActiveLow;
@@ -654,6 +651,35 @@ begin
   DrawTriangleRaw(C, P1, P2, P3, Color);
 end;
 
+
+procedure DrawPlusSign(C: TCanvas; const R: TRect; ASize: integer; AColor: TColor);
+begin
+  C.Pen.Color:= AColor;
+
+  C.Line(
+    Point(
+      (R.Left+R.Right) div 2 - ASize,
+      (R.Top+R.Bottom) div 2
+      ),
+    Point(
+      (R.Left+R.Right) div 2 + ASize+1,
+      (R.Top+R.Bottom) div 2
+      )
+    );
+
+  C.Line(
+    Point(
+      (R.Left+R.Right) div 2,
+      (R.Top+R.Bottom) div 2 - ASize
+      ),
+    Point(
+      (R.Left+R.Right) div 2,
+      (R.Top+R.Bottom) div 2 + ASize+1
+      )
+    );
+end;
+
+
 { TATTabData }
 
 constructor TATTabData.Create;
@@ -736,7 +762,6 @@ begin
   FOptShowDropMark:= _InitOptShowDropMark;
   FOptShowXButtons:= _InitOptShowXButtons;
   FOptShowPlusTab:= _InitOptShowPlusTab;
-  FOptShowPlusText:= _InitOptShowPlusText;
   FOptShowArrowsNear:= _InitOptShowArrowsNear;
   FOptShowModifiedText:= _InitOptShowModifiedText;
   FOptShowBorderActiveLow:= _InitOptShowBorderActiveLow;
@@ -833,7 +858,7 @@ begin
 
   NAngle:= RealTabAngle;
   RectText:= Rect(ARect.Left+NAngle, ARect.Top, ARect.Right-NAngle, ARect.Bottom);
-  bNeedMoreSpace:= (RectText.Right-RectText.Left<=30) and (ACaption<>OptShowPlusText);
+  bNeedMoreSpace:= (RectText.Right-RectText.Left<=30) and (ACaption<>'');
   NIndentL:= IfThen(not bNeedMoreSpace, NAngle+FOptSpaceBeforeText, 2);
   NIndentR:= NIndentL+IfThen(ACloseBtn, FOptSpaceXRight);
   C.FillRect(RectText);
@@ -991,8 +1016,7 @@ end;
 
 function TATTabs.GetTabWidth_Plus_Raw: integer;
 begin
-  Canvas.Font.Assign(Self.Font);
-  Result:= Canvas.TextWidth(FOptShowPlusText);
+  Result:= FOptArrowSize*4;
 end;
 
 function TATTabs.GetTabRectWidth(APlusBtn: boolean): integer;
@@ -1187,7 +1211,7 @@ begin
     if IsPaintNeeded(ElemType, -1, C, RRect) then
     begin
       DoPaintTabTo(C, RRect,
-        FOptShowPlusText,
+        '',
         IfThen((FTabIndexOver=TabIndexPlus) and not DragManager.IsDragging, FColorTabOver, FColorTabPassive),
         FColorBorderPassive,
         FColorBorderActive,
@@ -1199,6 +1223,7 @@ begin
         false,
         -1 //no icon
         );
+      DrawPlusSign(C, RRect, FOptArrowSize, Font.Color);
       DoPaintAfter(ElemType, -1, C, RRect);
     end;    
   end;
@@ -2003,37 +2028,20 @@ end;
 procedure TATTabs.DoPaintButtonPlus(C: TCanvas);
 var
   R: TRect;
+  NColor: TColor;
 begin
   R:= FRectButtonPlus;
   if R.Right>0 then
   begin
     C.Brush.Color:= FColorBg;
     C.FillRect(R);
-    C.Pen.Color:= IfThen(
+
+    NColor:= IfThen(
       (FTabIndexOver=TabIndexPlusBtn) and not DragManager.IsDragging,
       FColorArrowOver,
       FColorArrow);
 
-    C.Line(
-      Point(
-        (R.Left+R.Right) div 2 - FOptArrowSize,
-        (R.Top+R.Bottom) div 2
-        ),
-      Point(
-        (R.Left+R.Right) div 2 + FOptArrowSize+1,
-        (R.Top+R.Bottom) div 2
-        )
-      );
-    C.Line(
-      Point(
-        (R.Left+R.Right) div 2,
-        (R.Top+R.Bottom) div 2 - FOptArrowSize
-        ),
-      Point(
-        (R.Left+R.Right) div 2,
-        (R.Top+R.Bottom) div 2 + FOptArrowSize+1
-        )
-      );
+    DrawPlusSign(C, R, FOptArrowSize, NColor);
   end;
 end;
 
