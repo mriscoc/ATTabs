@@ -112,6 +112,7 @@ const
   TabIndexArrowMenu = -3;
   TabIndexArrowScrollLeft = -4;
   TabIndexArrowScrollRight = -5;
+  TabIndexPlusBtn = -6;
 
 const
   _InitTabColorBg = clBlack;
@@ -262,6 +263,7 @@ type
     FRectArrowDown: TRect;
     FRectArrowLeft: TRect;
     FRectArrowRight: TRect;
+    FRectButtonPlus: TRect;
 
     //events    
     FOnTabClick: TNotifyEvent;
@@ -280,6 +282,7 @@ type
     procedure DoPaintArrowDown(C: TCanvas);
     procedure DoPaintArrowLeft(C: TCanvas);
     procedure DoPaintArrowRight(C: TCanvas);
+    procedure DoPaintButtonPlus(C: TCanvas);
     procedure DoPaintTo(C: TCanvas);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
@@ -1138,9 +1141,10 @@ begin
     if FButtonsRight[i]<>tabBtnNone then
       Inc(FRealIndentRight, FOptButtonSize);
 
-  FRectArrowDown:= GetRectOfButton(tabBtnDropdownMenu);
   FRectArrowLeft:= GetRectOfButton(tabBtnScrollLeft);
   FRectArrowRight:= GetRectOfButton(tabBtnScrollRight);
+  FRectArrowDown:= GetRectOfButton(tabBtnDropdownMenu);
+  FRectButtonPlus:= GetRectOfButton(tabBtnPlus);
 
   //painting of BG is little different then other elements:
   //paint fillrect anyway, then maybe paint ownerdraw
@@ -1258,6 +1262,7 @@ begin
   DoPaintArrowLeft(C);
   DoPaintArrowRight(C);
   DoPaintArrowDown(C);
+  DoPaintButtonPlus(C);
 
   if FOptShowDropMark then
     if DragManager.IsDragging then
@@ -1363,6 +1368,12 @@ begin
     Exit
   end;
 
+  if PtInRect(FRectButtonPlus, Pnt) then
+  begin
+    Result:= TabIndexPlusBtn;
+    Exit
+  end;
+
   //normal tab?
   for i:= 0 to TabCount-1 do
   begin
@@ -1465,7 +1476,8 @@ begin
           DoScrollRight;
         end;
 
-      TabIndexPlus:
+      TabIndexPlus,
+      TabIndexPlusBtn:
         begin
           EndDrag(false);
           FTabIndexOver:= -1;
@@ -1987,6 +1999,44 @@ begin
   if NPos<>FScrollPos then
     DoScrollAnimation(NPos);
 end;
+
+procedure TATTabs.DoPaintButtonPlus(C: TCanvas);
+var
+  R: TRect;
+begin
+  R:= FRectButtonPlus;
+  if R.Right>0 then
+  begin
+    C.Brush.Color:= FColorBg;
+    C.FillRect(R);
+    C.Pen.Color:= IfThen(
+      (FTabIndexOver=TabIndexPlusBtn) and not DragManager.IsDragging,
+      FColorArrowOver,
+      FColorArrow);
+
+    C.Line(
+      Point(
+        (R.Left+R.Right) div 2 - FOptArrowSize,
+        (R.Top+R.Bottom) div 2
+        ),
+      Point(
+        (R.Left+R.Right) div 2 + FOptArrowSize+1,
+        (R.Top+R.Bottom) div 2
+        )
+      );
+    C.Line(
+      Point(
+        (R.Left+R.Right) div 2,
+        (R.Top+R.Bottom) div 2 - FOptArrowSize
+        ),
+      Point(
+        (R.Left+R.Right) div 2,
+        (R.Top+R.Bottom) div 2 + FOptArrowSize+1
+        )
+      );
+  end;
+end;
+
 
 procedure TATTabs.DoPaintArrowDown(C: TCanvas);
 begin
