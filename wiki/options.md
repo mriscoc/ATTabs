@@ -136,51 +136,49 @@ Allow to show "plus" pseudo-tab on right. It generates event on click.
 OptShowArrowsNear: boolean
 ======
 
-Show left/right scroll arrows near to each other. Usually they are shown in the centers of buttons, not near.
+Show left/right scroll arrows near to each other. Usually they are shown in the center of buttons, not near.
 
 OptShowModifiedText: TATTabString
 ======
 
-
+Str, which is shown with tab caption, for modified tab. (Modified: bool field in the TATTabData).
 
 OptShowBorderActiveLow: boolean
 ======
 
-
+Allow to show horiz line, below active tab. Usually not needed.
 
 OptShowEntireColor: boolean
 ======
 
-
+Allow to colorize full tab rect, for colored tabs. (Color of tab: field in the TATTabData).
 
 OptShowNumberPrefix: TATTabString
 ======
 
-
+String with `%d`, which makes numbered prefix for all tabs. Eg, `'%d) '` makes prefix with number and bracket. If empty, no prefix.
 
 OptMouseMiddleClickClose: boolean
 ======
 
-
+Allow to close tabs by middle mouse click.
 
 OptMouseDoubleClickClose: boolean
 ======
 
-
+Allow to close tabs by double click.
 
 OptMouseDoubleClickPlus: boolean
 ======
 
-
+Allow to call OnTabPlusClick by double click on empty area.
 
 OptMouseDragEnabled: boolean
 ======
 
-
+Enable drag-drop of tabs.
 
 OptMouseDragOutEnabled: boolean
 ======
 
-
-
-    
+Also enable drag-drop to/from another ATTabs control.
