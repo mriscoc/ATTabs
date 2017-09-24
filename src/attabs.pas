@@ -2167,41 +2167,57 @@ end;
 procedure TATTabs.DoPaintButtonPlus(C: TCanvas);
 var
   bOver: boolean;
+  ElemType: TATTabElemType;
   R: TRect;
   NColor: TColor;
 begin
   bOver:= FTabIndexOver=TabIndexPlusBtn;
+  if bOver then
+    ElemType:= aeButtonPlusOver
+  else
+    ElemType:= aeButtonPlus;
+
   R:= FRectButtonPlus;
   if R.Right>0 then
-  begin
-    NColor:= IfThen(
-      bOver and not DragManager.IsDragging,
-      FColorArrowOver,
-      FColorArrow);
+    if IsPaintNeeded(ElemType, -1, C, R) then
+    begin
+      NColor:= IfThen(
+        bOver and not DragManager.IsDragging,
+        FColorArrowOver,
+        FColorArrow);
 
-    DoPaintBgTo(C, R);
-    DrawPlusSign(C, R, FOptArrowSize, NColor);
-  end;
+      DoPaintBgTo(C, R);
+      DrawPlusSign(C, R, FOptArrowSize, NColor);
+      DoPaintAfter(ElemType, -1, C, R);
+    end;
 end;
 
 procedure TATTabs.DoPaintButtonClose(C: TCanvas);
 var
   bOver: boolean;
+  ElemType: TATTabElemType;
   R: TRect;
   NColor: TColor;
 begin
   bOver:= FTabIndexOver=TabIndexCloseBtn;
+  if bOver then
+    ElemType:= aeButtonCloseOver
+  else
+    ElemType:= aeButtonClose;
+
   R:= FRectButtonClose;
   if R.Right>0 then
-  begin
-    NColor:= IfThen(
-      bOver and not DragManager.IsDragging,
-      FColorArrowOver,
-      FColorArrow);
+    if IsPaintNeeded(ElemType, -1, C, R) then
+    begin
+      NColor:= IfThen(
+        bOver and not DragManager.IsDragging,
+        FColorArrowOver,
+        FColorArrow);
 
-    DoPaintBgTo(C, R);
-    DrawCrossSign(C, R, FOptArrowSize, NColor);
-  end;
+      DoPaintBgTo(C, R);
+      DrawCrossSign(C, R, FOptArrowSize, NColor);
+      DoPaintAfter(ElemType, -1, C, R);
+    end;
 end;
 
 
