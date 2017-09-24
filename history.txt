@@ -1,4 +1,8 @@
 
+2017.09.24
++ add: user buttons in OptButtonLayout: "0".."4"
++ add: support OnPaintBefore/OnPaintAfter for all arrows, user buttons
+
 2017.09.23
 + add: prop OptButtonLayout: string layout. allowed buttons: <>v+. allowed separator: comma. example values:
     <>,v
