@@ -81,6 +81,7 @@ type
   TATTabButton = (
     tabBtnNone,
     tabBtnPlus,
+    tabBtnClose,
     tabBtnScrollLeft,
     tabBtnScrollRight,
     tabBtnDropdownMenu,
@@ -91,7 +92,7 @@ type
     tabBtnUser4
     );
 
-  TATTabButtons = array[0..3] of TATTabButton;
+  TATTabButtons = array[0..20] of TATTabButton;
 
 type
   TATTabOverEvent = procedure (Sender: TObject; ATabIndex: integer) of object;
@@ -125,6 +126,7 @@ const
   TabIndexNone = -1; //none tab
   TabIndexPlus = -2;
   TabIndexPlusBtn = -3;
+  TabIndexCloseBtn = -4;
   TabIndexArrowMenu = -5;
   TabIndexArrowScrollLeft = -6;
   TabIndexArrowScrollRight = -7;
@@ -283,6 +285,7 @@ type
     FRectArrowLeft: TRect;
     FRectArrowRight: TRect;
     FRectButtonPlus: TRect;
+    FRectButtonClose: TRect;
     FRectButtonUser0: TRect;
     FRectButtonUser1: TRect;
     FRectButtonUser2: TRect;
@@ -309,6 +312,7 @@ type
     procedure DoPaintArrowDown(C: TCanvas);
     procedure DoPaintArrowLeft(C: TCanvas);
     procedure DoPaintArrowRight(C: TCanvas);
+    procedure DoPaintButtonClose(C: TCanvas);
     procedure DoPaintButtonPlus(C: TCanvas);
     procedure DoPaintTo(C: TCanvas);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
@@ -686,29 +690,39 @@ end;
 
 
 procedure DrawPlusSign(C: TCanvas; const R: TRect; ASize: integer; AColor: TColor);
+var
+  CX, CY: integer;
 begin
   C.Pen.Color:= AColor;
+  CX:= (R.Left+R.Right) div 2;
+  CY:= (R.Top+R.Bottom) div 2;
 
   C.Line(
-    Point(
-      (R.Left+R.Right) div 2 - ASize,
-      (R.Top+R.Bottom) div 2
-      ),
-    Point(
-      (R.Left+R.Right) div 2 + ASize+1,
-      (R.Top+R.Bottom) div 2
-      )
+    Point(CX - ASize, CY),
+    Point(CX + ASize+1, CY)
     );
+  C.Line(
+    Point(CX, CY - ASize),
+    Point(CX, CY + ASize+1)
+    );
+end;
+
+
+procedure DrawCrossSign(C: TCanvas; const R: TRect; ASize: integer; AColor: TColor);
+var
+  CX, CY: integer;
+begin
+  C.Pen.Color:= AColor;
+  CX:= (R.Left+R.Right) div 2;
+  CY:= (R.Top+R.Bottom) div 2;
 
   C.Line(
-    Point(
-      (R.Left+R.Right) div 2,
-      (R.Top+R.Bottom) div 2 - ASize
-      ),
-    Point(
-      (R.Left+R.Right) div 2,
-      (R.Top+R.Bottom) div 2 + ASize+1
-      )
+    Point(CX - ASize+1, CY - ASize+1),
+    Point(CX + ASize+1, CY + ASize+1)
+    );
+  C.Line(
+    Point(CX + ASize, CY - ASize+1),
+    Point(CX - ASize, CY + ASize+1)
     );
 end;
 
@@ -1204,6 +1218,7 @@ begin
   FRectArrowRight:= GetRectOfButton(tabBtnScrollRight);
   FRectArrowDown:= GetRectOfButton(tabBtnDropdownMenu);
   FRectButtonPlus:= GetRectOfButton(tabBtnPlus);
+  FRectButtonClose:= GetRectOfButton(tabBtnClose);
   FRectButtonUser0:= GetRectOfButton(tabBtnUser0);
   FRectButtonUser1:= GetRectOfButton(tabBtnUser1);
   FRectButtonUser2:= GetRectOfButton(tabBtnUser2);
@@ -1328,6 +1343,7 @@ begin
   DoPaintArrowRight(C);
   DoPaintArrowDown(C);
   DoPaintButtonPlus(C);
+  DoPaintButtonClose(C);
   DoPaintUserButtons(C);
 
   if FOptShowDropMark then
@@ -1437,6 +1453,12 @@ begin
   if PtInRect(FRectButtonPlus, Pnt) then
   begin
     Result:= TabIndexPlusBtn;
+    Exit
+  end;
+
+  if PtInRect(FRectButtonClose, Pnt) then
+  begin
+    Result:= TabIndexCloseBtn;
     Exit
   end;
 
@@ -1598,6 +1620,11 @@ begin
           if Assigned(FOnTabPlusClick) then
             FOnTabPlusClick(Self);
         end;
+
+      TabIndexCloseBtn:
+        begin
+          DeleteTab(FTabIndex, true, true);
+        end
 
       else
         begin
@@ -2135,20 +2162,41 @@ end;
 
 procedure TATTabs.DoPaintButtonPlus(C: TCanvas);
 var
+  bOver: boolean;
   R: TRect;
   NColor: TColor;
 begin
+  bOver:= FTabIndexOver=TabIndexPlusBtn;
   R:= FRectButtonPlus;
   if R.Right>0 then
   begin
-    DoPaintBgTo(C, R);
-
     NColor:= IfThen(
-      (FTabIndexOver=TabIndexPlusBtn) and not DragManager.IsDragging,
+      bOver and not DragManager.IsDragging,
       FColorArrowOver,
       FColorArrow);
 
+    DoPaintBgTo(C, R);
     DrawPlusSign(C, R, FOptArrowSize, NColor);
+  end;
+end;
+
+procedure TATTabs.DoPaintButtonClose(C: TCanvas);
+var
+  bOver: boolean;
+  R: TRect;
+  NColor: TColor;
+begin
+  bOver:= FTabIndexOver=TabIndexCloseBtn;
+  R:= FRectButtonClose;
+  if R.Right>0 then
+  begin
+    NColor:= IfThen(
+      bOver and not DragManager.IsDragging,
+      FColorArrowOver,
+      FColorArrow);
+
+    DoPaintBgTo(C, R);
+    DrawCrossSign(C, R, FOptArrowSize, NColor);
   end;
 end;
 
@@ -2261,6 +2309,7 @@ procedure TATTabs.ApplyButtonLayout;
         '>': begin Side[N]:= tabBtnScrollRight; Inc(N) end;
         'v': begin Side[N]:= tabBtnDropdownMenu; Inc(N) end;
         '+': begin Side[N]:= tabBtnPlus; Inc(N) end;
+        'x': begin Side[N]:= tabBtnClose; Inc(N) end;
         '0': begin Side[N]:= tabBtnUser0; Inc(N) end;
         '1': begin Side[N]:= tabBtnUser1; Inc(N) end;
         '2': begin Side[N]:= tabBtnUser2; Inc(N) end;

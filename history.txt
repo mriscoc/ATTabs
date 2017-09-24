@@ -1,5 +1,6 @@
 
 2017.09.24
++ add: close button in OptButtonLayout: "x"
 + add: user buttons in OptButtonLayout: "0".."4"
 + add: support OnTabDrawBefore/OnTabDrawAfter for all arrows, user buttons
 
