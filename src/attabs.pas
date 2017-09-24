@@ -67,6 +67,12 @@ type
     aeTabPlusOver,
     aeXButton,
     aeXButtonOver,
+    aeArrowDropdown,
+    aeArrowDropdownOver,
+    aeArrowScrollLeft,
+    aeArrowScrollLeftOver,
+    aeArrowScrollRight,
+    aeArrowScrollRightOver,
     aeUserButton,
     aeUserButtonOver
     );
@@ -345,6 +351,8 @@ type
     constructor Create(AOnwer: TComponent); override;
     function CanFocus: boolean; override;
     destructor Destroy; override;
+    procedure DragDrop(Source: TObject; X, Y: integer); override;
+
     function GetTabRectWidth(APlusBtn: boolean): integer;
     function GetTabRect(AIndex: integer): TRect;
     function GetTabRect_Plus: TRect;
@@ -365,7 +373,6 @@ type
     procedure ShowTabMenu;
     procedure SwitchTab(ANext: boolean);
     procedure MoveTab(AFrom, ATo: integer; AActivateThen: boolean);
-    procedure DragDrop(Source: TObject; X, Y: integer); override;
     procedure DoScrollLeft;
     procedure DoScrollRight;
 
@@ -2147,61 +2154,87 @@ end;
 
 
 procedure TATTabs.DoPaintArrowDown(C: TCanvas);
+var
+  bOver: boolean;
+  ElemType: TATTabElemType;
 begin
+  bOver:= FTabIndexOver=TabIndexArrowMenu;
+  if bOver then
+    ElemType:= aeArrowDropdownOver
+  else
+    ElemType:= aeArrowDropdown;
+
   if FRectArrowDown.Right>0 then
-  begin
-    DoPaintBgTo(C, FRectArrowDown);
-    DoPaintArrowTo(C,
-      ttriDown,
-      FRectArrowDown,
-      IfThen(
-        (FTabIndexOver=TabIndexArrowMenu) and not DragManager.IsDragging,
-        FColorArrowOver,
-        FColorArrow),
-      FColorBg);
-  end;
+    if IsPaintNeeded(ElemType, -1, C, FRectArrowDown) then
+    begin
+      DoPaintBgTo(C, FRectArrowDown);
+      DoPaintArrowTo(C,
+        ttriDown,
+        FRectArrowDown,
+        IfThen(bOver and not DragManager.IsDragging,
+          FColorArrowOver,
+          FColorArrow),
+        FColorBg);
+      DoPaintAfter(ElemType, -1, C, FRectArrowDown);
+    end;
 end;
 
 procedure TATTabs.DoPaintArrowLeft(C: TCanvas);
 var
+  bOver: boolean;
+  ElemType: TATTabElemType;
   R: TRect;
 begin
+  bOver:= FTabIndexOver=TabIndexArrowScrollLeft;
+  if bOver then
+    ElemType:= aeArrowScrollLeftOver
+  else
+    ElemType:= aeArrowScrollLeft;
+
   if FRectArrowLeft.Right>0 then
-  begin
-    DoPaintBgTo(C, FRectArrowLeft);
+    if IsPaintNeeded(ElemType, -1, C, FRectArrowLeft) then
+    begin
+      R:= FRectArrowLeft;
+      if FOptShowArrowsNear then
+        R.Left:= (R.Left+R.Right) div 2;
 
-    //shift < righter
-    R:= FRectArrowLeft;
-    if FOptShowArrowsNear then
-      R.Left:= (R.Left+R.Right) div 2;
-
-    DoPaintArrowTo(C,
-      ttriLeft,
-      R,
-      IfThen(FTabIndexOver=TabIndexArrowScrollLeft, FColorArrowOver, FColorArrow),
-      FColorBg);
-  end;
+      DoPaintBgTo(C, FRectArrowLeft);
+      DoPaintArrowTo(C,
+        ttriLeft,
+        R,
+        IfThen(bOver, FColorArrowOver, FColorArrow),
+        FColorBg);
+      DoPaintAfter(ElemType, -1, C, FRectArrowLeft);
+    end;
 end;
 
 procedure TATTabs.DoPaintArrowRight(C: TCanvas);
 var
+  bOver: boolean;
+  ElemType: TATTabElemType;
   R: TRect;
 begin
+  bOver:= FTabIndexOver=TabIndexArrowScrollRight;
+  if bOver then
+    ElemType:= aeArrowScrollRightOver
+  else
+    ElemType:= aeArrowScrollRight;
+
   if FRectArrowRight.Right<>0 then
-  begin
-    DoPaintBgTo(C, FRectArrowRight);
+    if IsPaintNeeded(ElemType, -1, C, FRectArrowRight) then
+    begin
+      R:= FRectArrowRight;
+      if FOptShowArrowsNear then
+        R.Right:= (R.Left+R.Right) div 2;
 
-    //shift > lefter
-    R:= FRectArrowRight;
-    if FOptShowArrowsNear then
-      R.Right:= (R.Left+R.Right) div 2;
-
-    DoPaintArrowTo(C,
-      ttriRight,
-      R,
-      IfThen(FTabIndexOver=TabIndexArrowScrollRight, FColorArrowOver, FColorArrow),
-      FColorBg);
-  end;
+      DoPaintBgTo(C, FRectArrowRight);
+      DoPaintArrowTo(C,
+        ttriRight,
+        R,
+        IfThen(bOver, FColorArrowOver, FColorArrow),
+        FColorBg);
+      DoPaintAfter(ElemType, -1, C, FRectArrowRight);
+    end;
 end;
 
 
