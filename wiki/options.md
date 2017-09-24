@@ -7,6 +7,7 @@ This is str of few chars. One char is one button at left or right side. Comma se
 * `>` - scroll tabs right
 * `v` - show dropdown menu of all tabs
 * `+` - plus button, does the same as plus pseudo-tab
+* `x` - close button, does the same as x icon on active tab
 * `0`..`4` - user buttons; they are owner drawn and handled in event OnTabClickUserButton
 
 
