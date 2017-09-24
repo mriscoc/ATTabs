@@ -65,16 +65,20 @@ type
     aeTabPassiveOver,
     aeTabPlus,
     aeTabPlusOver,
-    aeXButton,
-    aeXButtonOver,
+    aeTabIconX,
+    aeTabIconXOver,
     aeArrowDropdown,
     aeArrowDropdownOver,
     aeArrowScrollLeft,
     aeArrowScrollLeftOver,
     aeArrowScrollRight,
     aeArrowScrollRightOver,
-    aeUserButton,
-    aeUserButtonOver
+    aeButtonPlus,
+    aeButtonPlusOver,
+    aeButtonClose,
+    aeButtonCloseOver,
+    aeButtonUser,
+    aeButtonUserOver
     );
 
 type
@@ -884,7 +888,7 @@ var
   PL1, PL2, PR1, PR2: TPoint;
   RectText: TRect;
   NIndentL, NIndentR, NIndentTop: integer;
-  AType: TATTabElemType;
+  ElemType: TATTabElemType;
   AInvert, NAngle: integer;
   TempCaption: TATTabString;
   bNeedMoreSpace: boolean;
@@ -1017,14 +1021,14 @@ begin
   if ACloseBtn then
   begin
     if ATabCloseBg<>clNone then
-      AType:= aeXButtonOver
+      ElemType:= aeTabIconXOver
     else
-      AType:= aeXButton;
+      ElemType:= aeTabIconX;
     RectText:= GetTabRect_X(ARect);
-    if IsPaintNeeded(AType, -1, C, RectText) then
+    if IsPaintNeeded(ElemType, -1, C, RectText) then
     begin
       DoPaintXTo(C, RectText, ATabBg, ATabCloseBg, ATabCloseBorder, ATabCloseXMark);
-      DoPaintAfter(AType, -1, C, RectText);
+      DoPaintAfter(ElemType, -1, C, RectText);
     end;
   end;
 end;
@@ -2359,9 +2363,9 @@ begin
     DoPaintBgTo(C, R);
 
     if FTabIndexOver=NIndex then
-      ElemType:= aeUserButtonOver
+      ElemType:= aeButtonUserOver
     else
-      ElemType:= aeUserButton;
+      ElemType:= aeButtonUser;
 
     DoPaintAfter(ElemType, i, C, R);
   end;

@@ -308,11 +308,11 @@ procedure TForm1.TabDrawAfter_Top(Sender: TObject; AType: TATTabElemType;
   ATabIndex: Integer; C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
 begin
   case AType of
-    aeUserButton,
-    aeUserButtonOver:
+    aeButtonUser,
+    aeButtonUserOver:
       begin
         C.Font.Color:= clYellow;
-        C.Brush.Color:= IfThen(AType=aeUserButtonOver, clRed, clBlue);
+        C.Brush.Color:= IfThen(AType=aeButtonUserOver, clRed, clBlue);
         C.TextOut(ARect.Left, ARect.Top+3, '_'+IntToStr(ATabIndex));
       end;
   end;
@@ -338,12 +338,12 @@ begin
       ACanDraw:= false;
     end;
     }
-    aeXButton,
-    aeXButtonOver:
+    aeTabIconX,
+    aeTabIconXOver:
     begin
       NColor:= C.Pen.Color;
       C.Pen.Width:= 2;
-      C.Pen.Color:= IfThen(AType=aeXButton, clLtGray, clNavy);
+      C.Pen.Color:= IfThen(AType=aeTabIconX, clLtGray, clNavy);
       R:= Rect(ARect.Left+2, ARect.Top+2, ARect.Right-2, ARect.Bottom-2);
       C.Rectangle(R);
       C.Pen.Color:= NColor;
