@@ -434,7 +434,7 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
-    property Items: TStrings read GetItems write SetItems;
+    property Items: TStrings read GetItems write SetItems stored true;
 
     //colors
     property ColorBg: TColor read FColorBg write FColorBg default _InitTabColorBg;
@@ -862,6 +862,7 @@ begin
     FTabList[i]:= nil;
   end;
   FTabList.Clear;
+  FTabIndex:= 0;
 end;
 
 destructor TATTabs.Destroy;
@@ -1432,7 +1433,6 @@ begin
   Clear;
   for i:= 0 to AValue.Count-1 do
     AddTab(-1, AValue[i]);
-  Invalidate;
 end;
 
 procedure TATTabs.SetOptButtonLayout(const AValue: string);
