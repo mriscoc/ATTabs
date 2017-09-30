@@ -369,7 +369,6 @@ type
     function GetTabAt(X, Y: integer): integer;
     function GetTabData(AIndex: integer): TATTabData;
     function TabCount: integer;
-    property TabIndex: integer read FTabIndex write SetTabIndex;
     procedure AddTab(
       AIndex: integer;
       const ACaption: TATTabString;
@@ -435,7 +434,8 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
-    property Items: TStrings read FTabItems write SetItems;
+    property Tabs: TStrings read FTabItems write SetItems;
+    property TabIndex: integer read FTabIndex write SetTabIndex default 0;
 
     //colors
     property ColorBg: TColor read FColorBg write FColorBg default _InitTabColorBg;
