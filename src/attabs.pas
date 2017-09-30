@@ -333,11 +333,13 @@ type
     procedure DoPaintScrollMark(C: TCanvas);
     procedure DoScrollAnimation(APosTo: integer);
     function GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
+    function GetItems: TStringList;
     function GetMaxScrollPos: integer;
     function GetRectOfButton(AButton: TATTabButton): TRect;
     function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
     function GetScrollPageSize: integer;
     function RealTabAngle: integer;
+    procedure SetItems(AValue: TStringList);
     procedure SetOptButtonLayout(const AValue: string);
     procedure SetTabIndex(AIndex: integer);
     procedure GetTabCloseColor(AIndex: integer; const ARect: TRect; var AColorXBg,
@@ -377,6 +379,7 @@ type
       AColor: TColor = clNone;
       AImageIndex: integer = -1;
       APopupMenu: TPopupMenu = nil);
+    procedure Clear;
     function DeleteTab(AIndex: integer; AAllowEvent, AWithCancelBtn: boolean): boolean;
     procedure ShowTabMenu;
     procedure SwitchTab(ANext: boolean);
@@ -433,6 +436,7 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
+    property Items: TStringList read GetItems write SetItems;
 
     //colors
     property ColorBg: TColor read FColorBg write FColorBg default _InitTabColorBg;
@@ -850,7 +854,7 @@ begin
   Result:= false;
 end;
 
-destructor TATTabs.Destroy;
+procedure TATTabs.Clear;
 var
   i: integer;
 begin
@@ -859,8 +863,13 @@ begin
     TObject(FTabList[i]).Free;
     FTabList[i]:= nil;
   end;
-  FreeAndNil(FTabList);
+  FTabList.Clear;
+end;
 
+destructor TATTabs.Destroy;
+begin
+  Clear;
+  FreeAndNil(FTabList);
   FreeAndNil(FBitmap);
   inherited;
 end;
@@ -1418,6 +1427,15 @@ begin
     Result:= FOptTabAngle;
 end;
 
+procedure TATTabs.SetItems(AValue: TStringList);
+var
+  i: integer;
+begin
+  Clear;
+  for i:= 0 to AValue.Count-1 do
+    AddTab(-1, AValue[i]);
+end;
+
 procedure TATTabs.SetOptButtonLayout(const AValue: string);
 begin
   if FOptButtonLayout=AValue then Exit;
@@ -1843,6 +1861,22 @@ begin
   Result:= -1;
   for i:= 0 to High(AData) do
     if AData[i]=ABtn then exit(i);
+end;
+
+function TATTabs.GetItems: TStringList;
+var
+  D: TATTabData;
+  i: integer;
+begin
+  Result:= TStringList.Create;
+  for i:= 0 to TabCount-1 do
+  begin
+    D:= GetTabData(i);
+    if Assigned(D) then
+      Result.Add(D.TabCaption)
+    else
+      Result.Add('?');
+  end;
 end;
 
 function TATTabs.GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
