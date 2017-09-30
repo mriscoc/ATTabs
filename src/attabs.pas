@@ -274,6 +274,7 @@ type
     FTabIndexOver: integer;
     FTabIndexDrop: integer;
     FTabList: TList;
+    FTabItems: TStrings;
     FTabMenu: TATTabPopupMenu;
 
     FRealIndentLeft: integer;
@@ -434,7 +435,7 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
-    property Items: TStrings read GetItems write SetItems stored true;
+    property Items: TStrings read GetItems write SetItems;
 
     //colors
     property ColorBg: TColor read FColorBg write FColorBg default _InitTabColorBg;
@@ -835,6 +836,7 @@ begin
   FTabIndex:= 0;
   FTabIndexOver:= -1;
   FTabList:= TList.Create;
+  FTabItems:= TStringList.Create;
   FTabMenu:= nil;
   FScrollPos:= 0;
 
@@ -868,6 +870,7 @@ end;
 destructor TATTabs.Destroy;
 begin
   Clear;
+  FreeAndNil(FTabItems);
   FreeAndNil(FTabList);
   FreeAndNil(FBitmap);
   inherited;
@@ -1452,7 +1455,6 @@ begin
   Result:= -1;
   Pnt:= Point(X, Y);
 
-
   if PtInRect(FRectArrowLeft, Pnt) then
   begin
     Result:= TabIndexArrowScrollLeft;
@@ -1867,7 +1869,8 @@ var
   D: TATTabData;
   i: integer;
 begin
-  Result:= TStringList.Create;
+  Result:= FTabItems;
+  Result.Clear;
   for i:= 0 to TabCount-1 do
   begin
     D:= GetTabData(i);
