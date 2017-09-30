@@ -332,7 +332,7 @@ type
     procedure DoPaintScrollMark(C: TCanvas);
     procedure DoScrollAnimation(APosTo: integer);
     function GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
-    function GetItems: TStrings;
+    procedure UpdateTabItems;
     function GetMaxScrollPos: integer;
     function GetRectOfButton(AButton: TATTabButton): TRect;
     function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
@@ -435,7 +435,7 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
-    property Items: TStrings read GetItems write SetItems;
+    property Items: TStrings read FTabItems write SetItems;
 
     //colors
     property ColorBg: TColor read FColorBg write FColorBg default _InitTabColorBg;
@@ -1433,6 +1433,7 @@ procedure TATTabs.SetItems(AValue: TStrings);
 var
   i: integer;
 begin
+  FTabItems.Assign(AValue);
   Clear;
   for i:= 0 to AValue.Count-1 do
     AddTab(-1, AValue[i]);
@@ -1864,20 +1865,19 @@ begin
     if AData[i]=ABtn then exit(i);
 end;
 
-function TATTabs.GetItems: TStrings;
+procedure TATTabs.UpdateTabItems;
 var
   D: TATTabData;
   i: integer;
 begin
-  Result:= FTabItems;
-  Result.Clear;
+  FTabItems.Clear;
   for i:= 0 to TabCount-1 do
   begin
     D:= GetTabData(i);
     if Assigned(D) then
-      Result.Add(D.TabCaption)
+      FTabItems.Add(D.TabCaption)
     else
-      Result.Add('?');
+      FTabItems.Add('?');
   end;
 end;
 
