@@ -19,22 +19,20 @@ unit ATTabs;
 interface
 
 uses
-  {$ifdef windows}
-  Windows,
-  {$endif}
+  Classes, Types, Graphics,
+  Controls, Messages,
   {$ifdef FPC}
   InterfaceBase,
   LCLIntf,
-  LclType,
-  LclProc,
+  LCLType,
+  LCLProc,
   {$endif}
-  Messages,
-  Classes, Types, Graphics,
-  Controls,
+  {$ifdef windows}
+  Windows,
+  {$endif}
   {$ifdef TNT}
   TntMenus,
   {$endif}
-  ExtCtrls,
   Menus;
 
 type
@@ -333,13 +331,13 @@ type
     procedure DoPaintScrollMark(C: TCanvas);
     procedure DoScrollAnimation(APosTo: integer);
     function GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
-    function GetItems: TStringList;
+    function GetItems: TStrings;
     function GetMaxScrollPos: integer;
     function GetRectOfButton(AButton: TATTabButton): TRect;
     function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
     function GetScrollPageSize: integer;
     function RealTabAngle: integer;
-    procedure SetItems(AValue: TStringList);
+    procedure SetItems(AValue: TStrings);
     procedure SetOptButtonLayout(const AValue: string);
     procedure SetTabIndex(AIndex: integer);
     procedure GetTabCloseColor(AIndex: integer; const ARect: TRect; var AColorXBg,
@@ -436,7 +434,7 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
-    property Items: TStringList read GetItems write SetItems;
+    property Items: TStrings read GetItems write SetItems;
 
     //colors
     property ColorBg: TColor read FColorBg write FColorBg default _InitTabColorBg;
@@ -1427,13 +1425,14 @@ begin
     Result:= FOptTabAngle;
 end;
 
-procedure TATTabs.SetItems(AValue: TStringList);
+procedure TATTabs.SetItems(AValue: TStrings);
 var
   i: integer;
 begin
   Clear;
   for i:= 0 to AValue.Count-1 do
     AddTab(-1, AValue[i]);
+  Invalidate;
 end;
 
 procedure TATTabs.SetOptButtonLayout(const AValue: string);
@@ -1863,7 +1862,7 @@ begin
     if AData[i]=ABtn then exit(i);
 end;
 
-function TATTabs.GetItems: TStringList;
+function TATTabs.GetItems: TStrings;
 var
   D: TATTabData;
   i: integer;
