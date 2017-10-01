@@ -338,7 +338,7 @@ type
     function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
     function GetScrollPageSize: integer;
     function RealTabAngle: integer;
-    procedure SetItems(AValue: TStrings);
+    procedure SetTabs(AValue: TStrings);
     procedure SetOptButtonLayout(const AValue: string);
     procedure SetTabIndex(AIndex: integer);
     procedure GetTabCloseColor(AIndex: integer; const ARect: TRect; var AColorXBg,
@@ -397,6 +397,7 @@ type
     procedure WMEraseBkgnd(var Message: TMessage); message WM_ERASEBKGND;
     {$endif}
     procedure DragOver(Source: TObject; X, Y: integer; State: TDragState; var Accept: Boolean); override;
+    procedure Loaded; override;
 
   published
     //inherited
@@ -434,7 +435,7 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
-    property Tabs: TStrings read FTabItems write SetItems;
+    property Tabs: TStrings read FTabItems write SetTabs;
     property TabIndex: integer read FTabIndex write SetTabIndex default 0;
 
     //colors
@@ -1429,11 +1430,12 @@ begin
     Result:= FOptTabAngle;
 end;
 
-procedure TATTabs.SetItems(AValue: TStrings);
+procedure TATTabs.SetTabs(AValue: TStrings);
 var
   i: integer;
 begin
   FTabItems.Assign(AValue);
+
   Clear;
   for i:= 0 to AValue.Count-1 do
     AddTab(-1, AValue[i]);
@@ -2422,6 +2424,18 @@ begin
     DoPaintAfter(ElemType, i, C, R);
   end;
 end;
+
+procedure TATTabs.Loaded;
+var
+  i: integer;
+begin
+  inherited;
+
+  Clear;
+  for i:= 0 to FTabItems.Count-1 do
+    AddTab(-1, FTabItems[i]);
+end;
+
 
 end.
 
