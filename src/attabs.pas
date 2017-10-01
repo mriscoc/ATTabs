@@ -271,6 +271,7 @@ type
     //others
     FTabWidth: integer;
     FTabIndex: integer;
+    FTabIndexLoaded: integer;
     FTabIndexOver: integer;
     FTabIndexDrop: integer;
     FTabList: TList;
@@ -1797,6 +1798,9 @@ procedure TATTabs.SetTabIndex(AIndex: integer);
 var
   CanChange: boolean;
 begin
+  if csLoading in ComponentState then
+    FTabIndexLoaded:= AIndex;
+
   if IsIndexOk(AIndex) then
   begin
     CanChange:= true;
@@ -2434,6 +2438,8 @@ begin
   Clear;
   for i:= 0 to FTabItems.Count-1 do
     AddTab(-1, FTabItems[i]);
+
+  TabIndex:= FTabIndexLoaded;
 end;
 
 
