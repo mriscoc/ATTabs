@@ -19,6 +19,9 @@ unit ATTabs;
 interface
 
 uses
+  {$ifdef windows}
+  Windows,
+  {$endif}
   Classes, Types, Graphics,
   Controls, Messages,
   {$ifdef FPC}
@@ -26,9 +29,6 @@ uses
   LCLIntf,
   LCLType,
   LCLProc,
-  {$endif}
-  {$ifdef windows}
-  Windows,
   {$endif}
   {$ifdef TNT}
   TntMenus,
