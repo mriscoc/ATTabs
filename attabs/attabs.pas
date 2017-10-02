@@ -275,7 +275,7 @@ type
     FTabIndexOver: integer;
     FTabIndexDrop: integer;
     FTabList: TList;
-    FTabItems: TStrings;
+    FTabCaptions: TStrings;
     FTabMenu: TATTabPopupMenu;
 
     FRealIndentLeft: integer;
@@ -333,7 +333,8 @@ type
     procedure DoPaintScrollMark(C: TCanvas);
     procedure DoScrollAnimation(APosTo: integer);
     function GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
-    procedure UpdateTabItems;
+    function GetTabs: TStrings;
+    procedure UpdateTabCaptions;
     function GetMaxScrollPos: integer;
     function GetRectOfButton(AButton: TATTabButton): TRect;
     function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
@@ -436,7 +437,7 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
-    property Tabs: TStrings read FTabItems write SetTabs;
+    property Tabs: TStrings read GetTabs write SetTabs;
     property TabIndex: integer read FTabIndex write SetTabIndex default 0;
 
     //colors
@@ -838,7 +839,7 @@ begin
   FTabIndex:= 0;
   FTabIndexOver:= -1;
   FTabList:= TList.Create;
-  FTabItems:= TStringList.Create;
+  FTabCaptions:= TStringList.Create;
   FTabMenu:= nil;
   FScrollPos:= 0;
 
@@ -872,7 +873,7 @@ end;
 destructor TATTabs.Destroy;
 begin
   Clear;
-  FreeAndNil(FTabItems);
+  FreeAndNil(FTabCaptions);
   FreeAndNil(FTabList);
   FreeAndNil(FBitmap);
   inherited;
@@ -1435,11 +1436,10 @@ procedure TATTabs.SetTabs(AValue: TStrings);
 var
   i: integer;
 begin
-  FTabItems.Assign(AValue);
-
   Clear;
   for i:= 0 to AValue.Count-1 do
     AddTab(-1, AValue[i]);
+  Invalidate;
 end;
 
 procedure TATTabs.SetOptButtonLayout(const AValue: string);
@@ -1871,19 +1871,27 @@ begin
     if AData[i]=ABtn then exit(i);
 end;
 
-procedure TATTabs.UpdateTabItems;
+function TATTabs.GetTabs: TStrings;
+begin
+  Result:= FTabCaptions;
+  UpdateTabCaptions;
+end;
+
+procedure TATTabs.UpdateTabCaptions;
 var
   D: TATTabData;
+  S: string;
   i: integer;
 begin
-  FTabItems.Clear;
+  FTabCaptions.Clear;
   for i:= 0 to TabCount-1 do
   begin
     D:= GetTabData(i);
     if Assigned(D) then
-      FTabItems.Add(D.TabCaption)
+      S:= D.TabCaption
     else
-      FTabItems.Add('?');
+      S:= '?';
+    FTabCaptions.Add(S);
   end;
 end;
 
@@ -2436,8 +2444,8 @@ begin
   inherited;
 
   Clear;
-  for i:= 0 to FTabItems.Count-1 do
-    AddTab(-1, FTabItems[i]);
+  for i:= 0 to FTabCaptions.Count-1 do
+    AddTab(-1, FTabCaptions[i]);
 
   TabIndex:= FTabIndexLoaded;
 end;
