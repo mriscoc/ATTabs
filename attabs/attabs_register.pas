@@ -15,9 +15,7 @@ implementation
 
 procedure Register;
 begin
-  RegisterComponents('Misc', [
-    TATTabs
-    ]);
+  RegisterComponents('Misc', [TATTabs]);
 end;
 
 initialization
