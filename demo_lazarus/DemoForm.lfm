@@ -53,7 +53,7 @@ object Form1: TForm1
     Width = 115
     Caption = 'add after current'
     OnClick = btnAddClick
-    TabOrder = 5
+    TabOrder = 6
   end
   object btnDel: TButton
     Left = 264
@@ -62,7 +62,7 @@ object Form1: TForm1
     Width = 75
     Caption = 'del'
     OnClick = btnDelClick
-    TabOrder = 6
+    TabOrder = 7
   end
   object btnColor: TButton
     Left = 344
@@ -71,7 +71,7 @@ object Form1: TForm1
     Width = 75
     Caption = 'color'
     OnClick = btnColorClick
-    TabOrder = 7
+    TabOrder = 8
   end
   object btnLeft: TButton
     Left = 264
@@ -80,7 +80,7 @@ object Form1: TForm1
     Width = 75
     Caption = '<'
     OnClick = btnLeftClick
-    TabOrder = 10
+    TabOrder = 11
   end
   object btnRight: TButton
     Left = 344
@@ -89,7 +89,7 @@ object Form1: TForm1
     Width = 75
     Caption = '>'
     OnClick = btnRightClick
-    TabOrder = 11
+    TabOrder = 12
   end
   object EditInfo: TEdit
     Left = 264
@@ -97,7 +97,7 @@ object Form1: TForm1
     Top = 248
     Width = 225
     OnChange = EditInfoChange
-    TabOrder = 12
+    TabOrder = 13
   end
   object chkShowPlus: TCheckBox
     Left = 144
@@ -117,7 +117,7 @@ object Form1: TForm1
     Width = 127
     Caption = 'show numbers'
     OnChange = chkNumsChange
-    TabOrder = 2
+    TabOrder = 3
   end
   object btnModify: TButton
     Left = 144
@@ -126,7 +126,7 @@ object Form1: TForm1
     Width = 113
     Caption = 'toggle modified'
     OnClick = btnModifyClick
-    TabOrder = 9
+    TabOrder = 10
   end
   object chkShowFullColor: TCheckBox
     Left = 144
@@ -144,7 +144,7 @@ object Form1: TForm1
     Width = 208
     Caption = 'stress (300 tabs)'
     OnClick = btnStressClick
-    TabOrder = 8
+    TabOrder = 9
   end
   object Label4: TLabel
     Left = 464
@@ -168,7 +168,7 @@ object Form1: TForm1
     )
     OnChange = comboShowXChange
     Style = csDropDownList
-    TabOrder = 3
+    TabOrder = 4
   end
   object Label5: TLabel
     Left = 464
@@ -200,6 +200,15 @@ object Form1: TForm1
     )
     OnChange = comboLayoutChange
     Style = csDropDownList
-    TabOrder = 4
+    TabOrder = 5
+  end
+  object chkShowFlat: TCheckBox
+    Left = 144
+    Height = 24
+    Top = 121
+    Width = 47
+    Caption = 'flat'
+    OnChange = chkShowFlatChange
+    TabOrder = 2
   end
 end

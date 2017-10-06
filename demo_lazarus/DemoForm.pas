@@ -15,6 +15,7 @@ type
     btnLeft: TButton;
     btnRight: TButton;
     btnStress: TButton;
+    chkShowFlat: TCheckBox;
     comboLayout: TComboBox;
     comboShowX: TComboBox;
     EditInfo: TEdit;
@@ -30,6 +31,7 @@ type
     Label3: TLabel;
     procedure btnStressClick(Sender: TObject);
     procedure chkNumsChange(Sender: TObject);
+    procedure chkShowFlatChange(Sender: TObject);
     procedure chkShowFullColorChange(Sender: TObject);
     procedure chkShowPlusChange(Sender: TObject);
     procedure comboLayoutChange(Sender: TObject);
@@ -168,7 +170,7 @@ begin
   t0.AddTab(-1, 'Tab middle len', nil, false, clBlue);
 
   t.Font.Color:= $E0E0E0;
-  t1.Font.Color:= $E0E0E0;
+  t1.Font.Color:= clNavy;
 end;
 
 procedure TForm1.btnStressClick(Sender: TObject);
@@ -184,6 +186,16 @@ end;
 procedure TForm1.chkNumsChange(Sender: TObject);
 begin
   t1.OptShowNumberPrefix:= IfThen(chkNums.Checked, '%d. ', '');
+  t1.Invalidate;
+end;
+
+procedure TForm1.chkShowFlatChange(Sender: TObject);
+begin
+  t.OptShowFlat:= chkShowFlat.Checked;
+  t0.OptShowFlat:= chkShowFlat.Checked;
+  t1.OptShowFlat:= chkShowFlat.Checked;
+  t.Invalidate;
+  t0.Invalidate;
   t1.Invalidate;
 end;
 
