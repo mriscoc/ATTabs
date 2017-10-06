@@ -143,6 +143,7 @@ const
   _InitTabColorTabActive = $808080;
   _InitTabColorTabPassive = $786868;
   _InitTabColorTabOver = $A08080;
+  _InitTabColorFocusBand = clNavy;
   _InitTabColorFontModified = $A00000;
   _InitTabColorBorderActive = $A0A0A0;
   _InitTabColorBorderPassive = $A07070;
@@ -217,6 +218,7 @@ type
     FColorTabActive: TColor; //color of active tab
     FColorTabPassive: TColor; //color of inactive tabs
     FColorTabOver: TColor; //color of inactive tabs, mouse-over
+    FColorFocusBand: TColor;
     FColorFontModified: TColor;
     FColorCloseBg: TColor; //color of small square with "x" mark, inactive
     FColorCloseBgOver: TColor; //color of small square with "x" mark, mouse-over
@@ -451,6 +453,7 @@ type
     property ColorTabActive: TColor read FColorTabActive write FColorTabActive default _InitTabColorTabActive;
     property ColorTabPassive: TColor read FColorTabPassive write FColorTabPassive default _InitTabColorTabPassive;
     property ColorTabOver: TColor read FColorTabOver write FColorTabOver default _InitTabColorTabOver;
+    property ColorFocusBand: TColor read FColorFocusBand write FColorFocusBand default _InitTabColorFocusBand;
     property ColorFontModified: TColor read FColorFontModified write FColorFontModified default _InitTabColorFontModified;
     property ColorCloseBg: TColor read FColorCloseBg write FColorCloseBg default _InitTabColorCloseBg;
     property ColorCloseBgOver: TColor read FColorCloseBgOver write FColorCloseBgOver default _InitTabColorCloseBgOver;
@@ -786,6 +789,7 @@ begin
   FColorTabActive:= _InitTabColorTabActive;
   FColorTabPassive:= _InitTabColorTabPassive;
   FColorTabOver:= _InitTabColorTabOver;
+  FColorFocusBand:= _InitTabColorFocusBand;
   FColorFontModified:= _InitTabColorFontModified;
   FColorBorderActive:= _InitTabColorBorderActive;
   FColorBorderPassive:= _InitTabColorBorderPassive;
@@ -1027,7 +1031,7 @@ begin
   //borders
   if FOptShowAltTheme then
   begin
-    C.Brush.Color:= ATabBorder;
+    C.Brush.Color:= ColorFocusBand;
     if bActive then
       if FOptShowAtBottom then
         C.FillRect(PL1.X, PL1.Y-FOptFocusBandSize, PR1.X, PR1.Y+1)
