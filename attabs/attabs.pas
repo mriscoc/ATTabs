@@ -175,10 +175,12 @@ const
   _InitOptArrowSize = 4;
   _InitOptArrowSpaceLeft = 4;
   _InitOptColoredBandSize = 3;
+  _InitOptFocusBandSize = 4;
   _InitOptScrollMarkSizeX = 20;
   _InitOptScrollMarkSizeY = 3;
   _InitOptDropMarkSize = 6;
 
+  _InitOptShowAltTheme = false;
   _InitOptShowAtBottom = false;
   _InitOptShowNumberPrefix = '';
   _InitOptShowScrollMark = true;
@@ -246,11 +248,13 @@ type
     FOptSpaceXInner: integer; //space from "x" square edge to "x" mark
     FOptSpaceXSize: integer; //size of "x" mark
     FOptColoredBandSize: integer; //height of "misc color" line
+    FOptFocusBandSize: integer;
     FOptArrowSize: integer; //half-size of "arrow" mark
     FOptDropMarkSize: integer;
     FOptScrollMarkSizeX: integer;
     FOptScrollMarkSizeY: integer;
 
+    FOptShowAltTheme: boolean;
     FOptShowAtBottom: boolean;
     FOptShowXButtons: TATTabShowClose; //show mode for "x" buttons
     FOptShowArrowsNear: boolean;
@@ -475,11 +479,13 @@ type
     property OptSpaceXInner: integer read FOptSpaceXInner write FOptSpaceXInner default _InitOptSpaceXInner;
     property OptSpaceXSize: integer read FOptSpaceXSize write FOptSpaceXSize default _InitOptSpaceXSize;
     property OptColoredBandSize: integer read FOptColoredBandSize write FOptColoredBandSize default _InitOptColoredBandSize;
+    property OptFocusBandSize: integer read FOptFocusBandSize write FOptFocusBandSize default _InitOptFocusBandSize;
     property OptArrowSize: integer read FOptArrowSize write FOptArrowSize default _InitOptArrowSize;
     property OptScrollMarkSizeX: integer read FOptScrollMarkSizeX write FOptScrollMarkSizeX default _InitOptScrollMarkSizeX;
     property OptScrollMarkSizeY: integer read FOptScrollMarkSizeY write FOptScrollMarkSizeY default _InitOptScrollMarkSizeY;
     property OptDropMarkSize: integer read FOptDropMarkSize write FOptDropMarkSize default _InitOptDropMarkSize;
 
+    property OptShowAltTheme: boolean read FOptShowAltTheme write FOptShowAltTheme default _InitOptShowAltTheme;
     property OptShowAtBottom: boolean read FOptShowAtBottom write FOptShowAtBottom default _InitOptShowAtBottom;
     property OptShowScrollMark: boolean read FOptShowScrollMark write FOptShowScrollMark default _InitOptShowScrollMark;
     property OptShowDropMark: boolean read FOptShowDropMark write FOptShowDropMark default _InitOptShowDropMark;
@@ -811,10 +817,12 @@ begin
   FOptSpaceXSize:= _InitOptSpaceXSize;
   FOptArrowSize:= _InitOptArrowSize;
   FOptColoredBandSize:= _InitOptColoredBandSize;
+  FOptFocusBandSize:= _InitOptFocusBandSize;
   FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
   FOptDropMarkSize:= _InitOptDropMarkSize;
 
+  FOptShowAltTheme:= _InitOptShowAltTheme;
   FOptShowAtBottom:= _InitOptShowAtBottom;
   FOptShowNumberPrefix:= _InitOptShowNumberPrefix;
   FOptShowScrollMark:= _InitOptShowScrollMark;
@@ -905,12 +913,28 @@ var
   ElemType: TATTabElemType;
   AInvert, NAngle: integer;
   TempCaption: TATTabString;
-  bNeedMoreSpace: boolean;
+  bActive, bNeedMoreSpace: boolean;
 begin
   //optimize for 200 tabs
   if ARect.Left>=ClientWidth then exit;
   //skip tabs scrolled lefter
   if ARect.Right<=0 then exit;
+
+  bActive:= ATabBg=ColorTabActive;
+  if FOptShowAltTheme then
+  begin
+    ATabBg:= ColorBg;
+    if FOptShowAtBottom then
+    begin
+      Inc(ARect.Top, FOptFocusBandSize);
+      Inc(ARect.Bottom, FOptFocusBandSize);
+    end
+    else
+    begin
+      Dec(ARect.Top, FOptFocusBandSize);
+      Dec(ARect.Bottom, FOptFocusBandSize);
+    end;
+  end;
 
   if FOptShowEntireColor and (ATabHilite<>clNone) then
     ATabBg:= ATabHilite;
@@ -1001,6 +1025,16 @@ begin
   end;
 
   //borders
+  if FOptShowAltTheme then
+  begin
+    C.Brush.Color:= ATabBorder;
+    if bActive then
+      if FOptShowAtBottom then
+        C.FillRect(PL1.X, PL1.Y-FOptFocusBandSize, PR1.X, PR1.Y+1)
+      else
+        C.FillRect(PL2.X, PL2.Y+1, PR2.X, PR2.Y+FOptFocusBandSize+1);
+  end
+  else
   if FOptShowAtBottom then
   begin
     DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
