@@ -176,7 +176,7 @@ const
   _InitOptArrowSize = 4;
   _InitOptArrowSpaceLeft = 4;
   _InitOptColoredBandSize = 4;
-  _InitOptFocusBandSize = 4;
+  _InitOptFocusBandSize = 5;
   _InitOptScrollMarkSizeX = 20;
   _InitOptScrollMarkSizeY = 3;
   _InitOptDropMarkSize = 6;
