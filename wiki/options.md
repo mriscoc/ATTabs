@@ -109,6 +109,11 @@ OptDropMarkSize: integer
 
 Width of drag-drop (red) mark. It is shown when you drag a tab to another pos, in the same control.
 
+OptShowFlat: boolean
+======
+
+Activates flat look: in this mode tab edges and bottom lines are not painted, and tabs have the same BG color as control's BG color.
+
 OptShowAtBottom: boolean
 ======
 
