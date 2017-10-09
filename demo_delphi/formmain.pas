@@ -9,8 +9,10 @@ uses
 type
   TForm1 = class(TForm)
     chkFlat: TCheckBox;
+    chkShowPlus: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure chkFlatClick(Sender: TObject);
+    procedure chkShowPlusClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,6 +53,12 @@ end;
 procedure TForm1.chkFlatClick(Sender: TObject);
 begin
   t.OptShowFlat:= chkFlat.Checked;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkShowPlusClick(Sender: TObject);
+begin
+  t.OptShowPlusTab:= chkShowPlus.Checked;
   t.Invalidate;
 end;
 

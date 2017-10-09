@@ -17,11 +17,22 @@ object Form1: TForm1
   TextHeight = 13
   object chkFlat: TCheckBox
     Left = 72
-    Top = 104
+    Top = 136
     Width = 97
     Height = 17
     Caption = 'flat tabs'
     TabOrder = 0
     OnClick = chkFlatClick
+  end
+  object chkShowPlus: TCheckBox
+    Left = 72
+    Top = 112
+    Width = 153
+    Height = 17
+    Caption = 'show + pseudo tab'
+    Checked = True
+    State = cbChecked
+    TabOrder = 1
+    OnClick = chkShowPlusClick
   end
 end
