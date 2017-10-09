@@ -12,7 +12,7 @@ unit ATTabs;
   {$define windows}
   {$ifdef VER150} //Delphi 7
     {$define WIDE}
-    {$define TNT} //Tnt controls
+    //{$define TNT} //Tnt controls
   {$endif}
 {$endif}
 
@@ -411,7 +411,9 @@ type
     //inherited
     property Align;
     property Anchors;
+    {$ifdef fpc}
     property BorderSpacing;
+    {$endif}
     property ClientHeight;
     property ClientWidth;
     property Constraints;
@@ -430,8 +432,10 @@ type
     property OnDragOver;
     property OnEndDrag;
     property OnContextPopup;
+    {$ifdef fpc}
     property OnMouseEnter;
     property OnMouseLeave;
+    {$endif}
     property OnMouseMove;
     property OnMouseUp;
     property OnMouseWheel;
@@ -716,14 +720,11 @@ begin
   CX:= (R.Left+R.Right) div 2;
   CY:= (R.Top+R.Bottom) div 2;
 
-  C.Line(
-    Point(CX - ASize, CY),
-    Point(CX + ASize+1, CY)
-    );
-  C.Line(
-    Point(CX, CY - ASize),
-    Point(CX, CY + ASize+1)
-    );
+  C.MoveTo(CX - ASize, CY);
+  C.LineTo(CX + ASize+1, CY);
+
+  C.MoveTo(CX, CY - ASize);
+  C.LineTo(CX, CY + ASize+1);
 end;
 
 
@@ -735,14 +736,11 @@ begin
   CX:= (R.Left+R.Right) div 2;
   CY:= (R.Top+R.Bottom) div 2;
 
-  C.Line(
-    Point(CX - ASize+1, CY - ASize+1),
-    Point(CX + ASize+1, CY + ASize+1)
-    );
-  C.Line(
-    Point(CX + ASize, CY - ASize+1),
-    Point(CX - ASize, CY + ASize+1)
-    );
+  C.MoveTo(CX - ASize+1, CY - ASize+1);
+  C.LineTo(CX + ASize+1, CY + ASize+1);
+
+  C.MoveTo(CX + ASize, CY - ASize+1);
+  C.LineTo(CX - ASize, CY + ASize+1);
 end;
 
 
@@ -773,7 +771,6 @@ begin
   inherited;
 
   Caption:= '';
-  BorderStyle:= bsNone;
   ControlStyle:= ControlStyle+[csOpaque];
   DoubleBuffered:= IsDoubleBufferedNeeded;
 
@@ -1023,9 +1020,9 @@ begin
     begin
       C.Brush.Color:= ColorActiveMark;
       if FOptShowAtBottom then
-        C.FillRect(PL1.X, 0, PR1.X, FOptActiveMarkSize)
+        C.FillRect(Rect(PL1.X, 0, PR1.X, FOptActiveMarkSize))
       else
-        C.FillRect(PL2.X, ClientHeight-FOptActiveMarkSize, PR2.X, ClientHeight);
+        C.FillRect(Rect(PL2.X, ClientHeight-FOptActiveMarkSize, PR2.X, ClientHeight));
     end;
   end
   else
@@ -1193,6 +1190,11 @@ begin
     P.Y+FOptSpaceXSize);
 end;
 
+function _IsDrag: boolean;
+begin
+  Result:= Mouse.IsDragging;
+end;
+
 procedure TATTabs.GetTabCloseColor(AIndex: integer; const ARect: TRect;
   var AColorXBg, AColorXBorder, AColorXMark: TColor);
 var
@@ -1202,7 +1204,7 @@ begin
   AColorXBorder:= FColorCloseBg;
   AColorXMark:= FColorCloseX;
 
-  if DragManager.IsDragging then Exit;
+  if _IsDrag then Exit;
 
   if IsShowX(AIndex) then
     if AIndex=FTabIndexOver then
@@ -1314,7 +1316,7 @@ begin
     begin
       DoPaintTabTo(C, RRect,
         '',
-        IfThen((FTabIndexOver=TabIndexPlus) and not DragManager.IsDragging, FColorTabOver, FColorTabPassive),
+        IfThen((FTabIndexOver=TabIndexPlus) and not _IsDrag, FColorTabOver, FColorTabPassive),
         FColorBorderPassive,
         FColorBorderActive,
         clNone,
@@ -1345,7 +1347,7 @@ begin
         Data:= TATTabData(FTabList[i]);
         DoPaintTabTo(C, RRect,
           Format(FOptShowNumberPrefix, [i+1]) + Data.TabCaption,
-          IfThen((i=FTabIndexOver) and not DragManager.IsDragging, FColorTabOver, FColorTabPassive),
+          IfThen((i=FTabIndexOver) and not _IsDrag, FColorTabOver, FColorTabPassive),
           FColorBorderPassive,
           FColorBorderActive,
           Data.TabColor,
@@ -1394,7 +1396,7 @@ begin
   DoPaintUserButtons(C);
 
   if FOptShowDropMark then
-    if DragManager.IsDragging then
+    if _IsDrag then
       if PtInControl(Self, Mouse.CursorPos) then
         DoPaintDropMark(C);
 
@@ -1897,7 +1899,8 @@ var
 begin
   Result:= -1;
   for i:= 0 to High(AData) do
-    if AData[i]=ABtn then exit(i);
+    if AData[i]=ABtn then
+      begin Result:= i; exit; end;
 end;
 
 function TATTabs.GetTabs: TStrings;
@@ -2261,7 +2264,7 @@ begin
     if IsPaintNeeded(ElemType, -1, C, R) then
     begin
       NColor:= IfThen(
-        bOver and not DragManager.IsDragging,
+        bOver and not _IsDrag,
         FColorArrowOver,
         FColorArrow);
 
@@ -2289,7 +2292,7 @@ begin
     if IsPaintNeeded(ElemType, -1, C, R) then
     begin
       NColor:= IfThen(
-        bOver and not DragManager.IsDragging,
+        bOver and not _IsDrag,
         FColorArrowOver,
         FColorArrow);
 
@@ -2318,7 +2321,7 @@ begin
       DoPaintArrowTo(C,
         ttriDown,
         FRectArrowDown,
-        IfThen(bOver and not DragManager.IsDragging,
+        IfThen(bOver and not _IsDrag,
           FColorArrowOver,
           FColorArrow),
         FColorBg);
