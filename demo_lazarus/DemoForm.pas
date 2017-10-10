@@ -129,7 +129,7 @@ begin
   t1.OptSpaceOnTop:= 20;
   t1.OptSpaceXSize:= 15;
   t1.OptSpaceXInner:= 3;
-  t1.OptShowAtBottom:= true;
+  t1.OptPosition:= tabPositionBottom;
 
   t1.AddTab(-1, 'Owner-draw', nil, false, clNone);
   t1.AddTab(-1, 'Tab wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww', nil, false, clGreen);
