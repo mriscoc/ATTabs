@@ -114,10 +114,10 @@ OptShowFlat: boolean
 
 Activates flat look: in this mode tab edges and bottom lines are not painted, and tabs have the same BG color as control's BG color.
 
-OptShowAtBottom: boolean
+OptPosition: TATTabPosition
 ======
 
-If true, control paints in bottom-style. Use if you placed control on bottom of a form.
+Enum, one of visual kinds for tabs: at top, at bottom (at left/right - not implemented yet).
 
 OptShowScrollMark: boolean
 ======
