@@ -349,6 +349,7 @@ type
     procedure DoPaintScrollMark(C: TCanvas);
     procedure DoScrollAnimation(APosTo: integer);
     function GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
+    function GetInitialVerticalIndent: integer;
     function GetTabs: TStrings;
     function IsScrollMarkNeeded: boolean;
     procedure UpdateTabCaptions;
@@ -1195,8 +1196,8 @@ begin
   begin
     R.Left:= IfThen(FOptPosition=tabPositionLeft, FOptSpacer, FOptSpacer2);
     R.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer2, ClientWidth-FOptSpacer);
-    R.Top:= IfThen(FOptButtonLayout='', FOptSpaceInitial, 0);
-    R.Bottom:= R.Top+IfThen(FOptButtonLayout='', 0, FOptTabHeight);
+    R.Bottom:= GetInitialVerticalIndent;
+    R.Top:= R.Bottom;
 
     for i:= 0 to TabCount-1 do
     begin
@@ -1257,7 +1258,7 @@ begin
         begin
           Result.Left:= IfThen(FOptPosition=tabPositionLeft, FOptSpacer, FOptSpacer2);
           Result.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer2, ClientWidth-FOptSpacer);
-          Result.Top:= IfThen(FOptButtonLayout='', FOptSpaceInitial, FOptTabHeight);
+          Result.Top:= GetInitialVerticalIndent;
           Result.Bottom:= Result.Top + FOptTabHeight;
         end;
       end;
@@ -1587,7 +1588,7 @@ begin
       end;
     else
       begin
-        NIndent:= IfThen(FOptButtonLayout<>'', FOptTabHeight);
+        NIndent:= GetInitialVerticalIndent;
         NPos:= GetMaxScrollPos;
         NSize:= ClientHeight-NIndent;
 
@@ -2684,6 +2685,13 @@ begin
   TabIndex:= FTabIndexLoaded;
 end;
 
+function TATTabs.GetInitialVerticalIndent: integer;
+begin
+  if FOptButtonLayout='' then
+    Result:= FOptSpaceInitial
+  else
+    Result:= FOptTabHeight;
+end;
 
 end.
 
