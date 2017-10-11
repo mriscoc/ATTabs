@@ -177,7 +177,7 @@ const
   _InitOptSpaceInitial = 4;
   _InitOptSpaceBeforeText = 6;
   _InitOptSpaceBetweenTabs = 0;
-  _InitOptSpaceOnTop = 5;
+  _InitOptSpacer = 5;
   _InitOptSpaceXRight = 10;
   _InitOptSpaceXInner = 3;
   _InitOptSpaceXSize = 12;
@@ -253,7 +253,7 @@ type
     FOptSpaceBetweenTabs: integer; //space between nearest tabs (no need for angled tabs)
     FOptSpaceInitial: integer; //space between first tab and left control edge
     FOptSpaceBeforeText: integer; //space between text and tab left edge
-    FOptSpaceOnTop: integer; //height of top empty space (colored with bg)
+    FOptSpacer: integer; //height of top empty space (colored with bg)
     FOptSpaceXRight: integer; //space from "x" btn to right tab edge
     FOptSpaceXInner: integer; //space from "x" square edge to "x" mark
     FOptSpaceXSize: integer; //size of "x" mark
@@ -489,7 +489,7 @@ type
     property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
     property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
     property OptSpaceBeforeText: integer read FOptSpaceBeforeText write FOptSpaceBeforeText default _InitOptSpaceBeforeText;
-    property OptSpaceOnTop: integer read FOptSpaceOnTop write FOptSpaceOnTop default _InitOptSpaceOnTop;
+    property OptSpacer: integer read FOptSpacer write FOptSpacer default _InitOptSpacer;
     property OptSpaceXRight: integer read FOptSpaceXRight write FOptSpaceXRight default _InitOptSpaceXRight;
     property OptSpaceXInner: integer read FOptSpaceXInner write FOptSpaceXInner default _InitOptSpaceXInner;
     property OptSpaceXSize: integer read FOptSpaceXSize write FOptSpaceXSize default _InitOptSpaceXSize;
@@ -820,7 +820,7 @@ begin
   FOptSpaceInitial:= _InitOptSpaceInitial;
   FOptSpaceBeforeText:= _InitOptSpaceBeforeText;
   FOptSpaceBetweenTabs:= _InitOptSpaceBetweenTabs;
-  FOptSpaceOnTop:= _InitOptSpaceOnTop;
+  FOptSpacer:= _InitOptSpacer;
   FOptSpaceXRight:= _InitOptSpaceXRight;
   FOptSpaceXInner:= _InitOptSpaceXInner;
   FOptSpaceXSize:= _InitOptSpaceXSize;
@@ -1141,7 +1141,7 @@ begin
     tabPositionLeft,
     tabPositionRight:
       begin
-        Result:= ClientWidth-FOptSpaceOnTop;
+        Result:= ClientWidth-FOptSpacer;
       end;
     else
       begin
@@ -1177,8 +1177,8 @@ var
 begin
   if FOptPosition in [tabPositionLeft, tabPositionRight] then
   begin
-    R.Left:= IfThen(FOptPosition=tabPositionLeft, 0, FOptSpaceOnTop);
-    R.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpaceOnTop, ClientWidth);
+    R.Left:= IfThen(FOptPosition=tabPositionLeft, 0, FOptSpacer);
+    R.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer, ClientWidth);
     R.Top:= 0;
     R.Bottom:= IfThen(FOptButtonLayout='', 0, FOptTabHeight);
 
@@ -1196,7 +1196,7 @@ begin
 
   R.Left:= FRealIndentLeft+RealTabAngle;
   R.Right:= R.Left;
-  R.Top:= FOptSpaceOnTop;
+  R.Top:= FOptSpacer;
   R.Bottom:= R.Top+FOptTabHeight;
 
   for i:= 0 to TabCount-1 do
@@ -1223,7 +1223,7 @@ begin
         end
         else
         begin
-          Result.Top:= FOptSpaceOnTop;
+          Result.Top:= FOptSpacer;
           Result.Bottom:= Result.Top + FOptTabHeight;
           Result.Left:= FRealIndentLeft + RealTabAngle;
           Result.Right:= Result.Left + GetTabRectWidth(true);
@@ -1239,8 +1239,8 @@ begin
         end
         else
         begin
-          Result.Left:= IfThen(FOptPosition=tabPositionLeft, 0, FOptSpaceOnTop);
-          Result.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpaceOnTop, ClientWidth);
+          Result.Left:= IfThen(FOptPosition=tabPositionLeft, 0, FOptSpacer);
+          Result.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer, ClientWidth);
           Result.Top:= IfThen(FOptButtonLayout='', 0, FOptTabHeight);
           Result.Bottom:= Result.Top + FOptTabHeight;
         end;
@@ -1363,28 +1363,28 @@ begin
   case FOptPosition of
     tabPositionTop:
       begin
-        RBottom:= Rect(0, FOptSpaceOnTop+FOptTabHeight, ClientWidth, ClientHeight);
+        RBottom:= Rect(0, FOptSpacer+FOptTabHeight, ClientWidth, ClientHeight);
         C.Brush.Color:= FColorTabActive;
         C.FillRect(RBottom);
         DrawAntialisedLine(C, RBottom.Left, RBottom.Top, RBottom.Right, RBottom.Top, FColorBorderActive);
       end;
     tabPositionBottom:
       begin
-        RBottom:= Rect(0, 0, ClientWidth, FOptSpaceOnTop);
+        RBottom:= Rect(0, 0, ClientWidth, FOptSpacer);
         C.Brush.Color:= FColorTabActive;
         C.FillRect(RBottom);
         DrawAntialisedLine(C, RBottom.Left, RBottom.Bottom, RBottom.Right, RBottom.Bottom, FColorBorderActive);
       end;
     tabPositionLeft:
       begin
-        RBottom:= Rect(ClientWidth-FOptSpaceOnTop, 0, ClientWidth, ClientHeight);
+        RBottom:= Rect(ClientWidth-FOptSpacer, 0, ClientWidth, ClientHeight);
         C.Brush.Color:= FColorTabActive;
         C.FillRect(RBottom);
         DrawAntialisedLine(C, RBottom.Left, RBottom.Top, RBottom.Left, RBottom.Bottom, FColorBorderActive);
       end;
     tabPositionRight:
       begin
-        RBottom:= Rect(0, 0, FOptSpaceOnTop, ClientHeight);
+        RBottom:= Rect(0, 0, FOptSpacer, ClientHeight);
         C.Brush.Color:= FColorTabActive;
         C.FillRect(RBottom);
         DrawAntialisedLine(C, RBottom.Right, RBottom.Top, RBottom.Right, RBottom.Bottom, FColorBorderActive);
@@ -1524,7 +1524,7 @@ begin
 
     if NPos>0 then
     begin
-      R.Top:= IfThen(FOptPosition=tabPositionBottom, FOptTabHeight + FOptSpaceOnTop, 0);
+      R.Top:= IfThen(FOptPosition=tabPositionBottom, FOptTabHeight + FOptSpacer, 0);
       R.Bottom:= R.Top + FOptScrollMarkSizeY;
 
       R.Left:= FRealIndentLeft +
@@ -2024,18 +2024,20 @@ function TATTabs.GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
 begin
   if AtLeft then
   begin
-    Result.Left:= AIndex*FOptButtonSize;
+    Result.Left:= AIndex*FOptButtonSize
+      +IfThen(FOptPosition=tabPositionRight, FOptSpacer+1);
     Result.Right:= Result.Left+FOptButtonSize;
   end
   else
   begin
-    Result.Right:= ClientWidth-AIndex*FOptButtonSize;
+    Result.Right:= ClientWidth-AIndex*FOptButtonSize
+      -IfThen(FOptPosition=tabPositionLeft, FOptSpacer+1);
     Result.Left:= Result.Right-FOptButtonSize;
   end;
 
   Result.Top:= IfThen(
     FOptPosition in [tabPositionTop, tabPositionBottom],
-    FOptSpaceOnTop,
+    FOptSpacer,
     0);
   Result.Bottom:= Result.Top+FOptTabHeight;
 
