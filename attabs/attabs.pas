@@ -2110,7 +2110,9 @@ begin
   if AtLeft then
   begin
     Result.Left:= AIndex*FOptButtonSize
-      +IfThen(FOptPosition=tabPositionRight, FOptSpacer2+1);
+      +IfThen(FOptPosition=tabPositionLeft, FOptSpacer)
+      +IfThen(FOptPosition=tabPositionRight, FOptSpacer2)
+      +1;
     Result.Right:= Result.Left+FOptButtonSize;
   end
   else
