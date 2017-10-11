@@ -1179,7 +1179,7 @@ begin
   begin
     R.Left:= IfThen(FOptPosition=tabPositionLeft, 0, FOptSpacer);
     R.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer, ClientWidth);
-    R.Top:= FOptSpaceInitial;
+    R.Top:= IfThen(FOptButtonLayout='', FOptSpaceInitial, 0);
     R.Bottom:= R.Top+IfThen(FOptButtonLayout='', 0, FOptTabHeight);
 
     for i:= 0 to TabCount-1 do
