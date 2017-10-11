@@ -1034,23 +1034,39 @@ begin
     end;
   end
   else
-  if FOptPosition=tabPositionBottom then
-  begin
-    DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
-    DrawAntialisedLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
-    DrawAntialisedLine(C, PL2.X, PL2.Y+1, PR2.X, PL2.Y+1, ATabBorder);
-    if ATabBorderLow<>clNone then
-      DrawAntialisedLine(C, PL1.X, ARect.Top, PR1.X, ARect.Top, ATabBorderLow)
-  end
-  else
-  begin
-    DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
-    DrawAntialisedLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
-    DrawAntialisedLine(C, PL1.X, PL1.Y, PR1.X, PL1.Y, ATabBorder);
-    if ATabBorderLow<>clNone then
-      DrawAntialisedLine(C, PL2.X, ARect.Bottom, PR2.X, ARect.Bottom, ATabBorderLow)
-    else
-      DrawAntialisedLine(C, PL2.X+1, ARect.Bottom, PR2.X-1, ARect.Bottom, ATabBg);
+  case FOptPosition of
+    tabPositionTop:
+      begin
+        DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
+        DrawAntialisedLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
+        DrawAntialisedLine(C, PL1.X, PL1.Y, PR1.X, PL1.Y, ATabBorder);
+        if ATabBorderLow<>clNone then
+          DrawAntialisedLine(C, PL2.X, ARect.Bottom, PR2.X, ARect.Bottom, ATabBorderLow)
+        else
+          DrawAntialisedLine(C, PL2.X+1, ARect.Bottom, PR2.X-1, ARect.Bottom, ATabBg);
+      end;
+    tabPositionBottom:
+      begin
+        DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
+        DrawAntialisedLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
+        DrawAntialisedLine(C, PL2.X, PL2.Y+1, PR2.X, PL2.Y+1, ATabBorder);
+        if ATabBorderLow<>clNone then
+          DrawAntialisedLine(C, PL1.X, ARect.Top, PR1.X, ARect.Top, ATabBorderLow)
+      end;
+    tabPositionLeft:
+      begin
+        DrawAntialisedLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, ATabBorder);
+        DrawAntialisedLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, ATabBorder);
+        DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y, ATabBorder);
+        DrawAntialisedLine(C, PR1.X+1, PR1.Y, PR2.X+1, PR2.Y, IfThen(ATabBorderLow<>clNone, ATabBorderLow, ATabBg));
+      end;
+    tabPositionRight:
+      begin
+        DrawAntialisedLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, ATabBorder);
+        DrawAntialisedLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, ATabBorder);
+        DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y, IfThen(ATabBorderLow<>clNone, ATabBorderLow, ATabBg));
+        DrawAntialisedLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y, ATabBorder);
+      end;
   end;
 
   //color mark
@@ -1121,12 +1137,21 @@ end;
 
 function TATTabs.GetTabRectWidth(APlusBtn: boolean): integer;
 begin
-  if APlusBtn then
-    Result:= GetTabWidth_Plus_Raw
-  else
-    Result:= FOptTabWidthNormal;
-
-  Inc(Result, 2*(RealTabAngle + FOptSpaceBeforeText));
+  case FOptPosition of
+    tabPositionLeft,
+    tabPositionRight:
+      begin
+        Result:= ClientWidth-FOptSpaceOnTop;
+      end;
+    else
+      begin
+        if APlusBtn then
+          Result:= GetTabWidth_Plus_Raw
+        else
+          Result:= FOptTabWidthNormal;
+        Inc(Result, 2*(RealTabAngle + FOptSpaceBeforeText));
+      end;
+  end;
 end;
 
 
@@ -1138,7 +1163,7 @@ begin
   if Assigned(Data) then
     Result:= Data.TabRect
   else
-    Result:= Rect(0, 0, 200, 50); //dummy
+    Result:= Rect(0, 0, 10, 10);
 
   Dec(Result.Left, FScrollPos);
   Dec(Result.Right, FScrollPos);
@@ -1150,6 +1175,25 @@ var
   Data: TATTabData;
   R: TRect;
 begin
+  if FOptPosition in [tabPositionLeft, tabPositionRight] then
+  begin
+    R.Left:= IfThen(FOptPosition=tabPositionLeft, 0, FOptSpaceOnTop);
+    R.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpaceOnTop, ClientWidth);
+    R.Top:= 0;
+    R.Bottom:= IfThen(FOptButtonLayout='', 0, FOptTabHeight);
+
+    for i:= 0 to TabCount-1 do
+    begin
+      R.Top:= R.Bottom + FOptSpaceBetweenTabs;
+      R.Bottom:= R.Top + FOptTabHeight;
+      Data:= GetTabData(i);
+      if Assigned(Data) then
+        Data.TabRect:= R;
+    end;
+
+    exit;
+  end;
+
   R.Left:= FRealIndentLeft+RealTabAngle;
   R.Right:= R.Left;
   R.Top:= FOptSpaceOnTop;
@@ -1167,18 +1211,40 @@ end;
 
 function TATTabs.GetTabRect_Plus: TRect;
 begin
-  if TabCount>0 then
-  begin
-    Result:= GetTabRect(TabCount-1);
-    Result.Left:= Result.Right + FOptSpaceBetweenTabs;
-    Result.Right:= Result.Left + GetTabRectWidth(true);
-  end
-  else
-  begin
-    Result.Top:= FOptSpaceOnTop;
-    Result.Bottom:= Result.Top + FOptTabHeight;
-    Result.Left:= FRealIndentLeft + RealTabAngle;
-    Result.Right:= Result.Left + GetTabRectWidth(true);
+  case FOptPosition of
+    tabPositionTop,
+    tabPositionBottom:
+      begin
+        if TabCount>0 then
+        begin
+          Result:= GetTabRect(TabCount-1);
+          Result.Left:= Result.Right + FOptSpaceBetweenTabs;
+          Result.Right:= Result.Left + GetTabRectWidth(true);
+        end
+        else
+        begin
+          Result.Top:= FOptSpaceOnTop;
+          Result.Bottom:= Result.Top + FOptTabHeight;
+          Result.Left:= FRealIndentLeft + RealTabAngle;
+          Result.Right:= Result.Left + GetTabRectWidth(true);
+        end;
+      end;
+    else
+      begin
+        if TabCount>0 then
+        begin
+          Result:= GetTabRect(TabCount-1);
+          Result.Top:= Result.Bottom + FOptSpaceBetweenTabs;
+          Result.Bottom:= Result.Top + FOptTabHeight;
+        end
+        else
+        begin
+          Result.Left:= IfThen(FOptPosition=tabPositionLeft, 0, FOptSpaceOnTop);
+          Result.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpaceOnTop, ClientWidth);
+          Result.Top:= IfThen(FOptButtonLayout='', 0, FOptTabHeight);
+          Result.Bottom:= Result.Top + FOptTabHeight;
+        end;
+      end;
   end;
 end;
 
@@ -1481,6 +1547,9 @@ begin
   exit(0);
   {$endif}
 
+  if FOptPosition in [tabPositionLeft, tabPositionRight] then
+    Result:= 0
+  else
   if FTabList.Count>FOptUseAngleForMaxTabs then
     Result:= 0
   else
@@ -1964,8 +2033,12 @@ begin
     Result.Left:= Result.Right-FOptButtonSize;
   end;
 
-  Result.Top:= FOptSpaceOnTop;
+  Result.Top:= IfThen(
+    FOptPosition in [tabPositionTop, tabPositionBottom],
+    FOptSpaceOnTop,
+    0);
   Result.Bottom:= Result.Top+FOptTabHeight;
+
   if FOptPosition=tabPositionBottom then Inc(Result.Top);
 end;
 

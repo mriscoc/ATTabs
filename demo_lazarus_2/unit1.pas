@@ -47,10 +47,9 @@ begin
 
   t.OnTabPlusClick:=@TabPlusClick;
 
-  t.AddTab(-1, 'tab0');
-  t.AddTab(-1, 'tab1');
-  t.AddTab(-1, 'tab2');
-
+  //t.AddTab(-1, 'tab0');
+  //t.AddTab(-1, 'tab1');
+  //t.AddTab(-1, 'tab2');
 end;
 
 procedure TForm1.TabPlusClick(Sender: TObject);
