@@ -9,9 +9,6 @@ uses
   attabs;
 
 type
-
-  { TForm1 }
-
   TForm1 = class(TForm)
     chkPosTop: TRadioButton;
     chkPosBottom: TRadioButton;
@@ -37,7 +34,7 @@ implementation
 {$R *.lfm}
 
 const
-  cSizeX = 150;
+  cSizeX = 160;
   cSizeY = 33;
 
 { TForm1 }

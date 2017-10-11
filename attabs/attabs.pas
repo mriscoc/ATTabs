@@ -1294,19 +1294,35 @@ begin
 
   if not FOptShowFlat then
   //paint bottom rect
-  if FOptPosition=tabPositionTop then
-  begin
-    RBottom:= Rect(0, FOptSpaceOnTop+FOptTabHeight, ClientWidth, ClientHeight);
-    C.Brush.Color:= FColorTabActive;
-    C.FillRect(RBottom);
-    DrawAntialisedLine(C, 0, RBottom.Top, ClientWidth, RBottom.Top, FColorBorderActive);
-  end
-  else
-  begin
-    RBottom:= Rect(0, 0, ClientWidth, FOptSpaceOnTop);
-    C.Brush.Color:= FColorTabActive;
-    C.FillRect(RBottom);
-    DrawAntialisedLine(C, 0, RBottom.Bottom, ClientWidth, RBottom.Bottom, FColorBorderActive);
+  case FOptPosition of
+    tabPositionTop:
+      begin
+        RBottom:= Rect(0, FOptSpaceOnTop+FOptTabHeight, ClientWidth, ClientHeight);
+        C.Brush.Color:= FColorTabActive;
+        C.FillRect(RBottom);
+        DrawAntialisedLine(C, RBottom.Left, RBottom.Top, RBottom.Right, RBottom.Top, FColorBorderActive);
+      end;
+    tabPositionBottom:
+      begin
+        RBottom:= Rect(0, 0, ClientWidth, FOptSpaceOnTop);
+        C.Brush.Color:= FColorTabActive;
+        C.FillRect(RBottom);
+        DrawAntialisedLine(C, RBottom.Left, RBottom.Bottom, RBottom.Right, RBottom.Bottom, FColorBorderActive);
+      end;
+    tabPositionLeft:
+      begin
+        RBottom:= Rect(ClientWidth-FOptSpaceOnTop, 0, ClientWidth, ClientHeight);
+        C.Brush.Color:= FColorTabActive;
+        C.FillRect(RBottom);
+        DrawAntialisedLine(C, RBottom.Left, RBottom.Top, RBottom.Left, RBottom.Bottom, FColorBorderActive);
+      end;
+    tabPositionRight:
+      begin
+        RBottom:= Rect(0, 0, FOptSpaceOnTop, ClientHeight);
+        C.Brush.Color:= FColorTabActive;
+        C.FillRect(RBottom);
+        DrawAntialisedLine(C, RBottom.Right, RBottom.Top, RBottom.Right, RBottom.Bottom, FColorBorderActive);
+      end;
   end;
 
   //paint "plus" tab
