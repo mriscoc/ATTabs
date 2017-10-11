@@ -1,0 +1,49 @@
+object Form1: TForm1
+  Left = 352
+  Height = 354
+  Top = 383
+  Width = 624
+  Caption = 'ATTabs position demo'
+  ClientHeight = 354
+  ClientWidth = 624
+  OnCreate = FormCreate
+  Position = poScreenCenter
+  LCLVersion = '1.9.0.0'
+  object chkPosTop: TRadioButton
+    Left = 208
+    Height = 24
+    Top = 112
+    Width = 50
+    Caption = 'top'
+    Checked = True
+    OnChange = chkPosTopChange
+    TabOrder = 0
+  end
+  object chkPosBottom: TRadioButton
+    Left = 208
+    Height = 24
+    Top = 136
+    Width = 78
+    Caption = 'bottom'
+    OnChange = chkPosBottomChange
+    TabOrder = 1
+  end
+  object chkPosLeft: TRadioButton
+    Left = 208
+    Height = 24
+    Top = 160
+    Width = 50
+    Caption = 'left'
+    OnChange = chkPosLeftChange
+    TabOrder = 2
+  end
+  object chkPosRight: TRadioButton
+    Left = 208
+    Height = 24
+    Top = 184
+    Width = 58
+    Caption = 'right'
+    OnChange = chkPosRightChange
+    TabOrder = 3
+  end
+end

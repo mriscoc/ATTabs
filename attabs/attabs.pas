@@ -99,9 +99,9 @@ type
 type
   TATTabPosition = (
     tabPositionTop,
-    tabPositionBottom
-    //tabPositionLeft,
-    //tabPositionRight
+    tabPositionBottom,
+    tabPositionLeft,
+    tabPositionRight
     );
 
 type
