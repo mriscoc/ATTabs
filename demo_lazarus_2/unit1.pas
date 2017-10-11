@@ -54,7 +54,9 @@ begin
   t.Parent:= Self;
   t.Align:= alTop;
 
-  t.OnTabPlusClick:=@TabPlusClick;
+  t.OptMouseDragEnabled:= true;
+  t.DragMode:= dmAutomatic;
+  t.OnTabPlusClick:= @TabPlusClick;
 
   t.AddTab(-1, 'tab0', nil, true, clGreen);
   t.AddTab(-1, 'tab1', nil, true, clYellow);
