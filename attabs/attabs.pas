@@ -1070,13 +1070,13 @@ begin
         DrawAntialisedLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, ATabBorder);
         DrawAntialisedLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, ATabBorder);
         DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y, ATabBorder);
-        DrawAntialisedLine(C, PR1.X+1, PR1.Y, PR2.X+1, PR2.Y, IfThen(ATabBorderLow<>clNone, ATabBorderLow, ATabBg));
+        DrawAntialisedLine(C, PR1.X+1, PR1.Y+1, PR1.X+1, PR2.Y-1, IfThen(ATabBorderLow<>clNone, ATabBorderLow, ATabBg));
       end;
     tabPositionRight:
       begin
         DrawAntialisedLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, ATabBorder);
         DrawAntialisedLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, ATabBorder);
-        DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y, IfThen(ATabBorderLow<>clNone, ATabBorderLow, ATabBg));
+        DrawAntialisedLine(C, PL1.X-1, PL1.Y+1, PL1.X-1, PL2.Y-1, IfThen(ATabBorderLow<>clNone, ATabBorderLow, ATabBg));
         DrawAntialisedLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y, ATabBorder);
       end;
   end;
@@ -1200,7 +1200,7 @@ var
 begin
   if FOptPosition in [tabPositionLeft, tabPositionRight] then
   begin
-    R.Left:= IfThen(FOptPosition=tabPositionLeft, FOptSpacer, FOptSpacer2);
+    R.Left:= IfThen(FOptPosition=tabPositionLeft, FOptSpacer, FOptSpacer2+1);
     R.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer2, ClientWidth-FOptSpacer);
     R.Bottom:= GetInitialVerticalIndent;
     R.Top:= R.Bottom;
@@ -2116,7 +2116,9 @@ begin
   else
   begin
     Result.Right:= ClientWidth-AIndex*FOptButtonSize
-      -IfThen(FOptPosition=tabPositionLeft, FOptSpacer2+1);
+      -IfThen(FOptPosition=tabPositionLeft, FOptSpacer2)
+      -IfThen(FOptPosition=tabPositionRight, FOptSpacer)
+      -1;
     Result.Left:= Result.Right-FOptButtonSize;
   end;
 
