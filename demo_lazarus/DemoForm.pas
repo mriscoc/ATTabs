@@ -126,7 +126,7 @@ begin
   t1.OptTabAngle:= 4;
   t1.OptTabHeight:= 30;
   t1.OptTabWidthNormal:= 170;
-  t1.OptSpaceOnTop:= 20;
+  t1.OptSpacer:= 20;
   t1.OptSpaceXSize:= 15;
   t1.OptSpaceXInner:= 3;
   t1.OptPosition:= tabPositionBottom;
@@ -147,7 +147,7 @@ begin
   t0.OptTabAngle:= 0;
   t0.OptSpaceBetweenTabs:= 2;
   //t0.OptSpaceInitial:= 2;
-  t0.OptSpaceOnTop:= 4;
+  t0.OptSpacer:= 4;
   t0.OptSpaceXSize:= 13;
   t0.OptMouseDragEnabled:= false;
 
