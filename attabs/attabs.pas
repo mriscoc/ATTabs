@@ -1527,9 +1527,23 @@ begin
   if i<>FTabIndex then
   begin
     R:= GetTabRect(i);
-    R.Left:= IfThen(i<=FTabIndex, R.Left, R.Right);
-    R.Left:= R.Left - FOptDropMarkSize div 2;
-    R.Right:= R.Left + FOptDropMarkSize;
+
+    case FOptPosition of
+      tabPositionTop,
+      tabPositionBottom:
+        begin
+          R.Left:= IfThen(i<=FTabIndex, R.Left, R.Right);
+          R.Left:= R.Left - FOptDropMarkSize div 2;
+          R.Right:= R.Left + FOptDropMarkSize;
+        end;
+      else
+        begin
+          R.Top:= IfThen(i<=FTabIndex, R.Top, R.Bottom);
+          R.Top:= R.Top  - FOptDropMarkSize div 2;
+          R.Bottom:= R.Top + FOptDropMarkSize;
+        end;
+    end;
+
     C.Brush.Color:= FColorDropMark;
     C.FillRect(R);
   end;
