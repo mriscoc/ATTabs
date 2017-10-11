@@ -350,6 +350,7 @@ type
     procedure DoScrollAnimation(APosTo: integer);
     function GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
     function GetTabs: TStrings;
+    function IsScrollMarkNeeded: boolean;
     procedure UpdateTabCaptions;
     function GetMaxScrollPos: integer;
     function GetRectOfButton(AButton: TATTabButton): TRect;
@@ -1169,8 +1170,19 @@ begin
   else
     Result:= Rect(0, 0, 10, 10);
 
-  Dec(Result.Left, FScrollPos);
-  Dec(Result.Right, FScrollPos);
+  case FOptPosition of
+    tabPositionTop,
+    tabPositionBottom:
+      begin
+        Dec(Result.Left, FScrollPos);
+        Dec(Result.Right, FScrollPos);
+      end;
+    else
+      begin
+        Dec(Result.Top, FScrollPos);
+        Dec(Result.Bottom, FScrollPos);
+      end;
+  end;
 end;
 
 procedure TATTabs.DoUpdateTabRects;
@@ -1516,31 +1528,93 @@ begin
   end;
 end;
 
-procedure TATTabs.DoPaintScrollMark(C: TCanvas);
+
+function TATTabs.IsScrollMarkNeeded: boolean;
 var
-  NPos, NSize: integer;
   R: TRect;
 begin
-  if (FTabWidth<=FOptTabWidthMinimal) or (FScrollPos>0) then
-  begin
-    NPos:= GetMaxScrollPos;
-    NSize:= ClientWidth - FRealIndentLeft - FRealIndentRight;
+  if TabCount=0 then
+    Result:= false
+  else
+  if FScrollPos>0 then
+    Result:= true
+  else
+  case FOptPosition of
+    tabPositionTop,
+    tabPositionBottom:
+      begin
+        Result:= FTabWidth<=FOptTabWidthMinimal;
+      end;
+    else
+      begin
+        R:= GetTabRect(TabCount-1);
+        if FOptShowPlusTab then
+          Inc(R.Bottom, FOptTabHeight);
+        Result:= R.Bottom>=ClientHeight;
+      end;
+  end;
+end;
 
-    if NPos>0 then
-    begin
-      R.Top:= IfThen(FOptPosition=tabPositionBottom, FOptTabHeight + FOptSpacer, 0);
-      R.Bottom:= R.Top + FOptScrollMarkSizeY;
+procedure TATTabs.DoPaintScrollMark(C: TCanvas);
+var
+  NPos, NSize, NIndent: integer;
+  R: TRect;
+begin
+  if not IsScrollMarkNeeded then exit;
 
-      R.Left:= FRealIndentLeft +
-        Max(0, Min(
-          NSize-FOptScrollMarkSizeX,
-          Int64(FScrollPos) * (NSize-FOptScrollMarkSizeX) div NPos
-        ));
-      R.Right:= R.Left + FOptScrollMarkSizeX;
+  case FOptPosition of
+    tabPositionTop,
+    tabPositionBottom:
+      begin
+        NPos:= GetMaxScrollPos;
+        NSize:= ClientWidth - FRealIndentLeft - FRealIndentRight;
 
-      C.Brush.Color:= FColorScrollMark;
-      C.FillRect(R);
-    end;
+        if NPos>0 then
+        begin
+          R.Top:= IfThen(FOptPosition=tabPositionBottom, FOptTabHeight + FOptSpacer, 0);
+          R.Bottom:= R.Top + FOptScrollMarkSizeY;
+
+          R.Left:= FRealIndentLeft +
+            Max(0, Min(
+              NSize-FOptScrollMarkSizeX,
+              Int64(FScrollPos) * (NSize-FOptScrollMarkSizeX) div NPos
+            ));
+          R.Right:= R.Left + FOptScrollMarkSizeX;
+
+          C.Brush.Color:= FColorScrollMark;
+          C.FillRect(R);
+        end;
+      end;
+    else
+      begin
+        NIndent:= IfThen(FOptButtonLayout<>'', FOptTabHeight);
+        NPos:= GetMaxScrollPos;
+        NSize:= ClientHeight-NIndent;
+
+        if NPos>0 then
+        begin
+          R.Top:= NIndent +
+            Max(0, Min(
+              NSize - FOptScrollMarkSizeX,
+              Int64(FScrollPos) * (NSize-FOptScrollMarkSizeX) div NPos
+              ));
+          R.Bottom:= R.Top + FOptScrollMarkSizeX;
+
+          if FOptPosition=tabPositionLeft then
+          begin
+            R.Left:= 0;
+            R.Right:= R.Left + FOptScrollMarkSizeY;
+          end
+          else
+          begin
+            R.Right:= ClientWidth;
+            R.Left:= R.Right - FOptScrollMarkSizeY;
+          end;
+
+          C.Brush.Color:= FColorScrollMark;
+          C.FillRect(R);
+        end;
+      end;
   end;
 end;
 
@@ -2292,7 +2366,13 @@ function TATTabs.GetScrollPageSize: integer;
 const
   cPercents = 80;
 begin
-  Result:= ClientWidth * cPercents div 100;
+  case FOptPosition of
+    tabPositionTop,
+    tabPositionBottom:
+      Result:= ClientWidth * cPercents div 100;
+    else
+      Result:= ClientHeight * cPercents div 100;
+  end;
 end;
 
 function TATTabs.GetMaxScrollPos: integer;
@@ -2300,13 +2380,25 @@ var
   D: TATTabData;
 begin
   Result:= 0;
-  if TabCount>0 then
-  begin
-    D:= GetTabData(TabCount-1);
-    Result:= Max(0,
-      D.TabRect.Right - ClientWidth + FRealIndentRight +
-      IfThen(FOptShowPlusTab, GetTabRectWidth(true))
-      );
+  if TabCount=0 then exit;
+  D:= GetTabData(TabCount-1);
+
+  case FOptPosition of
+    tabPositionTop,
+    tabPositionBottom:
+      begin
+        Result:= Max(0,
+          D.TabRect.Right - ClientWidth + FRealIndentRight +
+          IfThen(FOptShowPlusTab, GetTabRectWidth(true))
+          );
+      end;
+    else
+      begin
+        Result:= Max(0,
+          D.TabRect.Bottom - ClientHeight +
+          IfThen(FOptShowPlusTab, FOptTabHeight)
+          );
+      end;
   end;
 end;
 
