@@ -1,4 +1,10 @@
 
+2017.10.11
++ add: prop OptPosition (top/bottom/left/right)
++ add: demo which tests OptPosition
+* renamed prop OptSpaceOnTop to OptSpacer
++ add: prop OptSpacer2 for left/right view
+
 2017.09.24
 + add: close button in OptButtonLayout: "x"
 + add: user buttons in OptButtonLayout: "0".."4"

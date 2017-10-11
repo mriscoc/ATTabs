@@ -10,11 +10,17 @@ This is str of few chars. One char is one button at left or right side. Comma se
 * `x` - close button, does the same as x icon on active tab
 * `0`..`4` - user buttons; they are owner drawn and handled in event OnTabClickUserButton
 
-
 OptButtonSize: integer
 ======
 
 Width of one button, from OptButtonLayout.
+
+OptPosition: enum
+======
+
+One of view styles: top/bottom/left/right.
+If top - control should have Align=alTop; if bottom - Align=alBottom; etc.
+In left/right styles, tab text is painted horizontally anyway.
 
 OptTabHeight: integer
 ======
@@ -64,10 +70,15 @@ OptSpaceBeforeText: integer
 
 Indent (pix) between tab caption edge and tab rect. When caption is long, indent is smaller.
 
-OptSpaceOnTop: integer
+OptSpacer: integer
 ======
 
-Indent (pix) between tab rects and top edge of control.
+Indent (pix) between tab rects and edge of control (one of edges, depends on OptPosition).
+
+OptSpacer2: integer
+======
+
+Only for left/right OptPosition. Indent between tab rects and another side of control. For top/bottom OptPosition, indent is auto-calculated.
 
 OptSpaceXRight: integer
 ======
