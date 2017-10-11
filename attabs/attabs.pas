@@ -147,7 +147,7 @@ const
   TabIndexUser4 = -14;
 
 const
-  _InitTabColorBg = clBlack;
+  _InitTabColorBg = $585858;
   _InitTabColorTabActive = $808080;
   _InitTabColorTabPassive = $786868;
   _InitTabColorTabOver = $A08080;
@@ -1033,10 +1033,16 @@ begin
     if bActive then
     begin
       C.Brush.Color:= ColorActiveMark;
-      if FOptPosition=tabPositionBottom then
-        C.FillRect(Rect(PL1.X, 0, PR1.X, FOptActiveMarkSize))
-      else
-        C.FillRect(Rect(PL2.X, ClientHeight-FOptActiveMarkSize, PR2.X, ClientHeight));
+      case FOptPosition of
+        tabPositionTop:
+          C.FillRect(Rect(PL2.X, ClientHeight-FOptActiveMarkSize, PR2.X, ClientHeight));
+        tabPositionBottom:
+          C.FillRect(Rect(PL1.X, 0, PR1.X, FOptActiveMarkSize));
+        tabPositionLeft:
+          C.FillRect(Rect(ClientWidth-FOptActiveMarkSize, PR1.Y, ClientWidth, PR2.Y));
+        tabPositionRight:
+          C.FillRect(Rect(0, PL1.Y, FOptActiveMarkSize, PL2.Y))
+       end;
     end;
   end
   else

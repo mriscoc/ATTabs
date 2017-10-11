@@ -13,12 +13,16 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    chkFullColor: TCheckBox;
+    chkFlat: TCheckBox;
     chkEmptyBtns: TCheckBox;
     chkPosTop: TRadioButton;
     chkPosBottom: TRadioButton;
     chkPosLeft: TRadioButton;
     chkPosRight: TRadioButton;
     procedure chkEmptyBtnsChange(Sender: TObject);
+    procedure chkFlatChange(Sender: TObject);
+    procedure chkFullColorChange(Sender: TObject);
     procedure chkPosBottomChange(Sender: TObject);
     procedure chkPosLeftChange(Sender: TObject);
     procedure chkPosRightChange(Sender: TObject);
@@ -52,9 +56,9 @@ begin
 
   t.OnTabPlusClick:=@TabPlusClick;
 
-  //t.AddTab(-1, 'tab0');
-  //t.AddTab(-1, 'tab1');
-  //t.AddTab(-1, 'tab2');
+  t.AddTab(-1, 'tab0', nil, true, clGreen);
+  t.AddTab(-1, 'tab1', nil, true, clYellow);
+  t.AddTab(-1, 'tab2');
 end;
 
 procedure TForm1.TabPlusClick(Sender: TObject);
@@ -84,6 +88,18 @@ begin
     t.OptButtonLayout:= ''
   else
     t.OptButtonLayout:= '<>,v';
+  t.Invalidate;
+end;
+
+procedure TForm1.chkFlatChange(Sender: TObject);
+begin
+  t.OptShowFlat:= chkFlat.Checked;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkFullColorChange(Sender: TObject);
+begin
+  t.OptShowEntireColor:= chkFullColor.Checked;
   t.Invalidate;
 end;
 
