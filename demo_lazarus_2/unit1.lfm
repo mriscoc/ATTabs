@@ -47,4 +47,13 @@ object Form1: TForm1
     OnChange = chkPosRightChange
     TabOrder = 3
   end
+  object chkEmptyBtns: TCheckBox
+    Left = 333
+    Height = 24
+    Top = 115
+    Width = 140
+    Caption = 'empty btn layout'
+    OnChange = chkEmptyBtnsChange
+    TabOrder = 4
+  end
 end

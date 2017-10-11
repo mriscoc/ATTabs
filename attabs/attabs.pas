@@ -174,7 +174,7 @@ const
   _InitOptTabWidthMinimal = 40;
   _InitOptTabWidthNormal = 130;
   _InitOptTabWidthMinimalHidesX = 55;
-  _InitOptSpaceInitial = 4;
+  _InitOptSpaceInitial = 5;
   _InitOptSpaceBeforeText = 6;
   _InitOptSpaceBetweenTabs = 0;
   _InitOptSpacer = 5;
@@ -1179,8 +1179,8 @@ begin
   begin
     R.Left:= IfThen(FOptPosition=tabPositionLeft, 0, FOptSpacer);
     R.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer, ClientWidth);
-    R.Top:= 0;
-    R.Bottom:= IfThen(FOptButtonLayout='', 0, FOptTabHeight);
+    R.Top:= FOptSpaceInitial;
+    R.Bottom:= R.Top+IfThen(FOptButtonLayout='', 0, FOptTabHeight);
 
     for i:= 0 to TabCount-1 do
     begin
@@ -1241,7 +1241,7 @@ begin
         begin
           Result.Left:= IfThen(FOptPosition=tabPositionLeft, 0, FOptSpacer);
           Result.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer, ClientWidth);
-          Result.Top:= IfThen(FOptButtonLayout='', 0, FOptTabHeight);
+          Result.Top:= IfThen(FOptButtonLayout='', FOptSpaceInitial, FOptTabHeight);
           Result.Bottom:= Result.Top + FOptTabHeight;
         end;
       end;
@@ -2108,6 +2108,12 @@ begin
   Count:= TabCount;
   if Count=0 then Exit;
 
+  if FOptPosition in [tabPositionLeft, tabPositionRight] then
+  begin
+    FTabWidth:= ClientWidth-FOptSpacer;
+    exit
+  end;
+
   //tricky formula: calculate auto-width
   NAngle:= RealTabAngle;
   Value:= (ClientWidth
@@ -2137,8 +2143,9 @@ begin
     else Result:= false;
   end;
 
-  if FTabWidth<FOptTabWidthMinimalHidesX then
-    Result:= false;
+  if FOptPosition in [tabPositionTop, tabPositionBottom] then
+    if FTabWidth<FOptTabWidthMinimalHidesX then
+      Result:= false;
 end;
 
 procedure TATTabs.DoTabDrop;

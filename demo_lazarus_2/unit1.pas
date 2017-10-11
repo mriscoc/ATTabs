@@ -9,11 +9,16 @@ uses
   attabs;
 
 type
+
+  { TForm1 }
+
   TForm1 = class(TForm)
+    chkEmptyBtns: TCheckBox;
     chkPosTop: TRadioButton;
     chkPosBottom: TRadioButton;
     chkPosLeft: TRadioButton;
     chkPosRight: TRadioButton;
+    procedure chkEmptyBtnsChange(Sender: TObject);
     procedure chkPosBottomChange(Sender: TObject);
     procedure chkPosLeftChange(Sender: TObject);
     procedure chkPosRightChange(Sender: TObject);
@@ -70,6 +75,15 @@ begin
   t.Align:= alBottom;
   t.OptPosition:= tabPositionBottom;
   t.Height:= cSizeY;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkEmptyBtnsChange(Sender: TObject);
+begin
+  if chkEmptyBtns.Checked then
+    t.OptButtonLayout:= ''
+  else
+    t.OptButtonLayout:= '<>,v';
   t.Invalidate;
 end;
 
