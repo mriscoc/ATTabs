@@ -119,16 +119,16 @@ type
 
 type
   TATTabTriangle = (
-    ttriDown,
-    ttriLeft,
-    ttriRight
+    atriDown,
+    atriLeft,
+    atriRight
     );
 
   TATTabShowClose = (
-    tbShowNone,
-    tbShowAll,
-    tbShowActive,
-    tbShowMouseOver
+    atbxShowNone,
+    atbxShowAll,
+    atbxShowActive,
+    atbxShowMouseOver
     );
 
 //int constants for GetTabAt
@@ -196,7 +196,7 @@ const
   _InitOptShowScrollMark = true;
   _InitOptShowDropMark = true;
   _InitOptShowArrowsNear = true;
-  _InitOptShowXButtons = tbShowAll;
+  _InitOptShowXButtons = atbxShowAll;
   _InitOptShowPlusTab = true;
   _InitOptShowModifiedText = '*';
   _InitOptShowBorderActiveLow = false;
@@ -711,19 +711,19 @@ begin
   //P1/P2: points of vert/horz line
   //P3: end point at arrow direction
   case Typ of
-    ttriDown:
+    atriDown:
     begin
       P1:= Point(R.Left, R.Top);
       P2:= Point(R.Right, R.Top);
       P3:= Point((R.Left+R.Right) div 2, R.Bottom);
     end;
-    ttriRight:
+    atriRight:
     begin
       P1:= Point(R.Left, R.Top);
       P2:= Point(R.Left, R.Bottom);
       P3:= Point(R.Right, (R.Top+R.Bottom) div 2);
     end;
-    ttriLeft:
+    atriLeft:
     begin
       P1:= Point(R.Right, R.Top);
       P2:= Point(R.Right, R.Bottom);
@@ -2073,8 +2073,8 @@ var
 begin
   N:= FOptArrowSize;
   case ATyp of
-    ttriLeft,
-    ttriRight:
+    atriLeft,
+    atriRight:
       begin
         SizeY:= N;
         SizeX:= N div 2;
@@ -2246,10 +2246,10 @@ end;
 function TATTabs.IsShowX(AIndex: integer): boolean;
 begin
   case FOptShowXButtons of
-    tbShowNone: Result:= false;
-    tbShowAll: Result:= true;
-    tbShowActive: Result:= AIndex=FTabIndex;
-    tbShowMouseOver: Result:= AIndex=FTabIndexOver;
+    atbxShowNone: Result:= false;
+    atbxShowAll: Result:= true;
+    atbxShowActive: Result:= AIndex=FTabIndex;
+    atbxShowMouseOver: Result:= AIndex=FTabIndexOver;
     else Result:= false;
   end;
 
@@ -2553,7 +2553,7 @@ begin
     begin
       DoPaintBgTo(C, FRectArrowDown);
       DoPaintArrowTo(C,
-        ttriDown,
+        atriDown,
         FRectArrowDown,
         IfThen(bOver and not _IsDrag,
           FColorArrowOver,
@@ -2584,7 +2584,7 @@ begin
 
       DoPaintBgTo(C, FRectArrowLeft);
       DoPaintArrowTo(C,
-        ttriLeft,
+        atriLeft,
         R,
         IfThen(bOver, FColorArrowOver, FColorArrow),
         FColorBg);
@@ -2613,7 +2613,7 @@ begin
 
       DoPaintBgTo(C, FRectArrowRight);
       DoPaintArrowTo(C,
-        ttriRight,
+        atriRight,
         R,
         IfThen(bOver, FColorArrowOver, FColorArrow),
         FColorBg);
