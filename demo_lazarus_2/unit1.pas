@@ -73,7 +73,7 @@ end;
 procedure TForm1.chkPosTopChange(Sender: TObject);
 begin
   t.Align:= alTop;
-  t.OptPosition:= tabPositionTop;
+  t.OptPosition:= atpTop;
   t.Height:= cSizeY;
   t.Invalidate;
 end;
@@ -81,7 +81,7 @@ end;
 procedure TForm1.chkPosBottomChange(Sender: TObject);
 begin
   t.Align:= alBottom;
-  t.OptPosition:= tabPositionBottom;
+  t.OptPosition:= atpBottom;
   t.Height:= cSizeY;
   t.Invalidate;
 end;
@@ -99,13 +99,13 @@ procedure TForm1.chkColorAllowVertChange(Sender: TObject);
 begin
   if chkColorAllowVert.Checked then
   begin
-    t.OptColoredBandForLeft:= tabPositionLeft;
-    t.OptColoredBandForRight:= tabPositionRight;
+    t.OptColoredBandForLeft:= atpLeft;
+    t.OptColoredBandForRight:= atpRight;
   end
   else
   begin
-    t.OptColoredBandForLeft:= tabPositionTop;
-    t.OptColoredBandForRight:= tabPositionTop;
+    t.OptColoredBandForLeft:= atpTop;
+    t.OptColoredBandForRight:= atpTop;
   end;
   t.Invalidate;
 end;
@@ -125,7 +125,7 @@ end;
 procedure TForm1.chkPosLeftChange(Sender: TObject);
 begin
   t.Align:= alLeft;
-  t.OptPosition:= tabPositionLeft;
+  t.OptPosition:= atpLeft;
   t.Width:= cSizeX;
   t.Invalidate;
 end;
@@ -133,7 +133,7 @@ end;
 procedure TForm1.chkPosRightChange(Sender: TObject);
 begin
   t.Align:= alRight;
-  t.OptPosition:= tabPositionRight;
+  t.OptPosition:= atpRight;
   t.Width:= cSizeX;
   t.Invalidate;
 end;

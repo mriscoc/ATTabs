@@ -97,7 +97,7 @@ begin
   t.OnTabDrawAfter:= TabDrawAfter_Top;
   t.OnTabClickUserButton:=TabClickUserButton;
   t.OptMouseDoubleClickPlus:= true;
-  t.OptShowXButtons:= tbShowAll;
+  t.OptShowXButtons:= atbxShowAll;
   t.OptTabAngle:= 0;
   t.DragMode:= dmAutomatic; //enable drag-drop
 
@@ -129,7 +129,7 @@ begin
   t1.OptSpacer:= 20;
   t1.OptSpaceXSize:= 15;
   t1.OptSpaceXInner:= 3;
-  t1.OptPosition:= tabPositionBottom;
+  t1.OptPosition:= atpBottom;
 
   t1.AddTab(-1, 'Owner-draw', nil, false, clNone);
   t1.AddTab(-1, 'Tab wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww', nil, false, clGreen);

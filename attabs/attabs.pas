@@ -81,27 +81,27 @@ type
 
 type
   TATTabButton = (
-    tabBtnNone,
-    tabBtnPlus,
-    tabBtnClose,
-    tabBtnScrollLeft,
-    tabBtnScrollRight,
-    tabBtnDropdownMenu,
-    tabBtnUser0,
-    tabBtnUser1,
-    tabBtnUser2,
-    tabBtnUser3,
-    tabBtnUser4
+    atbNone,
+    atbPlus,
+    atbClose,
+    atbScrollLeft,
+    atbScrollRight,
+    atbDropdownMenu,
+    atbUser0,
+    atbUser1,
+    atbUser2,
+    atbUser3,
+    atbUser4
     );
 
   TATTabButtons = array[0..20] of TATTabButton;
 
 type
   TATTabPosition = (
-    tabPositionTop,
-    tabPositionBottom,
-    tabPositionLeft,
-    tabPositionRight
+    atpTop,
+    atpBottom,
+    atpLeft,
+    atpRight
     );
 
 type
@@ -191,7 +191,7 @@ const
   _InitOptDropMarkSize = 6;
 
   _InitOptShowFlat = false;
-  _InitOptPosition = tabPositionTop;
+  _InitOptPosition = atpTop;
   _InitOptShowNumberPrefix = '';
   _InitOptShowScrollMark = true;
   _InitOptShowDropMark = true;
@@ -505,10 +505,10 @@ type
     property OptSpaceXInner: integer read FOptSpaceXInner write FOptSpaceXInner default _InitOptSpaceXInner;
     property OptSpaceXSize: integer read FOptSpaceXSize write FOptSpaceXSize default _InitOptSpaceXSize;
     property OptColoredBandSize: integer read FOptColoredBandSize write FOptColoredBandSize default _InitOptColoredBandSize;
-    property OptColoredBandForTop: TATTabPosition read FOptColoredBandForTop write FOptColoredBandForTop default tabPositionTop;
-    property OptColoredBandForBottom: TATTabPosition read FOptColoredBandForBottom write FOptColoredBandForBottom default tabPositionBottom;
-    property OptColoredBandForLeft: TATTabPosition read FOptColoredBandForLeft write FOptColoredBandForLeft default tabPositionLeft;
-    property OptColoredBandForRight: TATTabPosition read FOptColoredBandForRight write FOptColoredBandForRight default tabPositionRight;
+    property OptColoredBandForTop: TATTabPosition read FOptColoredBandForTop write FOptColoredBandForTop default atpTop;
+    property OptColoredBandForBottom: TATTabPosition read FOptColoredBandForBottom write FOptColoredBandForBottom default atpBottom;
+    property OptColoredBandForLeft: TATTabPosition read FOptColoredBandForLeft write FOptColoredBandForLeft default atpLeft;
+    property OptColoredBandForRight: TATTabPosition read FOptColoredBandForRight write FOptColoredBandForRight default atpRight;
     property OptActiveMarkSize: integer read FOptActiveMarkSize write FOptActiveMarkSize default _InitOptActiveMarkSize;
     property OptArrowSize: integer read FOptArrowSize write FOptArrowSize default _InitOptArrowSize;
     property OptScrollMarkSizeX: integer read FOptScrollMarkSizeX write FOptScrollMarkSizeX default _InitOptScrollMarkSizeX;
@@ -842,10 +842,10 @@ begin
   FOptSpaceXSize:= _InitOptSpaceXSize;
   FOptArrowSize:= _InitOptArrowSize;
   FOptColoredBandSize:= _InitOptColoredBandSize;
-  FOptColoredBandForTop:= tabPositionTop;
-  FOptColoredBandForBottom:= tabPositionBottom;
-  FOptColoredBandForLeft:= tabPositionLeft;
-  FOptColoredBandForRight:= tabPositionRight;
+  FOptColoredBandForTop:= atpTop;
+  FOptColoredBandForBottom:= atpBottom;
+  FOptColoredBandForLeft:= atpLeft;
+  FOptColoredBandForRight:= atpRight;
   FOptActiveMarkSize:= _InitOptActiveMarkSize;
   FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
@@ -959,7 +959,7 @@ begin
   C.Pen.Color:= ATabBg;
   C.Brush.Color:= ATabBg;
 
-  if FOptPosition=tabPositionBottom then
+  if FOptPosition=atpBottom then
     AInvert:= -1
   else
     AInvert:= 1;
@@ -990,7 +990,7 @@ begin
   begin
     //DrawTriangleRaw(C, PL1, PL2, Point(PL1.X, PL2.Y), ATabBg);
     //draw little shifted line- bottom-left point x+=1
-    if FOptPosition=tabPositionBottom then
+    if FOptPosition=atpBottom then
       DrawTriangleRaw(C, PL1, Point(PL2.X+1, PL2.Y), Point(PL2.X, PL1.Y), ATabBg)
     else
       DrawTriangleRaw(C, PL1, Point(PL2.X+1, PL2.Y), Point(PL1.X, PL2.Y), ATabBg);
@@ -1003,7 +1003,7 @@ begin
   begin
     //DrawTriangleRaw(C, PR1, PR2, Point(PR1.X, PR2.Y), ATabBg);
     //draw little shifted line- bottom-right point x-=1
-    if FOptPosition=tabPositionBottom then
+    if FOptPosition=atpBottom then
       DrawTriangleRaw(C, PR1, Point(PR2.X-1, PR2.Y), Point(PR2.X, PR1.Y), ATabBg)
     else
       DrawTriangleRaw(C, PR1, Point(PR2.X-1, PR2.Y), Point(PR1.X, PR2.Y), ATabBg);
@@ -1048,20 +1048,20 @@ begin
     begin
       C.Brush.Color:= ColorActiveMark;
       case FOptPosition of
-        tabPositionTop:
+        atpTop:
           C.FillRect(Rect(PL2.X, ClientHeight-FOptActiveMarkSize, PR2.X, ClientHeight));
-        tabPositionBottom:
+        atpBottom:
           C.FillRect(Rect(PL1.X, 0, PR1.X, FOptActiveMarkSize));
-        tabPositionLeft:
+        atpLeft:
           C.FillRect(Rect(ClientWidth-FOptActiveMarkSize, PR1.Y, ClientWidth, PR2.Y));
-        tabPositionRight:
+        atpRight:
           C.FillRect(Rect(0, PL1.Y, FOptActiveMarkSize, PL2.Y))
        end;
     end;
   end
   else
   case FOptPosition of
-    tabPositionTop:
+    atpTop:
       begin
         DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
         DrawAntialisedLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
@@ -1071,7 +1071,7 @@ begin
         else
           DrawAntialisedLine(C, PL2.X+1, ARect.Bottom, PR2.X-1, ARect.Bottom, ATabBg);
       end;
-    tabPositionBottom:
+    atpBottom:
       begin
         DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
         DrawAntialisedLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
@@ -1079,14 +1079,14 @@ begin
         if ATabBorderLow<>clNone then
           DrawAntialisedLine(C, PL1.X, ARect.Top, PR1.X, ARect.Top, ATabBorderLow)
       end;
-    tabPositionLeft:
+    atpLeft:
       begin
         DrawAntialisedLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, ATabBorder);
         DrawAntialisedLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, ATabBorder);
         DrawAntialisedLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y, ATabBorder);
         DrawAntialisedLine(C, PR1.X+1, PR1.Y+1, PR1.X+1, PR2.Y-1, IfThen(ATabBorderLow<>clNone, ATabBorderLow, ATabBg));
       end;
-    tabPositionRight:
+    atpRight:
       begin
         DrawAntialisedLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, ATabBorder);
         DrawAntialisedLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, ATabBorder);
@@ -1157,8 +1157,8 @@ end;
 function TATTabs.GetTabRectWidth(APlusBtn: boolean): integer;
 begin
   case FOptPosition of
-    tabPositionLeft,
-    tabPositionRight:
+    atpLeft,
+    atpRight:
       begin
         Result:= ClientWidth-FOptSpacer;
       end;
@@ -1185,8 +1185,8 @@ begin
     Result:= Rect(0, 0, 10, 10);
 
   case FOptPosition of
-    tabPositionTop,
-    tabPositionBottom:
+    atpTop,
+    atpBottom:
       begin
         Dec(Result.Left, FScrollPos);
         Dec(Result.Right, FScrollPos);
@@ -1205,10 +1205,10 @@ var
   Data: TATTabData;
   R: TRect;
 begin
-  if FOptPosition in [tabPositionLeft, tabPositionRight] then
+  if FOptPosition in [atpLeft, atpRight] then
   begin
-    R.Left:= IfThen(FOptPosition=tabPositionLeft, FOptSpacer, FOptSpacer2+1);
-    R.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer2, ClientWidth-FOptSpacer);
+    R.Left:= IfThen(FOptPosition=atpLeft, FOptSpacer, FOptSpacer2+1);
+    R.Right:= IfThen(FOptPosition=atpLeft, ClientWidth-FOptSpacer2, ClientWidth-FOptSpacer);
     R.Bottom:= GetInitialVerticalIndent;
     R.Top:= R.Bottom;
 
@@ -1242,8 +1242,8 @@ end;
 function TATTabs.GetTabRect_Plus: TRect;
 begin
   case FOptPosition of
-    tabPositionTop,
-    tabPositionBottom:
+    atpTop,
+    atpBottom:
       begin
         if TabCount>0 then
         begin
@@ -1269,8 +1269,8 @@ begin
         end
         else
         begin
-          Result.Left:= IfThen(FOptPosition=tabPositionLeft, FOptSpacer, FOptSpacer2);
-          Result.Right:= IfThen(FOptPosition=tabPositionLeft, ClientWidth-FOptSpacer2, ClientWidth-FOptSpacer);
+          Result.Left:= IfThen(FOptPosition=atpLeft, FOptSpacer, FOptSpacer2);
+          Result.Right:= IfThen(FOptPosition=atpLeft, ClientWidth-FOptSpacer2, ClientWidth-FOptSpacer);
           Result.Top:= GetInitialVerticalIndent;
           Result.Bottom:= Result.Top + FOptTabHeight;
         end;
@@ -1360,22 +1360,22 @@ begin
   FRealIndentLeft:= FOptSpaceInitial;
   FRealIndentRight:= 0;
   for i:= 0 to High(TATTabButtons) do
-    if FButtonsLeft[i]<>tabBtnNone then
+    if FButtonsLeft[i]<>atbNone then
       Inc(FRealIndentLeft, FOptButtonSize);
   for i:= 0 to High(TATTabButtons) do
-    if FButtonsRight[i]<>tabBtnNone then
+    if FButtonsRight[i]<>atbNone then
       Inc(FRealIndentRight, FOptButtonSize);
 
-  FRectArrowLeft:= GetRectOfButton(tabBtnScrollLeft);
-  FRectArrowRight:= GetRectOfButton(tabBtnScrollRight);
-  FRectArrowDown:= GetRectOfButton(tabBtnDropdownMenu);
-  FRectButtonPlus:= GetRectOfButton(tabBtnPlus);
-  FRectButtonClose:= GetRectOfButton(tabBtnClose);
-  FRectButtonUser0:= GetRectOfButton(tabBtnUser0);
-  FRectButtonUser1:= GetRectOfButton(tabBtnUser1);
-  FRectButtonUser2:= GetRectOfButton(tabBtnUser2);
-  FRectButtonUser3:= GetRectOfButton(tabBtnUser3);
-  FRectButtonUser4:= GetRectOfButton(tabBtnUser4);
+  FRectArrowLeft:= GetRectOfButton(atbScrollLeft);
+  FRectArrowRight:= GetRectOfButton(atbScrollRight);
+  FRectArrowDown:= GetRectOfButton(atbDropdownMenu);
+  FRectButtonPlus:= GetRectOfButton(atbPlus);
+  FRectButtonClose:= GetRectOfButton(atbClose);
+  FRectButtonUser0:= GetRectOfButton(atbUser0);
+  FRectButtonUser1:= GetRectOfButton(atbUser1);
+  FRectButtonUser2:= GetRectOfButton(atbUser2);
+  FRectButtonUser3:= GetRectOfButton(atbUser3);
+  FRectButtonUser4:= GetRectOfButton(atbUser4);
 
   //painting of BG is little different then other elements:
   //paint fillrect anyway, then maybe paint ownerdraw
@@ -1391,28 +1391,28 @@ begin
   //paint spacer rect
   if not FOptShowFlat then
     case FOptPosition of
-      tabPositionTop:
+      atpTop:
         begin
           RBottom:= Rect(0, FOptSpacer+FOptTabHeight, ClientWidth, ClientHeight);
           C.Brush.Color:= FColorTabActive;
           C.FillRect(RBottom);
           DrawAntialisedLine(C, RBottom.Left, RBottom.Top, RBottom.Right, RBottom.Top, FColorBorderActive);
         end;
-      tabPositionBottom:
+      atpBottom:
         begin
           RBottom:= Rect(0, 0, ClientWidth, FOptSpacer);
           C.Brush.Color:= FColorTabActive;
           C.FillRect(RBottom);
           DrawAntialisedLine(C, RBottom.Left, RBottom.Bottom, RBottom.Right, RBottom.Bottom, FColorBorderActive);
         end;
-      tabPositionLeft:
+      atpLeft:
         begin
           RBottom:= Rect(ClientWidth-FOptSpacer2, 0, ClientWidth, ClientHeight);
           C.Brush.Color:= FColorTabActive;
           C.FillRect(RBottom);
           DrawAntialisedLine(C, RBottom.Left, RBottom.Top, RBottom.Left, RBottom.Bottom, FColorBorderActive);
         end;
-      tabPositionRight:
+      atpRight:
         begin
           RBottom:= Rect(0, 0, FOptSpacer2, ClientHeight);
           C.Brush.Color:= FColorTabActive;
@@ -1536,8 +1536,8 @@ begin
     R:= GetTabRect(i);
 
     case FOptPosition of
-      tabPositionTop,
-      tabPositionBottom:
+      atpTop,
+      atpBottom:
         begin
           R.Left:= IfThen(i<=FTabIndex, R.Left, R.Right);
           R.Left:= R.Left - FOptDropMarkSize div 2;
@@ -1568,8 +1568,8 @@ begin
     Result:= true
   else
   case FOptPosition of
-    tabPositionTop,
-    tabPositionBottom:
+    atpTop,
+    atpBottom:
       begin
         Result:= FTabWidth<=FOptTabWidthMinimal;
       end;
@@ -1591,15 +1591,15 @@ begin
   if not IsScrollMarkNeeded then exit;
 
   case FOptPosition of
-    tabPositionTop,
-    tabPositionBottom:
+    atpTop,
+    atpBottom:
       begin
         NPos:= GetMaxScrollPos;
         NSize:= ClientWidth - FRealIndentLeft - FRealIndentRight;
 
         if NPos>0 then
         begin
-          R.Top:= IfThen(FOptPosition=tabPositionBottom, FOptTabHeight + FOptSpacer, 0);
+          R.Top:= IfThen(FOptPosition=atpBottom, FOptTabHeight + FOptSpacer, 0);
           R.Bottom:= R.Top + FOptScrollMarkSizeY;
 
           R.Left:= FRealIndentLeft +
@@ -1628,7 +1628,7 @@ begin
               ));
           R.Bottom:= R.Top + FOptScrollMarkSizeX;
 
-          if FOptPosition=tabPositionLeft then
+          if FOptPosition=atpLeft then
           begin
             R.Left:= 0;
             R.Right:= R.Left + FOptScrollMarkSizeY;
@@ -1653,7 +1653,7 @@ begin
   exit(0);
   {$endif}
 
-  if FOptPosition in [tabPositionLeft, tabPositionRight] then
+  if FOptPosition in [atpLeft, atpRight] then
     Result:= 0
   else
   if FTabList.Count>FOptUseAngleForMaxTabs then
@@ -2131,27 +2131,27 @@ begin
   if AtLeft then
   begin
     Result.Left:= AIndex*FOptButtonSize
-      +IfThen(FOptPosition=tabPositionLeft, FOptSpacer)
-      +IfThen(FOptPosition=tabPositionRight, FOptSpacer2)
+      +IfThen(FOptPosition=atpLeft, FOptSpacer)
+      +IfThen(FOptPosition=atpRight, FOptSpacer2)
       +1;
     Result.Right:= Result.Left+FOptButtonSize;
   end
   else
   begin
     Result.Right:= ClientWidth-AIndex*FOptButtonSize
-      -IfThen(FOptPosition=tabPositionLeft, FOptSpacer2)
-      -IfThen(FOptPosition=tabPositionRight, FOptSpacer)
+      -IfThen(FOptPosition=atpLeft, FOptSpacer2)
+      -IfThen(FOptPosition=atpRight, FOptSpacer)
       -1;
     Result.Left:= Result.Right-FOptButtonSize;
   end;
 
   Result.Top:= IfThen(
-    FOptPosition in [tabPositionTop, tabPositionBottom],
+    FOptPosition in [atpTop, atpBottom],
     FOptSpacer,
     0);
   Result.Bottom:= Result.Top+FOptTabHeight;
 
-  if FOptPosition=tabPositionBottom then Inc(Result.Top);
+  if FOptPosition=atpBottom then Inc(Result.Top);
 end;
 
 function TATTabs.GetRectOfButton(AButton: TATTabButton): TRect;
@@ -2218,7 +2218,7 @@ begin
   Count:= TabCount;
   if Count=0 then Exit;
 
-  if FOptPosition in [tabPositionLeft, tabPositionRight] then
+  if FOptPosition in [atpLeft, atpRight] then
   begin
     FTabWidth:= ClientWidth-FOptSpacer;
     exit
@@ -2253,7 +2253,7 @@ begin
     else Result:= false;
   end;
 
-  if FOptPosition in [tabPositionTop, tabPositionBottom] then
+  if FOptPosition in [atpTop, atpBottom] then
     if FTabWidth<FOptTabWidthMinimalHidesX then
       Result:= false;
 end;
@@ -2399,8 +2399,8 @@ const
   cPercents = 80;
 begin
   case FOptPosition of
-    tabPositionTop,
-    tabPositionBottom:
+    atpTop,
+    atpBottom:
       Result:= ClientWidth * cPercents div 100;
     else
       Result:= ClientHeight * cPercents div 100;
@@ -2416,8 +2416,8 @@ begin
   D:= GetTabData(TabCount-1);
 
   case FOptPosition of
-    tabPositionTop,
-    tabPositionBottom:
+    atpTop,
+    atpBottom:
       begin
         Result:= Max(0,
           D.TabRect.Right - ClientWidth + FRealIndentRight +
@@ -2641,16 +2641,16 @@ procedure TATTabs.ApplyButtonLayout;
     FillChar(Side, SizeOf(Side), 0);
     for i:= 1 to Length(S) do
       case S[i] of
-        '<': begin Side[N]:= tabBtnScrollLeft; Inc(N) end;
-        '>': begin Side[N]:= tabBtnScrollRight; Inc(N) end;
-        'v': begin Side[N]:= tabBtnDropdownMenu; Inc(N) end;
-        '+': begin Side[N]:= tabBtnPlus; Inc(N) end;
-        'x': begin Side[N]:= tabBtnClose; Inc(N) end;
-        '0': begin Side[N]:= tabBtnUser0; Inc(N) end;
-        '1': begin Side[N]:= tabBtnUser1; Inc(N) end;
-        '2': begin Side[N]:= tabBtnUser2; Inc(N) end;
-        '3': begin Side[N]:= tabBtnUser3; Inc(N) end;
-        '4': begin Side[N]:= tabBtnUser4; Inc(N) end;
+        '<': begin Side[N]:= atbScrollLeft; Inc(N) end;
+        '>': begin Side[N]:= atbScrollRight; Inc(N) end;
+        'v': begin Side[N]:= atbDropdownMenu; Inc(N) end;
+        '+': begin Side[N]:= atbPlus; Inc(N) end;
+        'x': begin Side[N]:= atbClose; Inc(N) end;
+        '0': begin Side[N]:= atbUser0; Inc(N) end;
+        '1': begin Side[N]:= atbUser1; Inc(N) end;
+        '2': begin Side[N]:= atbUser2; Inc(N) end;
+        '3': begin Side[N]:= atbUser3; Inc(N) end;
+        '4': begin Side[N]:= atbUser4; Inc(N) end;
       end;
   end;
   //
@@ -2733,24 +2733,24 @@ begin
   C.Brush.Color:= AColor;
 
   case FOptPosition of
-    tabPositionTop:
+    atpTop:
       Pos:= FOptColoredBandForTop;
-    tabPositionBottom:
+    atpBottom:
       Pos:= FOptColoredBandForBottom;
-    tabPositionLeft:
+    atpLeft:
       Pos:= FOptColoredBandForLeft;
-    tabPositionRight:
+    atpRight:
       Pos:= FOptColoredBandForRight;
   end;
 
   case Pos of
-    tabPositionTop:
+    atpTop:
       C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
-    tabPositionBottom:
+    atpBottom:
       C.FillRect(Rect(PL2.X+1, PL2.Y-2, PR2.X, PR2.Y-2+FOptColoredBandSize));
-    tabPositionLeft:
+    atpLeft:
       C.FillRect(Rect(PL1.X+1, PL1.Y+1, PL1.X+1+FOptColoredBandSize, PL2.Y));
-    tabPositionRight:
+    atpRight:
       C.FillRect(Rect(PR1.X-FOptColoredBandSize, PR1.Y+1, PR1.X, PR2.Y));
   end;
 

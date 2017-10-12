@@ -16,33 +16,33 @@ object Form1: TForm1
   LCLVersion = '1.9.0.0'
   object Label1: TLabel
     Left = 144
-    Height = 14
+    Height = 15
     Top = 280
-    Width = 325
+    Width = 350
     Caption = 'Note: enabled drag-drop from top tabs to bottom tabs'
     ParentColor = False
   end
   object labStatus: TLabel
     Left = 144
-    Height = 14
+    Height = 15
     Top = 296
-    Width = 40
+    Width = 45
     Caption = 'Status:'
     ParentColor = False
   end
   object Label2: TLabel
     Left = 144
-    Height = 14
+    Height = 15
     Top = 56
-    Width = 53
+    Width = 57
     Caption = 'top tabs:'
     ParentColor = False
   end
   object Label3: TLabel
     Left = 312
-    Height = 14
+    Height = 15
     Top = 56
-    Width = 77
+    Width = 83
     Caption = 'bottom tabs:'
     ParentColor = False
   end
@@ -93,7 +93,7 @@ object Form1: TForm1
   end
   object EditInfo: TEdit
     Left = 264
-    Height = 24
+    Height = 27
     Top = 248
     Width = 225
     OnChange = EditInfoChange
@@ -101,9 +101,9 @@ object Form1: TForm1
   end
   object chkShowPlus: TCheckBox
     Left = 144
-    Height = 24
+    Height = 23
     Top = 75
-    Width = 112
+    Width = 107
     Caption = 'show "+" tab'
     Checked = True
     OnChange = chkShowPlusChange
@@ -112,9 +112,9 @@ object Form1: TForm1
   end
   object chkNums: TCheckBox
     Left = 312
-    Height = 24
+    Height = 23
     Top = 72
-    Width = 127
+    Width = 115
     Caption = 'show numbers'
     OnChange = chkNumsChange
     TabOrder = 3
@@ -130,9 +130,9 @@ object Form1: TForm1
   end
   object chkShowFullColor: TCheckBox
     Left = 144
-    Height = 24
+    Height = 23
     Top = 96
-    Width = 131
+    Width = 118
     Caption = 'color entire tab'
     OnChange = chkShowFullColorChange
     TabOrder = 1
@@ -148,15 +148,15 @@ object Form1: TForm1
   end
   object Label4: TLabel
     Left = 464
-    Height = 14
+    Height = 15
     Top = 56
-    Width = 109
+    Width = 123
     Caption = 'top tabs: "x" icons:'
     ParentColor = False
   end
   object comboShowX: TComboBox
     Left = 464
-    Height = 25
+    Height = 23
     Top = 72
     Width = 160
     ItemHeight = 0
@@ -172,15 +172,15 @@ object Form1: TForm1
   end
   object Label5: TLabel
     Left = 464
-    Height = 14
+    Height = 15
     Top = 104
-    Width = 83
+    Width = 91
     Caption = 'button layout:'
     ParentColor = False
   end
   object comboLayout: TComboBox
     Left = 464
-    Height = 25
+    Height = 23
     Top = 120
     Width = 160
     DropDownCount = 20
@@ -204,9 +204,9 @@ object Form1: TForm1
   end
   object chkShowFlat: TCheckBox
     Left = 144
-    Height = 24
+    Height = 23
     Top = 121
-    Width = 47
+    Width = 46
     Caption = 'flat'
     OnChange = chkShowFlatChange
     TabOrder = 2
