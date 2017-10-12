@@ -335,6 +335,8 @@ type
     procedure DoPaintArrowRight(C: TCanvas);
     procedure DoPaintButtonClose(C: TCanvas);
     procedure DoPaintButtonPlus(C: TCanvas);
+    procedure DoPaintColoredBand(C: TCanvas; PL1, PL2, PR1, PR2: TPoint;
+      AColor: TColor);
     procedure DoPaintTo(C: TCanvas);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
@@ -1084,36 +1086,9 @@ begin
       end;
   end;
 
-  //color mark
+  //colored band
   if ATabHilite<>clNone then
-  begin
-    C.Brush.Color:= ATabHilite;
-    case FOptPosition of
-      tabPositionTop:
-        begin
-          C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
-        end;
-      tabPositionBottom:
-        begin
-          C.FillRect(Rect(PL2.X+1, PL2.Y-2, PR2.X, PR2.Y-2+FOptColoredBandSize))
-        end;
-      tabPositionLeft:
-        begin
-          if FOptColoredBandAllowVertical then
-            C.FillRect(Rect(PL1.X+1, PL1.Y+1, PL1.X+1+FOptColoredBandSize, PL2.Y))
-          else
-            C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
-        end;
-      tabPositionRight:
-        begin
-          if FOptColoredBandAllowVertical then
-            C.FillRect(Rect(PR1.X-FOptColoredBandSize, PR1.Y+1, PR1.X, PR2.Y))
-          else
-            C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
-        end;
-    end;
-    C.Brush.Color:= ATabBg;
-  end;
+    DoPaintColoredBand(C, PL1, PL2, PR1, PR2, ATabHilite);
 
   //"close" button
   if ACloseBtn then
@@ -2739,6 +2714,40 @@ begin
   else
     Result:= FOptTabHeight;
 end;
+
+procedure TATTabs.DoPaintColoredBand(C: TCanvas; PL1, PL2, PR1, PR2: TPoint; AColor: TColor);
+var
+  NColor: TColor;
+begin
+  NColor:= C.Brush.Color;
+  C.Brush.Color:= AColor;
+  case FOptPosition of
+    tabPositionTop:
+      begin
+        C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
+      end;
+    tabPositionBottom:
+      begin
+        C.FillRect(Rect(PL2.X+1, PL2.Y-2, PR2.X, PR2.Y-2+FOptColoredBandSize))
+      end;
+    tabPositionLeft:
+      begin
+        if FOptColoredBandAllowVertical then
+          C.FillRect(Rect(PL1.X+1, PL1.Y+1, PL1.X+1+FOptColoredBandSize, PL2.Y))
+        else
+          C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
+      end;
+    tabPositionRight:
+      begin
+        if FOptColoredBandAllowVertical then
+          C.FillRect(Rect(PR1.X-FOptColoredBandSize, PR1.Y+1, PR1.X, PR2.Y))
+        else
+          C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
+      end;
+  end;
+  C.Brush.Color:= NColor;
+end;
+
 
 end.
 
