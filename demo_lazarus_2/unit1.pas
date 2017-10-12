@@ -97,7 +97,16 @@ end;
 
 procedure TForm1.chkColorAllowVertChange(Sender: TObject);
 begin
-  t.OptColoredBandAllowVertical:= chkColorAllowVert.Checked;
+  if chkColorAllowVert.Checked then
+  begin
+    t.OptColoredBandForLeft:= tabPositionLeft;
+    t.OptColoredBandForRight:= tabPositionRight;
+  end
+  else
+  begin
+    t.OptColoredBandForLeft:= tabPositionTop;
+    t.OptColoredBandForRight:= tabPositionTop;
+  end;
   t.Invalidate;
 end;
 

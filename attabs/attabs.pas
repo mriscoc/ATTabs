@@ -260,7 +260,10 @@ type
     FOptSpaceXInner: integer; //space from "x" square edge to "x" mark
     FOptSpaceXSize: integer; //size of "x" mark
     FOptColoredBandSize: integer; //height of "misc color" line
-    FOptColoredBandAllowVertical: boolean;
+    FOptColoredBandForTop: TATTabPosition;
+    FOptColoredBandForBottom: TATTabPosition;
+    FOptColoredBandForLeft: TATTabPosition;
+    FOptColoredBandForRight: TATTabPosition;
     FOptActiveMarkSize: integer;
     FOptArrowSize: integer; //half-size of "arrow" mark
     FOptDropMarkSize: integer;
@@ -502,7 +505,10 @@ type
     property OptSpaceXInner: integer read FOptSpaceXInner write FOptSpaceXInner default _InitOptSpaceXInner;
     property OptSpaceXSize: integer read FOptSpaceXSize write FOptSpaceXSize default _InitOptSpaceXSize;
     property OptColoredBandSize: integer read FOptColoredBandSize write FOptColoredBandSize default _InitOptColoredBandSize;
-    property OptColoredBandAllowVertical: boolean read FOptColoredBandAllowVertical write FOptColoredBandAllowVertical default false;
+    property OptColoredBandForTop: TATTabPosition read FOptColoredBandForTop write FOptColoredBandForTop default tabPositionTop;
+    property OptColoredBandForBottom: TATTabPosition read FOptColoredBandForBottom write FOptColoredBandForBottom default tabPositionBottom;
+    property OptColoredBandForLeft: TATTabPosition read FOptColoredBandForLeft write FOptColoredBandForLeft default tabPositionLeft;
+    property OptColoredBandForRight: TATTabPosition read FOptColoredBandForRight write FOptColoredBandForRight default tabPositionRight;
     property OptActiveMarkSize: integer read FOptActiveMarkSize write FOptActiveMarkSize default _InitOptActiveMarkSize;
     property OptArrowSize: integer read FOptArrowSize write FOptArrowSize default _InitOptArrowSize;
     property OptScrollMarkSizeX: integer read FOptScrollMarkSizeX write FOptScrollMarkSizeX default _InitOptScrollMarkSizeX;
@@ -836,7 +842,10 @@ begin
   FOptSpaceXSize:= _InitOptSpaceXSize;
   FOptArrowSize:= _InitOptArrowSize;
   FOptColoredBandSize:= _InitOptColoredBandSize;
-  FOptColoredBandAllowVertical:= false;
+  FOptColoredBandForTop:= tabPositionTop;
+  FOptColoredBandForBottom:= tabPositionBottom;
+  FOptColoredBandForLeft:= tabPositionLeft;
+  FOptColoredBandForRight:= tabPositionRight;
   FOptActiveMarkSize:= _InitOptActiveMarkSize;
   FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
@@ -2718,33 +2727,33 @@ end;
 procedure TATTabs.DoPaintColoredBand(C: TCanvas; PL1, PL2, PR1, PR2: TPoint; AColor: TColor);
 var
   NColor: TColor;
+  Pos: TATTabPosition;
 begin
   NColor:= C.Brush.Color;
   C.Brush.Color:= AColor;
+
   case FOptPosition of
     tabPositionTop:
-      begin
-        C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
-      end;
+      Pos:= FOptColoredBandForTop;
     tabPositionBottom:
-      begin
-        C.FillRect(Rect(PL2.X+1, PL2.Y-2, PR2.X, PR2.Y-2+FOptColoredBandSize))
-      end;
+      Pos:= FOptColoredBandForBottom;
     tabPositionLeft:
-      begin
-        if FOptColoredBandAllowVertical then
-          C.FillRect(Rect(PL1.X+1, PL1.Y+1, PL1.X+1+FOptColoredBandSize, PL2.Y))
-        else
-          C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
-      end;
+      Pos:= FOptColoredBandForLeft;
     tabPositionRight:
-      begin
-        if FOptColoredBandAllowVertical then
-          C.FillRect(Rect(PR1.X-FOptColoredBandSize, PR1.Y+1, PR1.X, PR2.Y))
-        else
-          C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
-      end;
+      Pos:= FOptColoredBandForRight;
   end;
+
+  case Pos of
+    tabPositionTop:
+      C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
+    tabPositionBottom:
+      C.FillRect(Rect(PL2.X+1, PL2.Y-2, PR2.X, PR2.Y-2+FOptColoredBandSize));
+    tabPositionLeft:
+      C.FillRect(Rect(PL1.X+1, PL1.Y+1, PL1.X+1+FOptColoredBandSize, PL2.Y));
+    tabPositionRight:
+      C.FillRect(Rect(PR1.X-FOptColoredBandSize, PR1.Y+1, PR1.X, PR2.Y));
+  end;
+
   C.Brush.Color:= NColor;
 end;
 
