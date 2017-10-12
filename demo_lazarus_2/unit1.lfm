@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 352
+  Left = 313
   Height = 354
-  Top = 362
-  Width = 624
+  Top = 232
+  Width = 734
   Caption = 'ATTabs position demo'
   ClientHeight = 354
-  ClientWidth = 624
+  ClientWidth = 734
   OnCreate = FormCreate
   Position = poScreenCenter
   LCLVersion = '1.9.0.0'
@@ -51,8 +51,8 @@ object Form1: TForm1
     Left = 312
     Height = 23
     Top = 112
-    Width = 131
-    Caption = 'empty btn layout'
+    Width = 92
+    Caption = 'no buttons'
     OnChange = chkEmptyBtnsChange
     TabOrder = 4
   end
@@ -73,5 +73,14 @@ object Form1: TForm1
     Caption = 'full colored'
     OnChange = chkFullColorChange
     TabOrder = 6
+  end
+  object chkColorAllowVert: TCheckBox
+    Left = 312
+    Height = 23
+    Top = 184
+    Width = 156
+    Caption = 'color band: allow vert'
+    OnChange = chkColorAllowVertChange
+    TabOrder = 7
   end
 end

@@ -13,6 +13,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    chkColorAllowVert: TCheckBox;
     chkFullColor: TCheckBox;
     chkFlat: TCheckBox;
     chkEmptyBtns: TCheckBox;
@@ -20,6 +21,7 @@ type
     chkPosBottom: TRadioButton;
     chkPosLeft: TRadioButton;
     chkPosRight: TRadioButton;
+    procedure chkColorAllowVertChange(Sender: TObject);
     procedure chkEmptyBtnsChange(Sender: TObject);
     procedure chkFlatChange(Sender: TObject);
     procedure chkFullColorChange(Sender: TObject);
@@ -90,6 +92,12 @@ begin
     t.OptButtonLayout:= ''
   else
     t.OptButtonLayout:= '<>,v';
+  t.Invalidate;
+end;
+
+procedure TForm1.chkColorAllowVertChange(Sender: TObject);
+begin
+  t.OptColoredBandAllowVertical:= chkColorAllowVert.Checked;
   t.Invalidate;
 end;
 

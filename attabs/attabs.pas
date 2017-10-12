@@ -260,6 +260,7 @@ type
     FOptSpaceXInner: integer; //space from "x" square edge to "x" mark
     FOptSpaceXSize: integer; //size of "x" mark
     FOptColoredBandSize: integer; //height of "misc color" line
+    FOptColoredBandAllowVertical: boolean;
     FOptActiveMarkSize: integer;
     FOptArrowSize: integer; //half-size of "arrow" mark
     FOptDropMarkSize: integer;
@@ -499,6 +500,7 @@ type
     property OptSpaceXInner: integer read FOptSpaceXInner write FOptSpaceXInner default _InitOptSpaceXInner;
     property OptSpaceXSize: integer read FOptSpaceXSize write FOptSpaceXSize default _InitOptSpaceXSize;
     property OptColoredBandSize: integer read FOptColoredBandSize write FOptColoredBandSize default _InitOptColoredBandSize;
+    property OptColoredBandAllowVertical: boolean read FOptColoredBandAllowVertical write FOptColoredBandAllowVertical default false;
     property OptActiveMarkSize: integer read FOptActiveMarkSize write FOptActiveMarkSize default _InitOptActiveMarkSize;
     property OptArrowSize: integer read FOptArrowSize write FOptArrowSize default _InitOptArrowSize;
     property OptScrollMarkSizeX: integer read FOptScrollMarkSizeX write FOptScrollMarkSizeX default _InitOptScrollMarkSizeX;
@@ -832,6 +834,7 @@ begin
   FOptSpaceXSize:= _InitOptSpaceXSize;
   FOptArrowSize:= _InitOptArrowSize;
   FOptColoredBandSize:= _InitOptColoredBandSize;
+  FOptColoredBandAllowVertical:= false;
   FOptActiveMarkSize:= _InitOptActiveMarkSize;
   FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
@@ -1085,10 +1088,30 @@ begin
   if ATabHilite<>clNone then
   begin
     C.Brush.Color:= ATabHilite;
-    if FOptPosition=tabPositionBottom then
-      C.FillRect(Rect(PL2.X+1, PL2.Y-2, PR2.X, PR2.Y-2+FOptColoredBandSize))
-    else
-      C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
+    case FOptPosition of
+      tabPositionTop:
+        begin
+          C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
+        end;
+      tabPositionBottom:
+        begin
+          C.FillRect(Rect(PL2.X+1, PL2.Y-2, PR2.X, PR2.Y-2+FOptColoredBandSize))
+        end;
+      tabPositionLeft:
+        begin
+          if FOptColoredBandAllowVertical then
+            C.FillRect(Rect(PL1.X+1, PL1.Y+1, PL1.X+1+FOptColoredBandSize, PL2.Y))
+          else
+            C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
+        end;
+      tabPositionRight:
+        begin
+          if FOptColoredBandAllowVertical then
+            C.FillRect(Rect(PR1.X-FOptColoredBandSize, PR1.Y+1, PR1.X, PR2.Y))
+          else
+            C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
+        end;
+    end;
     C.Brush.Color:= ATabBg;
   end;
 
