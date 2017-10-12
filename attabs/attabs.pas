@@ -1096,8 +1096,9 @@ begin
   end;
 
   //colored band
-  if ATabHilite<>clNone then
-    DoPaintColoredBand(C, PL1, PL2, PR1, PR2, ATabHilite);
+  if not FOptShowEntireColor then
+    if ATabHilite<>clNone then
+      DoPaintColoredBand(C, PL1, PL2, PR1, PR2, ATabHilite);
 
   //"close" button
   if ACloseBtn then
