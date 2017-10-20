@@ -944,6 +944,7 @@ var
   ElemType: TATTabElemType;
   AInvert, NAngle: integer;
   TempCaption: TATTabString;
+  Extent: TSize;
   bActive, bNeedMoreSpace: boolean;
 begin
   //optimize for 200 tabs
@@ -1019,13 +1020,14 @@ begin
       C.Font.Color:= FColorFontModified;
 
     TempCaption:= IfThen(AModified, FOptShowModifiedText) + ACaption;
+    Extent:= C.TextExtent(TempCaption);
 
-    NIndentTop:= (FOptTabHeight - C.TextHeight('Wj')) div 2 + 1;
+    NIndentTop:= (FOptTabHeight-Extent.cy) div 2 + 1;
 
     if FOptCenterCaption then
       RectText.Left:= Max(
         RectText.Left,
-        (RectText.Left+RectText.Right-C.TextWidth(TempCaption)) div 2
+        (RectText.Left+RectText.Right-Extent.cx) div 2
         );
 
     {$ifdef WIDE}
