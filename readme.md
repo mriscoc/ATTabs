@@ -2,7 +2,7 @@ ATTabs
 ======
 
 Delphi/Lazarus component for lite tabs. 
-OS independant, fully custom drawn.
+OS independent, fully custom drawn.
 
 - can show x-icons in many styles
 - can show plus pseudo-tab
@@ -19,6 +19,13 @@ Picture of demo:
 
 ![img](img/demo.png?raw=true)
 
-Part of help is at the Wiki page of github.
+#### Documentation
+
+ * [Options](wiki/options.md)
+ * [Methods](wiki/methods.md)
+ * [Events](wiki/events.md)
+ * [Create sample](wiki/sample_create.md)
+
+#### License
 
 ATTabs is dual-licensed: MPL 2.0 and LGPL.
