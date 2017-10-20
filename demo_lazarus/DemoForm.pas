@@ -187,7 +187,10 @@ end;
 
 procedure TForm1.chkCenterCaptionChange(Sender: TObject);
 begin
-  t.OptCenterCaption:= chkCenterCaption.Checked;
+  if chkCenterCaption.Checked then
+    t.OptCaptionAlignment:= taCenter
+  else
+    t.OptCaptionAlignment:= taLeftJustify;
   t.Invalidate;
 end;
 
