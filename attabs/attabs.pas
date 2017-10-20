@@ -107,7 +107,6 @@ type
 type
   TATTabIconPosition = (
     aipIconWithText,
-    aipIconOnlyLefter,
     aipIconOnlyCentered,
     aipIconAboveTextCentered
     );
@@ -990,13 +989,31 @@ begin
   //imagelist
   if Assigned(FImages) then
     if (AImageIndex>=0) and (AImageIndex<FImages.Count) then
-    begin
-      FImages.Draw(C,
-        RectText.Left-2,
-        (RectText.Top + RectText.Bottom - FImages.Height) div 2,
-        AImageIndex);
-      Inc(RectText.Left, FImages.Width);
-    end;
+      case FOptIconPosition of
+        aipIconWithText:
+          begin
+            FImages.Draw(C,
+              RectText.Left-2,
+              (RectText.Top + RectText.Bottom - FImages.Height) div 2,
+              AImageIndex);
+            Inc(RectText.Left, FImages.Width);
+          end;
+        aipIconOnlyCentered:
+          begin
+            FImages.Draw(C,
+              (RectText.Left + RectText.Right - FImages.Width) div 2,
+              (RectText.Top + RectText.Bottom - FImages.Height) div 2,
+              AImageIndex);
+          end;
+        aipIconAboveTextCentered:
+          begin
+            FImages.Draw(C,
+              (RectText.Left + RectText.Right - FImages.Width) div 2,
+              RectText.Top + FOptColoredBandSize,
+              AImageIndex);
+            Inc(RectText.Top, FImages.Height);
+          end;
+      end;
 
   //left triangle
   PL1:= Point(ARect.Left+NAngle*AInvert, ARect.Top);
@@ -1034,7 +1051,7 @@ begin
     TempCaption:= IfThen(AModified, FOptShowModifiedText) + ACaption;
     Extent:= C.TextExtent(TempCaption);
 
-    NIndentTop:= (FOptTabHeight-Extent.cy) div 2 + 1;
+    NIndentTop:= (RectText.Bottom-RectText.Top-Extent.cy) div 2 + 1;
 
     case FOptCaptionAlignment of
       taCenter:

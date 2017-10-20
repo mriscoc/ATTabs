@@ -18,6 +18,7 @@ type
     chkCenterCaption: TCheckBox;
     chkShowFlat: TCheckBox;
     comboLayout: TComboBox;
+    comboIconPos: TComboBox;
     comboShowX: TComboBox;
     EditInfo: TEdit;
     chkShowPlus: TCheckBox;
@@ -26,6 +27,7 @@ type
     chkNums: TCheckBox;
     Label4: TLabel;
     Label5: TLabel;
+    Label6: TLabel;
     labStatus: TLabel;
     btnModify: TButton;
     Label2: TLabel;
@@ -37,6 +39,7 @@ type
     procedure chkShowFlatChange(Sender: TObject);
     procedure chkShowFullColorChange(Sender: TObject);
     procedure chkShowPlusChange(Sender: TObject);
+    procedure comboIconPosChange(Sender: TObject);
     procedure comboLayoutChange(Sender: TObject);
     procedure comboShowXChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -102,6 +105,8 @@ begin
   t.OptMouseDoubleClickPlus:= true;
   t.OptShowXButtons:= atbxShowAll;
   t.OptTabAngle:= 0;
+  t.Height:= 48;
+  t.OptTabHeight:= 38;
   t.DragMode:= dmAutomatic; //enable drag-drop
   t.Images:= ImageList1;
 
@@ -221,6 +226,12 @@ end;
 procedure TForm1.chkShowPlusChange(Sender: TObject);
 begin
   t.OptShowPlusTab:= chkShowPlus.Checked;
+  t.Invalidate;
+end;
+
+procedure TForm1.comboIconPosChange(Sender: TObject);
+begin
+  t.OptIconPosition:= TATTabIconPosition(comboIconPos.ItemIndex);
   t.Invalidate;
 end;
 
