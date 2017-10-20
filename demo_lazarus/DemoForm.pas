@@ -15,6 +15,7 @@ type
     btnLeft: TButton;
     btnRight: TButton;
     btnStress: TButton;
+    chkCenterCaption: TCheckBox;
     chkShowFlat: TCheckBox;
     comboLayout: TComboBox;
     comboShowX: TComboBox;
@@ -30,6 +31,7 @@ type
     chkShowFullColor: TCheckBox;
     Label3: TLabel;
     procedure btnStressClick(Sender: TObject);
+    procedure chkCenterCaptionChange(Sender: TObject);
     procedure chkNumsChange(Sender: TObject);
     procedure chkShowFlatChange(Sender: TObject);
     procedure chkShowFullColorChange(Sender: TObject);
@@ -181,6 +183,12 @@ begin
     t.DeleteTab(i, false, false);
   for i:= 1 to 300 do
     t.AddTab(-1, IntToStr(i));
+end;
+
+procedure TForm1.chkCenterCaptionChange(Sender: TObject);
+begin
+  t.OptCenterCaption:= chkCenterCaption.Checked;
+  t.Invalidate;
 end;
 
 procedure TForm1.chkNumsChange(Sender: TObject);

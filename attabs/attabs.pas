@@ -245,6 +245,7 @@ type
     FOptButtonSize: integer;
     FOptButtonLayout: string;
 
+    FOptCenterCaption: boolean;
     FOptTabAngle: integer; //angle of tab border: from 0 (vertcal border) to any size
     FOptUseAngleForMaxTabs: integer; //maximal tab count, for which TabAngle is used (else used 0)
     FOptTabHeight: integer;
@@ -495,6 +496,7 @@ type
     property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal default _InitOptTabWidthMinimal;
     property OptTabWidthMinimalHidesX: integer read FOptTabWidthMinimalHidesX write FOptTabWidthMinimalHidesX default _InitOptTabWidthMinimalHidesX;
     property OptTabAngle: integer read FOptTabAngle write FOptTabAngle default _InitOptTabAngle;
+    property OptCenterCaption: boolean read FOptCenterCaption write FOptCenterCaption default false;
     property OptUseAngleForMaxTabs: integer read FOptUseAngleForMaxTabs write FOptUseAngleForMaxTabs default _InitOptUseAngleForMaxTabs;
     property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
     property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
@@ -1019,6 +1021,12 @@ begin
     TempCaption:= IfThen(AModified, FOptShowModifiedText) + ACaption;
 
     NIndentTop:= (FOptTabHeight - C.TextHeight('Wj')) div 2 + 1;
+
+    if FOptCenterCaption then
+      RectText.Left:= Max(
+        RectText.Left,
+        (RectText.Left+RectText.Right-C.TextWidth(TempCaption)) div 2
+        );
 
     {$ifdef WIDE}
     ExtTextOutW(C.Handle,
