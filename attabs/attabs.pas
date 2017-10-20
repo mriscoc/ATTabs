@@ -106,9 +106,11 @@ type
 
 type
   TATTabIconPosition = (
-    aipIconWithText,
-    aipIconOnlyCentered,
-    aipIconAboveTextCentered
+    aipIconLefterThanText,
+    aipIconRighterThanText,
+    aipIconCentered,
+    aipIconAboveTextCentered,
+    aipIconBelowTextCentered
     );
 
 type
@@ -505,7 +507,7 @@ type
     property OptTabWidthMinimalHidesX: integer read FOptTabWidthMinimalHidesX write FOptTabWidthMinimalHidesX default _InitOptTabWidthMinimalHidesX;
     property OptTabAngle: integer read FOptTabAngle write FOptTabAngle default _InitOptTabAngle;
     property OptCaptionAlignment: TAlignment read FOptCaptionAlignment write FOptCaptionAlignment default taLeftJustify;
-    property OptIconPosition: TATTabIconPosition read FOptIconPosition write FOptIconPosition default aipIconWithText;
+    property OptIconPosition: TATTabIconPosition read FOptIconPosition write FOptIconPosition default aipIconLefterThanText;
     property OptUseAngleForMaxTabs: integer read FOptUseAngleForMaxTabs write FOptUseAngleForMaxTabs default _InitOptUseAngleForMaxTabs;
     property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
     property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
@@ -838,7 +840,7 @@ begin
   ApplyButtonLayout;
   FOptButtonSize:= _InitOptButtonSize;
   FOptCaptionAlignment:= taLeftJustify;
-  FOptIconPosition:= aipIconWithText;
+  FOptIconPosition:= aipIconLefterThanText;
   FOptTabAngle:= _InitOptTabAngle;
   FOptUseAngleForMaxTabs:= _InitOptUseAngleForMaxTabs;
   FOptTabHeight:= _InitOptTabHeight;
@@ -990,15 +992,23 @@ begin
   if Assigned(FImages) then
     if (AImageIndex>=0) and (AImageIndex<FImages.Count) then
       case FOptIconPosition of
-        aipIconWithText:
+        aipIconLefterThanText:
           begin
             FImages.Draw(C,
-              RectText.Left-2,
+              RectText.Left - 2,
               (RectText.Top + RectText.Bottom - FImages.Height) div 2,
               AImageIndex);
             Inc(RectText.Left, FImages.Width);
           end;
-        aipIconOnlyCentered:
+        aipIconRighterThanText:
+          begin
+            FImages.Draw(C,
+              RectText.Right - FImages.Width + 2,
+              (RectText.Top + RectText.Bottom - FImages.Height) div 2,
+              AImageIndex);
+            Dec(RectText.Right, FImages.Width);
+          end;
+        aipIconCentered:
           begin
             FImages.Draw(C,
               (RectText.Left + RectText.Right - FImages.Width) div 2,
@@ -1012,6 +1022,14 @@ begin
               RectText.Top + FOptColoredBandSize,
               AImageIndex);
             Inc(RectText.Top, FImages.Height);
+          end;
+        aipIconBelowTextCentered:
+          begin
+            FImages.Draw(C,
+              (RectText.Left + RectText.Right - FImages.Width) div 2,
+              RectText.Bottom - FImages.Height,
+              AImageIndex);
+            Dec(RectText.Bottom, FImages.Height);
           end;
       end;
 

@@ -240,9 +240,11 @@ object Form1: TForm1
     DropDownCount = 20
     ItemHeight = 0
     Items.Strings = (
-      'icon with text'
+      'icon lefter than text'
+      'icon righter than text'
       'icon centered'
       'icon above text'
+      'icon below text'
     )
     OnChange = comboIconPosChange
     Style = csDropDownList
