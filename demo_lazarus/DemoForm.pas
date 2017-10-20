@@ -21,6 +21,7 @@ type
     comboShowX: TComboBox;
     EditInfo: TEdit;
     chkShowPlus: TCheckBox;
+    ImageList1: TImageList;
     Label1: TLabel;
     chkNums: TCheckBox;
     Label4: TLabel;
@@ -102,11 +103,12 @@ begin
   t.OptShowXButtons:= atbxShowAll;
   t.OptTabAngle:= 0;
   t.DragMode:= dmAutomatic; //enable drag-drop
+  t.Images:= ImageList1;
 
   t.AddTab(-1, 'Tab');
-  t.AddTab(-1, 'Tab middle len', nil, false, clGreen);
-  t.AddTab(-1, 'Tab ____________', nil, false, clBlue);
-  t.AddTab(-1, 'I');
+  t.AddTab(-1, 'Tab middle len', nil, false, clGreen, 1);
+  t.AddTab(-1, 'Tab ____________', nil, false, clBlue, 2);
+  t.AddTab(-1, 'I', nil, false, clNone, 0);
   t.AddTab(-1, 'I');
   t.AddTab(-1, 'I');
   t.AddTab(-1, 'I');

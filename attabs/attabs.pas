@@ -105,6 +105,14 @@ type
     );
 
 type
+  TATTabIconPosition = (
+    aipIconWithText,
+    aipIconOnlyLefter,
+    aipIconOnlyCentered,
+    aipIconAboveTextCentered
+    );
+
+type
   TATTabOverEvent = procedure (Sender: TObject; ATabIndex: integer) of object;
   TATTabCloseEvent = procedure (Sender: TObject; ATabIndex: integer;
     var ACanClose, ACanContinue: boolean) of object;
@@ -246,6 +254,7 @@ type
     FOptButtonLayout: string;
 
     FOptCaptionAlignment: TAlignment;
+    FOptIconPosition: TATTabIconPosition;
     FOptTabAngle: integer; //angle of tab border: from 0 (vertcal border) to any size
     FOptUseAngleForMaxTabs: integer; //maximal tab count, for which TabAngle is used (else used 0)
     FOptTabHeight: integer;
@@ -497,6 +506,7 @@ type
     property OptTabWidthMinimalHidesX: integer read FOptTabWidthMinimalHidesX write FOptTabWidthMinimalHidesX default _InitOptTabWidthMinimalHidesX;
     property OptTabAngle: integer read FOptTabAngle write FOptTabAngle default _InitOptTabAngle;
     property OptCaptionAlignment: TAlignment read FOptCaptionAlignment write FOptCaptionAlignment default taLeftJustify;
+    property OptIconPosition: TATTabIconPosition read FOptIconPosition write FOptIconPosition default aipIconWithText;
     property OptUseAngleForMaxTabs: integer read FOptUseAngleForMaxTabs write FOptUseAngleForMaxTabs default _InitOptUseAngleForMaxTabs;
     property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
     property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
@@ -828,6 +838,8 @@ begin
   FOptButtonLayout:= _InitOptButtonLayout;
   ApplyButtonLayout;
   FOptButtonSize:= _InitOptButtonSize;
+  FOptCaptionAlignment:= taLeftJustify;
+  FOptIconPosition:= aipIconWithText;
   FOptTabAngle:= _InitOptTabAngle;
   FOptUseAngleForMaxTabs:= _InitOptUseAngleForMaxTabs;
   FOptTabHeight:= _InitOptTabHeight;
@@ -852,7 +864,6 @@ begin
   FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
   FOptDropMarkSize:= _InitOptDropMarkSize;
-  FOptCaptionAlignment:= taLeftJustify;
 
   FOptShowFlat:= _InitOptShowFlat;
   FOptPosition:= _InitOptPosition;
