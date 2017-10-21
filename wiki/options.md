@@ -135,11 +135,6 @@ OptShowFlat: boolean
 
 Activates flat look: in this mode tab edges and bottom lines are not painted, and tabs have the same BG color as control's BG color.
 
-OptPosition: TATTabPosition
-======
-
-Enum, one of visual kinds for tabs: at top, at bottom (at left/right - not implemented yet).
-
 OptShowScrollMark: boolean
 ======
 
