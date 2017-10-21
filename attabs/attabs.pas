@@ -52,6 +52,7 @@ type
     TabRect: TRect;
     TabImageIndex: integer;
     TabPopupMenu: TPopupMenu;
+    TabSpecial: boolean;
     constructor Create; virtual;
   end;
 
