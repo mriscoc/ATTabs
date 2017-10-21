@@ -49,10 +49,11 @@ type
     TabObject: TObject;
     TabColor: TColor;
     TabModified: boolean;
+    TabSpecial: boolean;
     TabRect: TRect;
     TabImageIndex: integer;
     TabPopupMenu: TPopupMenu;
-    TabSpecial: boolean;
+    TabFontStyle: TFontStyles;
     constructor Create; virtual;
   end;
 
@@ -359,7 +360,7 @@ type
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
       ATabBg, ATabBorder, ATabBorderLow, ATabHilite, ATabCloseBg,
       ATabCloseBorder, ATabCloseXMark: TColor; ACloseBtn, AModified: boolean;
-      AImageIndex: integer);
+      AImageIndex: integer; AFontStyle: TFontStyles);
     procedure DoPaintArrowTo(C: TCanvas; ATyp: TATTabTriangle; ARect: TRect;
       AColorArr, AColorBg: TColor);
     procedure DoPaintUserButtons(C: TCanvas);
@@ -792,6 +793,7 @@ begin
   TabColor:= clNone;
   TabImageIndex:= -1;
   TabPopupMenu:= nil;
+  TabFontStyle:= [];
 end;
 
 { TATTabs }
@@ -954,7 +956,8 @@ procedure TATTabs.DoPaintTabTo(
   C: TCanvas; ARect: TRect; const ACaption: TATTabString;
   ATabBg, ATabBorder, ATabBorderLow, ATabHilite, ATabCloseBg, ATabCloseBorder, ATabCloseXMark: TColor;
   ACloseBtn, AModified: boolean;
-  AImageIndex: integer);
+  AImageIndex: integer;
+  AFontStyle: TFontStyles);
 var
   PL1, PL2, PR1, PR2: TPoint;
   RectText: TRect;
@@ -1070,6 +1073,7 @@ begin
     C.Font.Assign(Self.Font);
     if AModified then
       C.Font.Color:= FColorFontModified;
+    C.Font.Style:= AFontStyle;
 
     TempCaption:= IfThen(AModified, FOptShowModifiedText) + ACaption;
     Extent:= C.TextExtent(TempCaption);
@@ -1515,7 +1519,8 @@ begin
         NColorXMark,
         false,
         false,
-        -1 //no icon
+        -1, //no icon
+        []
         );
       DrawPlusSign(C, RRect, FOptArrowSize, Font.Color);
       DoPaintAfter(ElemType, -1, C, RRect);
@@ -1546,7 +1551,8 @@ begin
           NColorXMark,
           IsShowX(i),
           Data.TabModified,
-          Data.TabImageIndex
+          Data.TabImageIndex,
+          Data.TabFontStyle
           );
         DoPaintAfter(ElemType, i, C, RRect);
       end;
@@ -1572,7 +1578,8 @@ begin
         NColorXMark,
         IsShowX(i),
         Data.TabModified,
-        Data.TabImageIndex
+        Data.TabImageIndex,
+        Data.TabFontStyle
         );
       DoPaintAfter(aeTabActive, i, C, RRect);
     end;  

@@ -15,6 +15,7 @@ type
     btnLeft: TButton;
     btnRight: TButton;
     btnStress: TButton;
+    btnToggleSpecial: TButton;
     chkCenterCaption: TCheckBox;
     chkShowFlat: TCheckBox;
     comboLayout: TComboBox;
@@ -34,6 +35,7 @@ type
     chkShowFullColor: TCheckBox;
     Label3: TLabel;
     procedure btnStressClick(Sender: TObject);
+    procedure btnToggleSpecialClick(Sender: TObject);
     procedure chkCenterCaptionChange(Sender: TObject);
     procedure chkNumsChange(Sender: TObject);
     procedure chkShowFlatChange(Sender: TObject);
@@ -190,6 +192,22 @@ begin
     t.DeleteTab(i, false, false);
   for i:= 1 to 300 do
     t.AddTab(-1, IntToStr(i));
+end;
+
+procedure TForm1.btnToggleSpecialClick(Sender: TObject);
+var
+  d: TATTabData;
+begin
+  d:= t.GetTabData(t.tabIndex);
+  if d=nil then Exit;
+
+  d.TabSpecial:= not d.TabSpecial;
+  if d.TabSpecial then
+    d.TabFontStyle:= [fsItalic, fsBold]
+  else
+    d.TabFontStyle:= [];
+
+  t.Invalidate;
 end;
 
 procedure TForm1.chkCenterCaptionChange(Sender: TObject);

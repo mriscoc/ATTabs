@@ -50,7 +50,7 @@ object Form1: TForm1
     Left = 136
     Height = 25
     Top = 256
-    Width = 115
+    Width = 113
     Caption = 'add after current'
     OnClick = btnAddClick
     TabOrder = 7
@@ -92,9 +92,9 @@ object Form1: TForm1
     TabOrder = 13
   end
   object EditInfo: TEdit
-    Left = 256
+    Left = 416
     Height = 27
-    Top = 320
+    Top = 288
     Width = 225
     OnChange = EditInfoChange
     TabOrder = 14
@@ -249,6 +249,15 @@ object Form1: TForm1
     OnChange = comboIconPosChange
     Style = csDropDownList
     TabOrder = 15
+  end
+  object btnToggleSpecial: TButton
+    Left = 136
+    Height = 25
+    Top = 320
+    Width = 113
+    Caption = 'toggle special'
+    OnClick = btnToggleSpecialClick
+    TabOrder = 16
   end
   object ImageList1: TImageList
     left = 624
