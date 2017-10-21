@@ -1,7 +1,7 @@
 OptButtonLayout: string
 ======
 
-This is str of few chars. One char is one button at left or right side. Comma separates buttons for left/right, e.g. `"<>,v+"` is 2 buttons `<>` on left and 2 buttons `v+` on right.
+String of few chars, one char is one button at left or right side. Comma separates buttons for left/right, e.g. `"<>,v+"` is 2 buttons `<`, `>` on left and 2 buttons `v`, `+` on right. If value is empty, buttons not painted at all, this gives more space for tabs for left/right OptPosition.
 
 * `<` - scroll tabs left
 * `>` - scroll tabs right
@@ -13,7 +13,7 @@ This is str of few chars. One char is one button at left or right side. Comma se
 OptButtonSize: integer
 ======
 
-Width of one button, from OptButtonLayout.
+Width of one button, from OptButtonLayout. Height of buttons is OptTabHeight.
 
 OptPosition: enum
 ======
@@ -31,7 +31,7 @@ You can set icon above text, icon below text, etc.
 OptTabHeight: integer
 ======
 
-Height of tab-rect area. Usually smaller than control height to show indents on top/bottom.
+Height of tab-rect area. Usually smaller than control height to show indents above/below tabs.
 
 OptTabWidthNormal: integer
 ======
@@ -41,12 +41,12 @@ Normal width of a tab, when small count of tabs is created.
 OptTabWidthMinimal: integer
 ======
 
-Smallest width of a tab, used when lot of tabs is created (and tabs are shrinked).
+Smallest width of a tab, used when lot of tabs is created (so some tabs don't fit).
 
 OptTabWidthMinimalHidesX: integer
 ======
 
-When real width of a tab becomes smaller than option, X mark hides on all tabs.
+When current tab width (for top/bottom OptPosition) becomes smaller than option, X mark hides on all tabs.
 
 OptTabAngle: integer
 ======
@@ -54,7 +54,7 @@ OptTabAngle: integer
 Sets angled tabs, if value>0. Tabs paint much faster, if option is 0. It is not angle in radians, it is one side of triangle. 
 
 Even on Linux, 10 tabs with angles paint slowly, when mouse moves fast over control.
-Also don't use angled tabs on macOS, they paint bad.
+Also don't use angled tabs on macOS, they paint bad on Retina canvas.
 
 OptUseAngleForMaxTabs: integer
 ======
@@ -68,42 +68,43 @@ Indent (pixels) between nearest tabs.
 
 OptSpaceBetweenIconCaption: integer
 ======
-Indent (pixels) between icon (from ImageList) and caption. Both horz and vert.
+
+Indent (pixels) between icon (from ImageList) and caption. For all icon positions.
 
 OptSpaceInitial: integer
 ======
 
-Indent (pix) before 1st tab.
+Indent before first tab, for top/bottom OptPosition.
 
 OptSpaceBeforeText: integer
 ======
 
-Indent (pix) between tab caption edge and tab rect. When caption is long, indent is smaller.
+Indent between tab caption edge and tab rect. When caption is long, indent is smaller.
 
 OptSpacer: integer
 ======
 
-Indent (pix) between tab rects and edge of control (one of edges, depends on OptPosition).
+Indent between tab rects and edge of control (one of edges, depends on OptPosition).
 
 OptSpacer2: integer
 ======
 
-Only for left/right OptPosition. Indent between tab rects and another side of control. For top/bottom OptPosition, indent is auto-calculated.
+Only for left/right OptPosition. Indent between tab rects and another side of control. For top/bottom OptPosition, such indent is auto-calculated.
 
 OptSpaceXRight: integer
 ======
 
-Indent (pix) between X icon edge and right side of tab rect.
+Indent between X icon edge and right side of tab rect.
 
 OptSpaceXInner: integer
 ======
 
-Indent (pix) between X icon edge and X lines.
+Indent between X icon edge and X lines.
 
 OptSpaceXSize: integer
 ======
 
-Size (pix) of X icon lines.
+Size of X icon lines.
 
 OptColoredBandSize: integer
 ======
