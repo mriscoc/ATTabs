@@ -146,40 +146,41 @@ OptShowDropMark: boolean
 
 Allow to show drop mark. When drag-drop is active.
 
-OptShowXButtons: TATTabShowClose
+OptShowXButtons: enum
 ======
 
-Allow to show X icons on tabs. Several variants here: show all, none, for active tab, for mouse-over tab.
+How to show X icons on tabs.
+Several variants: show all, don't show, show for active tab, show for mouse-over tab.
 
 OptShowPlusTab: boolean
 ======
 
-Allow to show "plus" pseudo-tab on right. It generates event on click.
+Allow to show "plus" pseudo-tab. It generates event on click.
 
 OptShowArrowsNear: boolean
 ======
 
 Show left/right scroll arrows near to each other. Usually they are shown in the center of buttons, not near.
 
-OptShowModifiedText: TATTabString
+OptShowModifiedText: string
 ======
 
-Str, which is shown with tab caption, for modified tab. (Modified: bool field in the TATTabData).
+String to shown before tab caption, for modified tab. Modified: bool field in the TATTabData.
 
 OptShowBorderActiveLow: boolean
 ======
 
-Allow to show horiz line, below active tab. Usually not needed.
+Allow to show horiz line, below active tab (top/bottom OptPosition). Usually not needed.
 
 OptShowEntireColor: boolean
 ======
 
-Allow to colorize full tab rect, for colored tabs. (Color of tab: field in the TATTabData).
+Allow to colorize full tab rect, for colored tabs. Color of tab: field in the TATTabData.
 
 OptShowNumberPrefix: TATTabString
 ======
 
-String with `%d`, which makes numbered prefix for all tabs. Eg, `'%d) '` makes prefix with number and bracket. If empty, no prefix.
+String with `%d`, which makes numbered prefix for all tabs. Eg, `'%d) '` makes prefix with number and bracket. If empty, no prefix used.
 
 OptMouseMiddleClickClose: boolean
 ======
