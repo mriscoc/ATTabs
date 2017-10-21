@@ -22,6 +22,12 @@ One of view styles: top/bottom/left/right.
 If top - control should have Align=alTop; if bottom - Align=alBottom; etc.
 In left/right styles, tab text is painted horizontally anyway.
 
+OptIconPosition: enum
+======
+
+Position of icon (from ImageList) relative to caption of tab.
+You can set icon above text, icon below text, etc.
+
 OptTabHeight: integer
 ======
 
@@ -59,6 +65,10 @@ OptSpaceBetweenTabs: integer
 ======
 
 Indent (pixels) between nearest tabs.
+
+OptSpaceBetweenIconCaption: integer
+======
+Indent (pixels) between icon (from ImageList) and caption. Both horz and vert.
 
 OptSpaceInitial: integer
 ======

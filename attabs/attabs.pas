@@ -186,6 +186,7 @@ const
   _InitOptSpaceInitial = 5;
   _InitOptSpaceBeforeText = 6;
   _InitOptSpaceBetweenTabs = 0;
+  _InitOptSpaceBetweenIconCaption = 0;
   _InitOptSpacer = 4;
   _InitOptSpacer2 = 15;
   _InitOptSpaceXRight = 10;
@@ -261,6 +262,7 @@ type
     FOptTabWidthNormal: integer; //tab maximal width (used when only few tabs)
     FOptTabWidthMinimalHidesX: integer; //tab minimal width, after which "x" mark hides for inactive tabs
     FOptSpaceBetweenTabs: integer; //space between nearest tabs (no need for angled tabs)
+    FOptSpaceBetweenIconCaption: integer;
     FOptSpaceInitial: integer; //space between first tab and left control edge
     FOptSpaceBeforeText: integer; //space between text and tab left edge
     FOptSpacer: integer; //height of top empty space (colored with bg)
@@ -508,6 +510,7 @@ type
     property OptTabAngle: integer read FOptTabAngle write FOptTabAngle default _InitOptTabAngle;
     property OptUseAngleForMaxTabs: integer read FOptUseAngleForMaxTabs write FOptUseAngleForMaxTabs default _InitOptUseAngleForMaxTabs;
     property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
+    property OptSpaceBetweenIconCaption: integer read FOptSpaceBetweenIconCaption write FOptSpaceBetweenIconCaption default _InitOptSpaceBetweenIconCaption;
     property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
     property OptSpaceBeforeText: integer read FOptSpaceBeforeText write FOptSpaceBeforeText default _InitOptSpaceBeforeText;
     property OptSpacer: integer read FOptSpacer write FOptSpacer default _InitOptSpacer;
@@ -850,6 +853,7 @@ begin
   FOptSpaceInitial:= _InitOptSpaceInitial;
   FOptSpaceBeforeText:= _InitOptSpaceBeforeText;
   FOptSpaceBetweenTabs:= _InitOptSpaceBetweenTabs;
+  FOptSpaceBetweenIconCaption:= _InitOptSpaceBetweenIconCaption;
   FOptSpacer:= _InitOptSpacer;
   FOptSpacer2:= _InitOptSpacer2;
   FOptSpaceXRight:= _InitOptSpaceXRight;
@@ -998,7 +1002,7 @@ begin
               RectText.Left - 2,
               (RectText.Top + RectText.Bottom - FImages.Height) div 2,
               AImageIndex);
-            Inc(RectText.Left, FImages.Width);
+            Inc(RectText.Left, FImages.Width+FOptSpaceBetweenIconCaption);
           end;
         aipIconRighterThanText:
           begin
@@ -1006,7 +1010,7 @@ begin
               RectText.Right - FImages.Width + 2,
               (RectText.Top + RectText.Bottom - FImages.Height) div 2,
               AImageIndex);
-            Dec(RectText.Right, FImages.Width);
+            Dec(RectText.Right, FImages.Width+FOptSpaceBetweenIconCaption);
           end;
         aipIconCentered:
           begin
@@ -1021,7 +1025,7 @@ begin
               (RectText.Left + RectText.Right - FImages.Width) div 2,
               RectText.Top + FOptColoredBandSize,
               AImageIndex);
-            Inc(RectText.Top, FImages.Height);
+            Inc(RectText.Top, FImages.Height+FOptSpaceBetweenIconCaption);
           end;
         aipIconBelowTextCentered:
           begin
@@ -1029,7 +1033,7 @@ begin
               (RectText.Left + RectText.Right - FImages.Width) div 2,
               RectText.Bottom - FImages.Height,
               AImageIndex);
-            Dec(RectText.Bottom, FImages.Height);
+            Dec(RectText.Bottom, FImages.Height+FOptSpaceBetweenIconCaption);
           end;
       end;
 
