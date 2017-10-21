@@ -349,8 +349,8 @@ type
     procedure DoPaintArrowRight(C: TCanvas);
     procedure DoPaintButtonClose(C: TCanvas);
     procedure DoPaintButtonPlus(C: TCanvas);
-    procedure DoPaintColoredBand(C: TCanvas; PL1, PL2, PR1, PR2: TPoint;
-      AColor: TColor);
+    procedure DoPaintButtonsBG(C: TCanvas);
+    procedure DoPaintColoredBand(C: TCanvas; PL1, PL2, PR1, PR2: TPoint; AColor: TColor);
     procedure DoPaintTo(C: TCanvas);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
@@ -1573,6 +1573,9 @@ begin
     end;  
   end;
 
+  //button back
+  DoPaintButtonsBG(C);
+  //buttons
   DoPaintArrowLeft(C);
   DoPaintArrowRight(C);
   DoPaintArrowDown(C);
@@ -2822,6 +2825,20 @@ begin
   C.Brush.Color:= NColor;
 end;
 
+procedure TATTabs.DoPaintButtonsBG(C: TCanvas);
+var
+  RL, RR: TRect;
+begin
+  if FOptPosition in [atpLeft, atpRight] then
+    if FOptButtonLayout<>'' then
+    begin
+      RL:= GetRectOfButtonIndex(0, true);
+      RR:= GetRectOfButtonIndex(0, false);
+      DoPaintBgTo(C, Rect(
+        RL.Left, 0,
+        RR.Right, FOptTabHeight));
+    end;
+end;
 
 end.
 
