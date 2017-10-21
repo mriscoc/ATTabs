@@ -74,7 +74,8 @@ Indent (pixels) between icon (from ImageList) and caption. For all icon position
 OptSpaceInitial: integer
 ======
 
-Indent before first tab, for top/bottom OptPosition.
+Indent before first tab.
+For left/right OptPosition, it's used only if OptButtonLayout is empty.
 
 OptSpaceBeforeText: integer
 ======
