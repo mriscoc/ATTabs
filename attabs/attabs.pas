@@ -417,7 +417,8 @@ type
       AModified: boolean = false;
       AColor: TColor = clNone;
       AImageIndex: integer = -1;
-      APopupMenu: TPopupMenu = nil);
+      APopupMenu: TPopupMenu = nil;
+      AFontStyle: TFontStyles = []);
     procedure Clear;
     function DeleteTab(AIndex: integer; AAllowEvent, AWithCancelBtn: boolean): boolean;
     procedure ShowTabMenu;
@@ -2030,7 +2031,8 @@ procedure TATTabs.AddTab(
   AModified: boolean = false;
   AColor: TColor = clNone;
   AImageIndex: integer = -1;
-  APopupMenu: TPopupMenu = nil);
+  APopupMenu: TPopupMenu = nil;
+  AFontStyle: TFontStyles = []);
 var
   Data: TATTabData;
 begin
@@ -2041,6 +2043,7 @@ begin
   Data.TabColor:= AColor;
   Data.TabImageIndex:= AImageIndex;
   Data.TabPopupMenu:= APopupMenu;
+  Data.TabFontStyle:= AFontStyle;
 
   if IsIndexOk(AIndex) then
     FTabList.Insert(AIndex, Data)
@@ -2395,8 +2398,15 @@ begin
   Data:= GetTabData(NTab);
   if Data=nil then Exit;
 
-  ATabs.AddTab(NTabTo, Data.TabCaption, Data.TabObject,
-    Data.TabModified, Data.TabColor, Data.TabImageIndex);
+  ATabs.AddTab(NTabTo,
+    Data.TabCaption,
+    Data.TabObject,
+    Data.TabModified,
+    Data.TabColor,
+    Data.TabImageIndex,
+    Data.TabPopupMenu,
+    Data.TabFontStyle
+    );
 
   //correct TabObject parent
   if Data.TabObject is TWinControl then
