@@ -597,6 +597,11 @@ end;
 
 procedure DrawLine(C: TCanvas; X1, Y1, X2, Y2: integer; AColor: TColor);
 begin
+  if Y1=Y2 then
+    if X2>X1 then Inc(X2) else Dec(X2);
+  if X1=X2 then
+    if Y2>Y1 then Inc(Y2) else Dec(Y2);
+
   C.Pen.Color:= AColor;
   C.MoveTo(X1, Y1);
   C.LineTo(X2, Y2);
@@ -644,15 +649,10 @@ procedure DrawPlusSign(C: TCanvas; const R: TRect; ASize: integer; AColor: TColo
 var
   CX, CY: integer;
 begin
-  C.Pen.Color:= AColor;
   CX:= (R.Left+R.Right) div 2;
   CY:= (R.Top+R.Bottom) div 2;
-
-  C.MoveTo(CX - ASize, CY);
-  C.LineTo(CX + ASize+1, CY);
-
-  C.MoveTo(CX, CY - ASize);
-  C.LineTo(CX, CY + ASize+1);
+  DrawLine(C, CX-ASize, CY, CX+ASize, CY, AColor);
+  DrawLine(C, CX, CY-ASize, CX, CY+ASize, AColor);
 end;
 
 
