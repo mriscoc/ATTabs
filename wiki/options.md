@@ -48,19 +48,6 @@ OptTabWidthMinimalHidesX: integer
 
 When current tab width (for top/bottom OptPosition) becomes smaller than option, X mark hides on all tabs.
 
-OptTabAngle: integer
-======
-
-Sets angled tabs, if value>0. Tabs paint much faster, if option is 0. It is not angle in radians, it is one side of triangle. 
-
-Even on Linux, 10 tabs with angles paint slowly, when mouse moves fast over control.
-Also don't use angled tabs on macOS, they paint bad on Retina canvas.
-
-OptUseAngleForMaxTabs: integer
-======
-
-When count of tabs becomes >= option, tabs become non-angled. To paint faster.
-
 OptSpaceBetweenTabs: integer
 ======
 
