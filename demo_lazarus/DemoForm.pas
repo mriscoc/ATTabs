@@ -106,7 +106,6 @@ begin
   t.OnTabClickUserButton:=TabClickUserButton;
   t.OptMouseDoubleClickPlus:= true;
   t.OptShowXButtons:= atbxShowAll;
-  t.OptTabAngle:= 0;
   t.Height:= 48;
   t.OptTabHeight:= 38;
   t.DragMode:= dmAutomatic; //enable drag-drop
@@ -134,7 +133,6 @@ begin
 
   t1.OptButtonLayout:= '<,>';
   t1.OptShowArrowsNear:= false;
-  t1.OptTabAngle:= 4;
   t1.OptTabHeight:= 30;
   t1.OptTabWidthNormal:= 170;
   t1.OptSpacer:= 20;
@@ -155,7 +153,6 @@ begin
 
   t0.Height:= 42;
   t0.OptButtonLayout:= ',<>v';
-  t0.OptTabAngle:= 0;
   t0.OptSpaceBetweenTabs:= 2;
   //t0.OptSpaceInitial:= 2;
   t0.OptSpacer:= 4;
