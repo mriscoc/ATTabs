@@ -355,8 +355,8 @@ type
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
       ATabBg, ATabBorder, ATabBorderLow, ATabHilite, ATabCloseBg,
-      ATabCloseBorder, ATabCloseXMark: TColor; ACloseBtn, AModified: boolean;
-      AImageIndex: integer; AFontStyle: TFontStyles);
+  ATabCloseBorder, ATabCloseXMark: TColor; ACloseBtn, AModified,
+  ATabActive: boolean; AImageIndex: integer; AFontStyle: TFontStyles);
     procedure DoPaintArrowTo(C: TCanvas; ATyp: TATTabTriangle; ARect: TRect;
       AColorArr, AColorBg: TColor);
     procedure DoPaintUserButtons(C: TCanvas);
@@ -840,7 +840,7 @@ end;
 procedure TATTabs.DoPaintTabTo(
   C: TCanvas; ARect: TRect; const ACaption: TATTabString;
   ATabBg, ATabBorder, ATabBorderLow, ATabHilite, ATabCloseBg, ATabCloseBorder, ATabCloseXMark: TColor;
-  ACloseBtn, AModified: boolean;
+  ACloseBtn, AModified, ATabActive: boolean;
   AImageIndex: integer;
   AFontStyle: TFontStyles);
 var
@@ -848,17 +848,15 @@ var
   RectText: TRect;
   NIndentL, NIndentR, NIndentTop: integer;
   ElemType: TATTabElemType;
-  AInvert: integer;
   TempCaption: TATTabString;
   Extent: TSize;
-  bActive, bNeedMoreSpace: boolean;
+  bNeedMoreSpace: boolean;
 begin
   //optimize for 200 tabs
   if ARect.Left>=ClientWidth then exit;
   //skip tabs scrolled lefter
   if ARect.Right<=0 then exit;
 
-  bActive:= ATabBg=ColorTabActive;
   if FOptShowFlat then
     ATabBg:= ColorBg;
 
@@ -867,11 +865,6 @@ begin
 
   C.Pen.Color:= ATabBg;
   C.Brush.Color:= ATabBg;
-
-  if FOptPosition=atpBottom then
-    AInvert:= -1
-  else
-    AInvert:= 1;
 
   RectText:= Rect(ARect.Left, ARect.Top, ARect.Right, ARect.Bottom);
   bNeedMoreSpace:= (RectText.Right-RectText.Left<=30) and (ACaption<>'');
@@ -980,7 +973,7 @@ begin
   //borders
   if FOptShowFlat then
   begin
-    if bActive then
+    if ATabActive then
     begin
       C.Brush.Color:= ColorActiveMark;
       case FOptPosition of
@@ -1382,6 +1375,7 @@ begin
         NColorXMark,
         false,
         false,
+        false,
         -1, //no icon
         []
         );
@@ -1414,6 +1408,7 @@ begin
           NColorXMark,
           IsShowX(i),
           Data.TabModified,
+          false,
           Data.TabImageIndex,
           Data.TabFontStyle
           );
@@ -1441,6 +1436,7 @@ begin
         NColorXMark,
         IsShowX(i),
         Data.TabModified,
+        true,
         Data.TabImageIndex,
         Data.TabFontStyle
         );
