@@ -1,2 +1,2 @@
 #!/bin/bash
-~/lazarus/tools/lazres icons.lrs tattabs.bmp
+~/lazarus/tools/lazres icons.lrs *.bmp
