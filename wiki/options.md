@@ -128,7 +128,7 @@ For angled tabs, you must also set OptSpaceInitial to positive value, or angled 
 OptShowAngleTangent: single
 ======
 
-Sets angle for OptShowAngled. It is tangent for angle, good value here is about 1..10, default is 2.x.
+Tangent of angle for OptShowAngled. Good value here is about 2..5. For bigger values don't use OptShowAngled.
 
 OptShowFlat: boolean
 ======
