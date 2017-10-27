@@ -1,4 +1,10 @@
 
+2017.10.27
++ add: prop OptShowAngled
++ add: prop OptShowAngleTangent
++ add: paint of angled tabs made faster (not using Canvas.Pixels)
+* removed prop OptTabAngle
+
 2017.10.11
 + add: prop OptPosition (top/bottom/left/right)
 + add: demo which tests OptPosition
