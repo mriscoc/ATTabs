@@ -211,6 +211,8 @@ const
   _InitOptShowModifiedText = '*';
   _InitOptShowBorderActiveLow = false;
   _InitOptShowEntireColor = false;
+  _InitOptShowAngled = false;
+
   _InitOptMouseMiddleClickClose = true;
   _InitOptMouseDoubleClickClose = true;
   _InitOptMouseDoubleClickPlus = false;
@@ -292,6 +294,7 @@ type
     FOptShowNumberPrefix: TATTabString;
     FOptShowScrollMark: boolean;
     FOptShowDropMark: boolean;
+    FOptShowAngled: boolean;
 
     FOptMouseMiddleClickClose: boolean; //enable close tab by middle-click
     FOptMouseDoubleClickClose: boolean;
@@ -311,6 +314,8 @@ type
 
     FRealIndentLeft: integer;
     FRealIndentRight: integer;
+    FAngleTangent: real;
+    FAngleSide: integer;
 
     FScrollPos: integer;
     FImages: TImageList;
@@ -538,6 +543,8 @@ type
     property OptShowBorderActiveLow: boolean read FOptShowBorderActiveLow write FOptShowBorderActiveLow default _InitOptShowBorderActiveLow;
     property OptShowEntireColor: boolean read FOptShowEntireColor write FOptShowEntireColor default _InitOptShowEntireColor;
     property OptShowNumberPrefix: TATTabString read FOptShowNumberPrefix write FOptShowNumberPrefix;
+    property OptShowAngled: boolean read FOptShowAngled write FOptShowAngled default _InitOptShowAngled;
+
     property OptMouseMiddleClickClose: boolean read FOptMouseMiddleClickClose write FOptMouseMiddleClickClose default _InitOptMouseMiddleClickClose;
     property OptMouseDoubleClickClose: boolean read FOptMouseDoubleClickClose write FOptMouseDoubleClickClose default _InitOptMouseDoubleClickClose;
     property OptMouseDoubleClickPlus: boolean read FOptMouseDoubleClickPlus write FOptMouseDoubleClickPlus default _InitOptMouseDoubleClickPlus;
@@ -571,6 +578,9 @@ uses
   Dialogs,
   Forms,
   Math;
+
+const
+  cSmoothScale = 5;
 
 function IsDoubleBufferedNeeded: boolean;
 begin
@@ -698,16 +708,24 @@ begin
       3: begin ar[0]:= p0; ar[1]:= p1; ar[2]:= p2; line1:= p1; line2:= p2; end;
     end;
 
-    b.Canvas.Brush.Color:= AColorBG;
-    b.Canvas.Fillrect(0, 0, b.Width, b.Height);
+    //b.Canvas.Brush.Color:= AColorBG;
+    //b.Canvas.FillRect(0, 0, b.Width, b.Height);
+    b.Canvas.CopyRect(
+      Rect(0, 0, b.Width, b.Height),
+      C,
+      Rect(AX, AY, AX+ASizeX, AY+ASizeY)
+      );
 
+    b.Canvas.Pen.Style:= psClear;
     b.Canvas.Brush.Color:= AColorFill;
     b.Canvas.Polygon(ar);
+    b.Canvas.Pen.Style:= psSolid;
 
     b.Canvas.Pen.Color:= AColorLine;
     b.Canvas.Pen.Width:= AScale;
     b.Canvas.MoveTo(line1);
     b.Canvas.LineTo(line2);
+    b.Canvas.Pen.Width:= 1;
 
     C.StretchDraw(
       Rect(AX, AY, AX+ASizeX, AY+ASizeY),
@@ -803,6 +821,7 @@ begin
   FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
   FOptDropMarkSize:= _InitOptDropMarkSize;
+  FAngleTangent:= 2.6;
 
   FOptShowFlat:= _InitOptShowFlat;
   FOptPosition:= _InitOptPosition;
@@ -815,6 +834,8 @@ begin
   FOptShowModifiedText:= _InitOptShowModifiedText;
   FOptShowBorderActiveLow:= _InitOptShowBorderActiveLow;
   FOptShowEntireColor:= _InitOptShowEntireColor;
+  FOptShowAngled:= _InitOptShowAngled;
+
   FOptMouseMiddleClickClose:= _InitOptMouseMiddleClickClose;
   FOptMouseDoubleClickClose:= _InitOptMouseDoubleClickClose;
   FOptMouseDoubleClickPlus:= _InitOptMouseDoubleClickPlus;
@@ -832,14 +853,6 @@ begin
   FTabCaptions:= TStringList.Create;
   FTabMenu:= nil;
   FScrollPos:= 0;
-
-  FOnTabClick:= nil;
-  FOnTabPlusClick:= nil;
-  FOnTabClose:= nil;
-  FOnTabMenu:= nil;
-  FOnTabDrawBefore:= nil;
-  FOnTabDrawAfter:= nil;
-  FOnTabChangeQuery:= nil;
 end;
 
 function TATTabs.CanFocus: boolean;
@@ -1038,8 +1051,10 @@ begin
   case FOptPosition of
     atpTop:
       begin
-        DrawLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
-        DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
+        if not FOptShowAngled then
+          DrawLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
+        if not FOptShowAngled then
+          DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
         DrawLine(C, PL1.X, PL1.Y, PR1.X, PL1.Y, ATabBorder);
         if ATabBorderLow<>clNone then
           DrawLine(C, PL2.X, ARect.Bottom, PR2.X, ARect.Bottom, ATabBorderLow)
@@ -1069,6 +1084,37 @@ begin
         DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y, ATabBorder);
       end;
   end;
+
+  if FOptShowAngled then
+    case FOptPosition of
+      atpTop:
+        begin
+          DrawTriangleRectFramed(C,
+            ARect.Left-FAngleSide+1,
+            ARect.Top,
+            FAngleSide,
+            FOptTabHeight+IfThen(ATabActive, 1),
+            cSmoothScale,
+            0,
+            ColorBg,
+            ATabBg,
+            ATabBorder);
+          DrawTriangleRectFramed(C,
+            ARect.Right-1,
+            ARect.Top,
+            FAngleSide,
+            FOptTabHeight+IfThen(ATabActive, 1),
+            cSmoothScale,
+            1,
+            ColorBg,
+            ATabBg,
+            ATabBorder);
+        end;
+      atpBottom:
+        begin
+
+        end;
+    end;
 
   //colored band
   if not FOptShowEntireColor then
@@ -1332,6 +1378,8 @@ var
 begin
   ElemType:= aeBackground;
   RRect:= ClientRect;
+
+  FAngleSide:= Trunc(FOptTabHeight/FAngleTangent);
 
   FRealIndentLeft:= FOptSpaceInitial;
   FRealIndentRight:= FOptSpaceInitial;
