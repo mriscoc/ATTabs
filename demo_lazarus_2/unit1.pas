@@ -6,13 +6,15 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  attabs;
+  math, attabs;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    chkBetween: TCheckBox;
+    chkAngled: TCheckBox;
     chkColorAllowVert: TCheckBox;
     chkFullColor: TCheckBox;
     chkFlat: TCheckBox;
@@ -21,6 +23,8 @@ type
     chkPosBottom: TRadioButton;
     chkPosLeft: TRadioButton;
     chkPosRight: TRadioButton;
+    procedure chkAngledChange(Sender: TObject);
+    procedure chkBetweenChange(Sender: TObject);
     procedure chkColorAllowVertChange(Sender: TObject);
     procedure chkEmptyBtnsChange(Sender: TObject);
     procedure chkFlatChange(Sender: TObject);
@@ -107,6 +111,19 @@ begin
     t.OptColoredBandForLeft:= atpTop;
     t.OptColoredBandForRight:= atpTop;
   end;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkAngledChange(Sender: TObject);
+begin
+  t.OptShowAngled:= chkAngled.Checked;
+  t.OptSpaceInitial:= IfThen(t.OptShowAngled, 10, 4);
+  t.Invalidate;
+end;
+
+procedure TForm1.chkBetweenChange(Sender: TObject);
+begin
+  t.OptSpaceBetweenTabs:= IfThen(chkBetween.Checked, 8, 0);
   t.Invalidate;
 end;
 
