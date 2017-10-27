@@ -2277,7 +2277,6 @@ begin
   //tricky formula: calculate auto-width
   Value:= (ClientWidth
     - IfThen(FOptShowPlusTab, GetTabWidth_Plus_Raw + 2*FOptSpaceBeforeText)
-    - FOptSpaceBetweenTabs
     - FRealIndentLeft
     - FRealIndentRight) div Count
       - FOptSpaceBetweenTabs;
