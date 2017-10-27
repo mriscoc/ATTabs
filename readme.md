@@ -7,12 +7,13 @@ OS independent, fully custom drawn.
 - can show x-icons in many styles
 - can show plus pseudo-tab
 - can show scroll arrows if lot of tabs
+- can show flat tabs (Material style)
 - can show colored tabs
-- can show dropdown tab menu
-- can show numbers on tabs
+- can show drop-down tab menu
+- can show icons/numbers on tabs
 - can confirm tab closing
-- can use tab owner-draw
-- can drag-drop tabs, also to another control
+- allow tab owner-draw
+- drag-drop tabs, also to another control
 - etc.
 
 Picture of demo:
