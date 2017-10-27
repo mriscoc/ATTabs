@@ -76,7 +76,7 @@ type
       C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
   public
     { Public declarations }
-    t, t0, t1: TATTabs;
+    t_top, t_fox, t_cust: TATTabs;
   end;
 
 var
@@ -95,110 +95,110 @@ begin
   DragManager.DragImmediate:= false;
 
   //default tabs
-  t:= TATTabs.Create(Self);
-  t.Parent:= Self;
-  t.Align:= alTop;
-  t.OnTabClick:= TabClick;
-  t.OnTabPlusClick:= TabPlusClick;
-  t.OnTabClose:= TabClose;
-  t.OnTabMove:= TabMove;
-  t.OnTabClose:= TabCloseEvent;
-  t.OnTabDrawAfter:= TabDrawAfter_Top;
-  t.OnTabClickUserButton:=TabClickUserButton;
-  t.OptMouseDoubleClickPlus:= true;
-  t.OptShowXButtons:= atbxShowAll;
-  t.Height:= 48;
-  t.OptTabHeight:= 38;
-  t.DragMode:= dmAutomatic; //enable drag-drop
-  t.Images:= ImageList1;
+  t_top:= TATTabs.Create(Self);
+  t_top.Parent:= Self;
+  t_top.Align:= alTop;
+  t_top.OnTabClick:= TabClick;
+  t_top.OnTabPlusClick:= TabPlusClick;
+  t_top.OnTabClose:= TabClose;
+  t_top.OnTabMove:= TabMove;
+  t_top.OnTabClose:= TabCloseEvent;
+  t_top.OnTabDrawAfter:= TabDrawAfter_Top;
+  t_top.OnTabClickUserButton:=TabClickUserButton;
+  t_top.OptMouseDoubleClickPlus:= true;
+  t_top.OptShowXButtons:= atbxShowAll;
+  t_top.Height:= 48;
+  t_top.OptTabHeight:= 38;
+  t_top.DragMode:= dmAutomatic; //enable drag-drop
+  t_top.Images:= ImageList1;
 
-  t.AddTab(-1, 'Tab');
-  t.AddTab(-1, 'Tab middle len', nil, false, clGreen, 1);
-  t.AddTab(-1, 'Tab ____________', nil, false, clBlue, 2);
-  t.AddTab(-1, 'I', nil, false, clNone, 0);
-  t.AddTab(-1, 'I');
-  t.AddTab(-1, 'I');
-  t.AddTab(-1, 'I');
-  t.AddTab(-1, 'I');
+  t_top.AddTab(-1, 'Tab');
+  t_top.AddTab(-1, 'Tab middle len', nil, false, clGreen, 1);
+  t_top.AddTab(-1, 'Tab ____________', nil, false, clBlue, 2);
+  t_top.AddTab(-1, 'I', nil, false, clNone, 0);
+  t_top.AddTab(-1, 'I');
+  t_top.AddTab(-1, 'I');
+  t_top.AddTab(-1, 'I');
+  t_top.AddTab(-1, 'I');
 
   //-----------------------------------
-  //angle tabs below
-  t1:= TATTabs.Create(Self);
-  t1.Parent:= Self;
-  t1.Align:= alBottom;
-  t1.Font.Size:= 12;
-  t1.Height:= 56;
-  t1.OnTabDrawBefore:= TabDrawBefore_Bottom;
-  t1.OnTabDrawAfter:= TabDrawAfter_Bottom;
-  t1.ColorBg:= $F9EADB;
+  t_cust:= TATTabs.Create(Self);
+  t_cust.Parent:= Self;
+  t_cust.Align:= alBottom;
+  t_cust.Font.Size:= 12;
+  t_cust.Height:= 56;
+  t_cust.OnTabDrawBefore:= TabDrawBefore_Bottom;
+  t_cust.OnTabDrawAfter:= TabDrawAfter_Bottom;
+  t_cust.ColorBg:= $F9EADB;
 
-  t1.OptButtonLayout:= '<,>';
-  t1.OptShowArrowsNear:= false;
-  t1.OptTabHeight:= 30;
-  t1.OptTabWidthNormal:= 170;
-  t1.OptSpacer:= 20;
-  t1.OptSpaceXSize:= 15;
-  t1.OptSpaceXInner:= 3;
-  t1.OptPosition:= atpBottom;
+  t_cust.OptButtonLayout:= '<,>';
+  t_cust.OptShowArrowsNear:= false;
+  t_cust.OptTabHeight:= 30;
+  t_cust.OptTabWidthNormal:= 170;
+  t_cust.OptSpacer:= 20;
+  t_cust.OptSpaceXSize:= 15;
+  t_cust.OptSpaceXInner:= 3;
+  t_cust.OptPosition:= atpBottom;
+  t_cust.OptShowAngled:= true;
 
-  t1.AddTab(-1, 'Owner-draw', nil, false, clNone);
-  t1.AddTab(-1, 'Tab wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww', nil, false, clGreen);
-  t1.AddTab(-1, 'Last');
+  t_cust.AddTab(-1, 'Owner-draw', nil, false, clNone);
+  t_cust.AddTab(-1, 'Tab wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww', nil, false, clGreen);
+  t_cust.AddTab(-1, 'Last');
 
   //-----------------------------------
   //Firefox rectangle tabs
-  t0:= TATTabs.Create(Self);
-  t0.Parent:= Self;
-  t0.Align:= alBottom;
-  t0.Font.Size:= 8;
+  t_fox:= TATTabs.Create(Self);
+  t_fox.Parent:= Self;
+  t_fox.Align:= alBottom;
+  t_fox.Font.Size:= 8;
 
-  t0.Height:= 42;
-  t0.OptButtonLayout:= '';
-  t0.OptSpaceBetweenTabs:= 8;
-  t0.OptSpaceInitial:= 20;
-  t0.OptSpacer:= 4;
-  t0.OptSpaceXSize:= 13;
-  t0.OptMouseDragEnabled:= false;
-  t0.OptShowAngled:= true;
-  t0.OnTabPlusClick:= Tab2PlusClick;
+  t_fox.Height:= 42;
+  t_fox.OptButtonLayout:= '';
+  t_fox.OptSpaceBetweenTabs:= 8;
+  t_fox.OptSpaceInitial:= 20;
+  t_fox.OptSpacer:= 4;
+  t_fox.OptSpaceXSize:= 13;
+  t_fox.OptMouseDragEnabled:= false;
+  t_fox.OptShowAngled:= true;
+  t_fox.OnTabPlusClick:= Tab2PlusClick;
 
-  t0.Font.Color:= clBlack;
-  t0.ColorBg:= $F9EADB;
-  t0.ColorBorderActive:= $ACA196;
-  t0.ColorBorderPassive:= $ACA196;
-  t0.ColorTabActive:= $FCF5ED;
-  t0.ColorTabPassive:= $E0D3C7;
-  t0.ColorTabOver:= $F2E4D7;
-  t0.ColorCloseBg:= clNone;
-  t0.ColorCloseBgOver:= $D5C9BD;
-  t0.ColorCloseBorderOver:= $B0B0B0;
-  t0.ColorCloseX:= $7B6E60;
-  t0.ColorArrow:= $5C5751;
-  t0.ColorArrowOver:= t0.ColorArrow;
+  t_fox.Font.Color:= clBlack;
+  t_fox.ColorBg:= $F9EADB;
+  t_fox.ColorBorderActive:= $ACA196;
+  t_fox.ColorBorderPassive:= $ACA196;
+  t_fox.ColorTabActive:= $FCF5ED;
+  t_fox.ColorTabPassive:= $E0D3C7;
+  t_fox.ColorTabOver:= $F2E4D7;
+  t_fox.ColorCloseBg:= clNone;
+  t_fox.ColorCloseBgOver:= $D5C9BD;
+  t_fox.ColorCloseBorderOver:= $B0B0B0;
+  t_fox.ColorCloseX:= $7B6E60;
+  t_fox.ColorArrow:= $5C5751;
+  t_fox.ColorArrowOver:= t_fox.ColorArrow;
 
-  t0.AddTab(-1, 'Firefox');
-  t0.AddTab(-1, 'A tab _____________________________________________________', nil, false, clGreen);
-  t0.AddTab(-1, 'Tab middle len', nil, false, clBlue);
+  t_fox.AddTab(-1, 'Firefox');
+  t_fox.AddTab(-1, 'A tab _____________________________________________________', nil, false, clGreen);
+  t_fox.AddTab(-1, 'Tab middle len', nil, false, clBlue);
 
-  t.Font.Color:= $E0E0E0;
-  t1.Font.Color:= clNavy;
+  t_top.Font.Color:= $E0E0E0;
+  t_cust.Font.Color:= clNavy;
 end;
 
 procedure TForm1.btnStressClick(Sender: TObject);
 var
   i: integer;
 begin
-  for i:= t.TabCount-1 downto 1 do
-    t.DeleteTab(i, false, false);
+  for i:= t_top.TabCount-1 downto 1 do
+    t_top.DeleteTab(i, false, false);
   for i:= 1 to 300 do
-    t.AddTab(-1, IntToStr(i));
+    t_top.AddTab(-1, IntToStr(i));
 end;
 
 procedure TForm1.btnToggleSpecialClick(Sender: TObject);
 var
   d: TATTabData;
 begin
-  d:= t.GetTabData(t.tabIndex);
+  d:= t_top.GetTabData(t_top.tabIndex);
   if d=nil then Exit;
 
   d.TabSpecial:= not d.TabSpecial;
@@ -207,99 +207,99 @@ begin
   else
     d.TabFontStyle:= [];
 
-  t.Invalidate;
+  t_top.Invalidate;
 end;
 
 procedure TForm1.chkCenterCaptionChange(Sender: TObject);
 begin
   if chkCenterCaption.Checked then
-    t.OptCaptionAlignment:= taCenter
+    t_top.OptCaptionAlignment:= taCenter
   else
-    t.OptCaptionAlignment:= taLeftJustify;
-  t.Invalidate;
+    t_top.OptCaptionAlignment:= taLeftJustify;
+  t_top.Invalidate;
 end;
 
 procedure TForm1.chkNumsChange(Sender: TObject);
 begin
-  t1.OptShowNumberPrefix:= IfThen(chkNums.Checked, '%d. ', '');
-  t1.Invalidate;
+  t_cust.OptShowNumberPrefix:= IfThen(chkNums.Checked, '%d. ', '');
+  t_cust.Invalidate;
 end;
 
 procedure TForm1.chkShowFlatChange(Sender: TObject);
 begin
-  t.OptShowFlat:= chkShowFlat.Checked;
-  t0.OptShowFlat:= chkShowFlat.Checked;
-  t1.OptShowFlat:= chkShowFlat.Checked;
-  t.Invalidate;
-  t0.Invalidate;
-  t1.Invalidate;
+  t_top.OptShowFlat:= chkShowFlat.Checked;
+  t_fox.OptShowFlat:= chkShowFlat.Checked;
+  t_cust.OptShowFlat:= chkShowFlat.Checked;
+  t_top.Invalidate;
+  t_fox.Invalidate;
+  t_cust.Invalidate;
 end;
 
 procedure TForm1.chkShowFullColorChange(Sender: TObject);
 begin
-  t.OptShowEntireColor:= chkShowFullColor.Checked;
-  t.Invalidate;
+  t_top.OptShowEntireColor:= chkShowFullColor.Checked;
+  t_top.Invalidate;
 end;
 
 procedure TForm1.chkShowPlusChange(Sender: TObject);
 begin
-  t.OptShowPlusTab:= chkShowPlus.Checked;
-  t.Invalidate;
+  t_top.OptShowPlusTab:= chkShowPlus.Checked;
+  t_top.Invalidate;
 end;
 
 procedure TForm1.comboIconPosChange(Sender: TObject);
 begin
-  t.OptIconPosition:= TATTabIconPosition(comboIconPos.ItemIndex);
-  t.Invalidate;
+  t_top.OptIconPosition:= TATTabIconPosition(comboIconPos.ItemIndex);
+  t_top.Invalidate;
 end;
 
 procedure TForm1.comboLayoutChange(Sender: TObject);
 begin
-  t.OptButtonLayout:= comboLayout.Text;
-  t.OptShowArrowsNear:= Pos('<>', t.OptButtonLayout)>0;
-  t.Invalidate;
+  t_top.OptButtonLayout:= comboLayout.Text;
+  t_top.OptShowArrowsNear:= Pos('<>', t_top.OptButtonLayout)>0;
+  t_top.Invalidate;
 end;
 
 procedure TForm1.comboShowXChange(Sender: TObject);
 begin
-  t.OptShowXButtons:= TATTabShowClose(comboShowX.ItemIndex);
-  t.Invalidate;
+  t_top.OptShowXButtons:= TATTabShowClose(comboShowX.ItemIndex);
+  t_top.Invalidate;
 end;
 
 procedure TForm1.btnAddClick(Sender: TObject);
 begin
-  t.AddTab(t.TabIndex+1, 'test '+StringOfChar('n', Random(20)), nil, false, Random(65000));
+  t_top.AddTab(t_top.TabIndex+1, 'test '+StringOfChar('n', Random(20)), nil, false, Random(65000));
 end;
 
 procedure TForm1.btnDelClick(Sender: TObject);
 begin
-  t.DeleteTab(1, true, false);
+  t_top.DeleteTab(1, true, false);
 end;
 
 procedure TForm1.btnColorClick(Sender: TObject);
 var
   d: TATTabData;
 begin
-  d:= t.GetTabData(t.tabindex);
+  d:= t_top.GetTabData(t_top.tabindex);
   d.TabColor:= Random(60000);
-  t.Invalidate;
+  t_top.Invalidate;
 end;
 
 procedure TForm1.btnLeftClick(Sender: TObject);
 begin
-  t.tabIndex:= t.TabIndex-1;
+  t_top.tabIndex:= t_top.TabIndex-1;
 end;
 
 procedure TForm1.btnRightClick(Sender: TObject);
 begin
-  t.tabIndex:= t.TabIndex+1;
+  t_top.tabIndex:= t_top.TabIndex+1;
 end;
 
 procedure TForm1.TabClick(Sender: TObject);
 var
   d: TATTabData;
 begin
-  d:= t.GetTabData(t.TabIndex);
+  d:= t_top.GetTabData(t_top.TabIndex);
   LockEdit:= true;
   if Assigned(d) then
     EditInfo.Text:= d.TabCaption
@@ -315,7 +315,7 @@ end;
 
 procedure TForm1.Tab2PlusClick(Sender: TObject);
 begin
-  t0.AddTab(t0.TabIndex+1, 'test');
+  t_fox.AddTab(t_fox.TabIndex+1, 'test');
 end;
 
 
@@ -340,7 +340,7 @@ procedure TForm1.EditInfoChange(Sender: TObject);
 var
   d: TATTabData;
 begin
-  d:= t.GetTabData(t.tabIndex);
+  d:= t_top.GetTabData(t_top.tabIndex);
   if d=nil then Exit;
   if LockEdit then Exit;
 
@@ -425,11 +425,11 @@ procedure TForm1.btnModifyClick(Sender: TObject);
 var
   d: TATTabData;
 begin
-  d:= t.GetTabData(t.tabIndex);
+  d:= t_top.GetTabData(t_top.tabIndex);
   if d=nil then Exit;
 
   d.TabModified:= not d.TabModified;
-  t.Invalidate;
+  t_top.Invalidate;
 end;
 
 procedure TForm1.TabCloseEvent(Sender: TObject; ATabIndex: Integer;
