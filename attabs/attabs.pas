@@ -1263,7 +1263,9 @@ begin
 
     for i:= 0 to TabCount-1 do
     begin
-      R.Top:= R.Bottom + FOptSpaceBetweenTabs;
+      R.Top:= R.Bottom;
+      if i>0 then
+        Inc(R.Top, FOptSpaceBetweenTabs);
       R.Bottom:= R.Top + FOptTabHeight;
       Data:= GetTabData(i);
       if Assigned(Data) then
@@ -1280,7 +1282,9 @@ begin
 
   for i:= 0 to TabCount-1 do
   begin
-    R.Left:= R.Right + FOptSpaceBetweenTabs;
+    R.Left:= R.Right;
+    if i>0 then
+      Inc(R.Left, FOptSpaceBetweenTabs);
     R.Right:= R.Left + FTabWidth;
     Data:= GetTabData(i);
     if Assigned(Data) then
