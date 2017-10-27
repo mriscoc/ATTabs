@@ -2796,7 +2796,7 @@ begin
     atpTop:
       C.FillRect(Rect(PL1.X+1, PL1.Y+1, PR1.X, PR1.Y+1+FOptColoredBandSize));
     atpBottom:
-      C.FillRect(Rect(PL2.X+1, PL2.Y-2, PR2.X, PR2.Y-2+FOptColoredBandSize));
+      C.FillRect(Rect(PL2.X+1, PL2.Y-3, PR2.X, PR2.Y-3+FOptColoredBandSize));
     atpLeft:
       C.FillRect(Rect(PL1.X+1, PL1.Y+1, PL1.X+1+FOptColoredBandSize, PL2.Y));
     atpRight:
