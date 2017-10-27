@@ -123,8 +123,12 @@ OptShowAngled: boolean
 ======
 
 Show angled sides for tabs. Only for top/bottom OptPosition. 
-Angle is fixed, it's constant FAngleTangent.
 For angled tabs, you must also set OptSpaceInitial to positive value, or angled sides will paint over edges. And must set OptSpaceBetweenTabs, or angled sides will be not nice between tabs.
+
+OptShowAngleTangent: single
+======
+
+Sets angle for OptShowAngled. It is tangent for angle, good value here is about 1..10, default is 2.x.
 
 OptShowFlat: boolean
 ======

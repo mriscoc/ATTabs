@@ -212,6 +212,7 @@ const
   _InitOptShowBorderActiveLow = false;
   _InitOptShowEntireColor = false;
   _InitOptShowAngled = false;
+  _InitOptShowAngleTangent = 2.6;
 
   _InitOptMouseMiddleClickClose = true;
   _InitOptMouseDoubleClickClose = true;
@@ -314,7 +315,7 @@ type
 
     FRealIndentLeft: integer;
     FRealIndentRight: integer;
-    FAngleTangent: real;
+    FAngleTangent: single;
     FAngleSide: integer;
 
     FScrollPos: integer;
@@ -533,6 +534,8 @@ type
     property OptPosition: TATTabPosition read FOptPosition write FOptPosition default _InitOptPosition;
     property OptIconPosition: TATTabIconPosition read FOptIconPosition write FOptIconPosition default aipIconLefterThanText;
     property OptCaptionAlignment: TAlignment read FOptCaptionAlignment write FOptCaptionAlignment default taLeftJustify;
+    property OptShowAngled: boolean read FOptShowAngled write FOptShowAngled default _InitOptShowAngled;
+    property OptShowAngleTangent: single read FAngleTangent write FAngleTangent default _InitOptShowAngleTangent;
     property OptShowFlat: boolean read FOptShowFlat write FOptShowFlat default _InitOptShowFlat;
     property OptShowScrollMark: boolean read FOptShowScrollMark write FOptShowScrollMark default _InitOptShowScrollMark;
     property OptShowDropMark: boolean read FOptShowDropMark write FOptShowDropMark default _InitOptShowDropMark;
@@ -543,7 +546,6 @@ type
     property OptShowBorderActiveLow: boolean read FOptShowBorderActiveLow write FOptShowBorderActiveLow default _InitOptShowBorderActiveLow;
     property OptShowEntireColor: boolean read FOptShowEntireColor write FOptShowEntireColor default _InitOptShowEntireColor;
     property OptShowNumberPrefix: TATTabString read FOptShowNumberPrefix write FOptShowNumberPrefix;
-    property OptShowAngled: boolean read FOptShowAngled write FOptShowAngled default _InitOptShowAngled;
 
     property OptMouseMiddleClickClose: boolean read FOptMouseMiddleClickClose write FOptMouseMiddleClickClose default _InitOptMouseMiddleClickClose;
     property OptMouseDoubleClickClose: boolean read FOptMouseDoubleClickClose write FOptMouseDoubleClickClose default _InitOptMouseDoubleClickClose;
@@ -829,7 +831,7 @@ begin
   FOptScrollMarkSizeX:= _InitOptScrollMarkSizeX;
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
   FOptDropMarkSize:= _InitOptDropMarkSize;
-  FAngleTangent:= 2.6;
+  FAngleTangent:= _InitOptShowAngleTangent;
 
   FOptShowFlat:= _InitOptShowFlat;
   FOptPosition:= _InitOptPosition;
