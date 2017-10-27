@@ -682,10 +682,18 @@ begin
 end;
 
 
+type
+  TATMissedPoint = (
+    ampnTopLeft,
+    ampnTopRight,
+    ampnBottomLeft,
+    ampnBottomRight
+    );
+
 procedure DrawTriangleRectFramed(C: TCanvas;
   AX, AY, ASizeX, ASizeY, AScale: integer;
-  ATriKind: integer;
-  AColorBG, AColorFill, AColorLine: TColor);
+  ATriKind: TATMissedPoint;
+  AColorFill, AColorLine: TColor);
 var
   b: TBitmap;
   p0, p1, p2, p3: TPoint;
@@ -702,10 +710,10 @@ begin
     p3:= Point(b.Width, b.Height);
 
     case ATriKind of
-      0: begin ar[0]:= p1; ar[1]:= p2; ar[2]:= p3; line1:= p1; line2:= p2; end;
-      1: begin ar[0]:= p0; ar[1]:= p2; ar[2]:= p3; line1:= p0; line2:= p3; end;
-      2: begin ar[0]:= p0; ar[1]:= p1; ar[2]:= p3; line1:= p0; line2:= p3; end;
-      3: begin ar[0]:= p0; ar[1]:= p1; ar[2]:= p2; line1:= p1; line2:= p2; end;
+      ampnTopLeft: begin ar[0]:= p1; ar[1]:= p2; ar[2]:= p3; line1:= p1; line2:= p2; end;
+      ampnTopRight: begin ar[0]:= p0; ar[1]:= p2; ar[2]:= p3; line1:= p0; line2:= p3; end;
+      ampnBottomLeft: begin ar[0]:= p0; ar[1]:= p1; ar[2]:= p3; line1:= p0; line2:= p3; end;
+      ampnBottomRight: begin ar[0]:= p0; ar[1]:= p1; ar[2]:= p2; line1:= p1; line2:= p2; end;
     end;
 
     //b.Canvas.Brush.Color:= AColorBG;
@@ -1095,8 +1103,7 @@ begin
             FAngleSide,
             FOptTabHeight+IfThen(ATabActive, 1),
             cSmoothScale,
-            0,
-            ColorBg,
+            ampnTopLeft,
             ATabBg,
             ATabBorder);
           DrawTriangleRectFramed(C,
@@ -1105,8 +1112,7 @@ begin
             FAngleSide,
             FOptTabHeight+IfThen(ATabActive, 1),
             cSmoothScale,
-            1,
-            ColorBg,
+            ampnTopRight,
             ATabBg,
             ATabBorder);
         end;
@@ -1118,8 +1124,7 @@ begin
             FAngleSide,
             FOptTabHeight,
             cSmoothScale,
-            2,
-            ColorBg,
+            ampnBottomLeft,
             ATabBg,
             ATabBorder);
           DrawTriangleRectFramed(C,
@@ -1128,8 +1133,7 @@ begin
             FAngleSide,
             FOptTabHeight,
             cSmoothScale,
-            3,
-            ColorBg,
+            ampnBottomRight,
             ATabBg,
             ATabBorder);
         end;
