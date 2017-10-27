@@ -1288,7 +1288,7 @@ begin
   RRect:= ClientRect;
 
   FRealIndentLeft:= FOptSpaceInitial;
-  FRealIndentRight:= 0;
+  FRealIndentRight:= FOptSpaceInitial;
   for i:= 0 to High(TATTabButtons) do
     if FButtonsLeft[i]<>atbNone then
       Inc(FRealIndentLeft, FOptButtonSize);

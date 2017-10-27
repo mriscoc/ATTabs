@@ -62,6 +62,7 @@ type
     procedure TabMove(Sender: TObject; NFrom, NTo: Integer);
     procedure TabClick(Sender: TObject);
     procedure TabPlusClick(Sender: TObject);
+    procedure Tab2PlusClick(Sender: TObject);
     procedure TabClose(Sender: TObject; ATabIndex: Integer;
       var ACanClose, ACanContinie: boolean);
     procedure TabDrawAfter_Bottom(Sender: TObject;
@@ -152,12 +153,13 @@ begin
   t0.Font.Size:= 8;
 
   t0.Height:= 42;
-  t0.OptButtonLayout:= ',<>v';
+  t0.OptButtonLayout:= '';
   t0.OptSpaceBetweenTabs:= 2;
-  //t0.OptSpaceInitial:= 2;
+  t0.OptSpaceInitial:= 20;
   t0.OptSpacer:= 4;
   t0.OptSpaceXSize:= 13;
   t0.OptMouseDragEnabled:= false;
+  t0.OnTabPlusClick:= Tab2PlusClick;
 
   t0.Font.Color:= clBlack;
   t0.ColorBg:= $F9EADB;
@@ -308,6 +310,11 @@ end;
 procedure TForm1.TabPlusClick(Sender: TObject);
 begin
   btnAdd.Click;
+end;
+
+procedure TForm1.Tab2PlusClick(Sender: TObject);
+begin
+  t0.AddTab(t0.TabIndex+1, 'test');
 end;
 
 
