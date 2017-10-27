@@ -1095,6 +1095,8 @@ begin
       end;
   end;
 
+  C.AntialiasingMode:= amOn;
+  //angled tabs
   if FOptShowAngled then
     case FOptPosition of
       atpTop:
