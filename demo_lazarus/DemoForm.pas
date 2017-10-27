@@ -94,10 +94,10 @@ begin
   //avoid drag on click arrows
   DragManager.DragImmediate:= false;
 
-  //default tabs
   t_top:= TATTabs.Create(Self);
   t_top.Parent:= Self;
   t_top.Align:= alTop;
+  t_top.Font.Color:= $E0E0E0;
   t_top.OnTabClick:= TabClick;
   t_top.OnTabPlusClick:= TabPlusClick;
   t_top.OnTabClose:= TabClose;
@@ -121,32 +121,34 @@ begin
   t_top.AddTab(-1, 'I');
   t_top.AddTab(-1, 'I');
 
-  //-----------------------------------
   t_cust:= TATTabs.Create(Self);
   t_cust.Parent:= Self;
   t_cust.Align:= alBottom;
+  t_cust.Font.Color:= clNavy;
   t_cust.Font.Size:= 12;
   t_cust.Height:= 56;
   t_cust.OnTabDrawBefore:= TabDrawBefore_Bottom;
   t_cust.OnTabDrawAfter:= TabDrawAfter_Bottom;
   t_cust.ColorBg:= $F9EADB;
+  t_cust.ColorBorderActive:= clLime;
+  t_cust.ColorBorderPassive:= clFuchsia;
 
   t_cust.OptButtonLayout:= '<,>';
+  t_cust.OptShowAngled:= true;
   t_cust.OptShowArrowsNear:= false;
   t_cust.OptTabHeight:= 30;
   t_cust.OptTabWidthNormal:= 170;
+  t_cust.OptSpaceInitial:= 10;
+  t_cust.OptSpaceBetweenTabs:= 4;
   t_cust.OptSpacer:= 20;
   t_cust.OptSpaceXSize:= 15;
   t_cust.OptSpaceXInner:= 3;
   t_cust.OptPosition:= atpBottom;
-  t_cust.OptShowAngled:= true;
 
   t_cust.AddTab(-1, 'Owner-draw', nil, false, clNone);
   t_cust.AddTab(-1, 'Tab wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww', nil, false, clGreen);
   t_cust.AddTab(-1, 'Last');
 
-  //-----------------------------------
-  //Firefox rectangle tabs
   t_fox:= TATTabs.Create(Self);
   t_fox.Parent:= Self;
   t_fox.Align:= alBottom;
@@ -179,9 +181,6 @@ begin
   t_fox.AddTab(-1, 'Firefox');
   t_fox.AddTab(-1, 'A tab _____________________________________________________', nil, false, clGreen);
   t_fox.AddTab(-1, 'Tab middle len', nil, false, clBlue);
-
-  t_top.Font.Color:= $E0E0E0;
-  t_cust.Font.Color:= clNavy;
 end;
 
 procedure TForm1.btnStressClick(Sender: TObject);

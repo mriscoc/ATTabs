@@ -1112,7 +1112,26 @@ begin
         end;
       atpBottom:
         begin
-
+          DrawTriangleRectFramed(C,
+            ARect.Left-FAngleSide+1,
+            ARect.Top+IfThen(not ATabActive, 1),
+            FAngleSide,
+            FOptTabHeight,
+            cSmoothScale,
+            2,
+            ColorBg,
+            ATabBg,
+            ATabBorder);
+          DrawTriangleRectFramed(C,
+            ARect.Right-1,
+            ARect.Top+IfThen(not ATabActive, 1),
+            FAngleSide,
+            FOptTabHeight,
+            cSmoothScale,
+            3,
+            ColorBg,
+            ATabBg,
+            ATabBorder);
         end;
     end;
 
