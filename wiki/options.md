@@ -123,12 +123,12 @@ OptShowAngled: boolean
 ======
 
 Show angled sides for tabs. Only for top/bottom OptPosition. 
-For angled tabs, you must also set OptSpaceInitial to positive value, or angled sides will paint over edges. And must set OptSpaceBetweenTabs, or angled sides will be not nice between tabs.
+For angled tabs, you should set OptSpaceInitial to bigger value. And should set OptSpaceBetweenTabs too.
 
 OptShowAngleTangent: single
 ======
 
-Tangent of angle for OptShowAngled. Good value here is about 2..5. For bigger values don't use OptShowAngled.
+Tangent of angle for OptShowAngled. Value 1.0 means 45 degrees. Good value here is about 2..5. For bigger values don't use OptShowAngled.
 
 OptShowFlat: boolean
 ======
