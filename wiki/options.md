@@ -119,6 +119,13 @@ OptDropMarkSize: integer
 
 Width of drag-drop (red) mark. It is shown when you drag a tab to another pos, in the same control.
 
+OptShowAngled: boolean
+======
+
+Show angled sides for tabs. Only for top/bottom OptPosition. 
+Angle is fixed, it's constant FAngleTangent.
+For angled tabs, you must also set OptSpaceInitial to positive value, or angled sides will paint over edges. And must set OptSpaceBetweenTabs, or angled sides will be not nice between tabs.
+
 OptShowFlat: boolean
 ======
 
