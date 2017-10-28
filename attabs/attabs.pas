@@ -1095,7 +1095,10 @@ begin
       end;
   end;
 
+  {$ifdef fpc}
   C.AntialiasingMode:= amOn;
+  {$endif}
+
   //angled tabs
   if FOptShowAngled then
     case FOptPosition of
