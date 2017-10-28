@@ -1,4 +1,7 @@
 
+2017.10.28
++ add: Delphi compatible
+
 2017.10.27
 + add: prop OptShowAngled
 + add: prop OptShowAngleTangent
