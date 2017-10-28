@@ -4,15 +4,19 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, attabs, StdCtrls;
+  Dialogs, attabs, StdCtrls, math;
 
 type
   TForm1 = class(TForm)
     chkFlat: TCheckBox;
     chkShowPlus: TCheckBox;
+    chkAngled: TCheckBox;
+    chkGap: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure chkFlatClick(Sender: TObject);
     procedure chkShowPlusClick(Sender: TObject);
+    procedure chkAngledClick(Sender: TObject);
+    procedure chkGapClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -59,6 +63,19 @@ end;
 procedure TForm1.chkShowPlusClick(Sender: TObject);
 begin
   t.OptShowPlusTab:= chkShowPlus.Checked;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkAngledClick(Sender: TObject);
+begin
+  t.OptShowAngled:= chkAngled.Checked;
+  t.OptSpaceInitial:= IfThen(chkAngled.Checked, 10, 4);
+  t.Invalidate;
+end;
+
+procedure TForm1.chkGapClick(Sender: TObject);
+begin
+  t.OptSpaceBetweenTabs:= IfThen(chkGap.Checked, 6, 0);
   t.Invalidate;
 end;
 

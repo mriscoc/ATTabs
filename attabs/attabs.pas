@@ -397,6 +397,7 @@ type
     procedure DoTabDrop;
     procedure DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
     procedure DoUpdateTabRects;
+    procedure UpdateCanvasAntialiasMode(C: TCanvas);
 
   public
     constructor Create(AOnwer: TComponent); override;
@@ -535,7 +536,7 @@ type
     property OptIconPosition: TATTabIconPosition read FOptIconPosition write FOptIconPosition default aipIconLefterThanText;
     property OptCaptionAlignment: TAlignment read FOptCaptionAlignment write FOptCaptionAlignment default taLeftJustify;
     property OptShowAngled: boolean read FOptShowAngled write FOptShowAngled default _InitOptShowAngled;
-    property OptShowAngleTangent: single read FAngleTangent write FAngleTangent default _InitOptShowAngleTangent;
+    property OptShowAngleTangent: single read FAngleTangent write FAngleTangent {$ifdef fpc} default _InitOptShowAngleTangent {$endif};
     property OptShowFlat: boolean read FOptShowFlat write FOptShowFlat default _InitOptShowFlat;
     property OptShowScrollMark: boolean read FOptShowScrollMark write FOptShowScrollMark default _InitOptShowScrollMark;
     property OptShowDropMark: boolean read FOptShowDropMark write FOptShowDropMark default _InitOptShowDropMark;
@@ -704,7 +705,12 @@ var
 begin
   b:= TBitmap.Create;
   try
+    {$ifdef fpc}
     b.SetSize(ASizeX*AScale, ASizeY*AScale);
+    {$else}
+    b.Width:= ASizeX*AScale;
+    b.Height:= ASizeY*AScale;
+    {$endif}
 
     p0:= Point(0, 0);
     p1:= Point(b.Width, 0);
@@ -733,13 +739,19 @@ begin
 
     b.Canvas.Pen.Color:= AColorLine;
     b.Canvas.Pen.Width:= AScale;
-    b.Canvas.MoveTo(line1);
-    b.Canvas.LineTo(line2);
+    b.Canvas.MoveTo(line1.X, line1.Y);
+    b.Canvas.LineTo(line2.X, line2.Y);
     b.Canvas.Pen.Width:= 1;
 
-    C.StretchDraw(
-      Rect(AX, AY, AX+ASizeX, AY+ASizeY),
-      b);
+    {$ifdef fpc}
+    C.StretchDraw(Rect(AX, AY, AX+ASizeX, AY+ASizeY), b);
+    {$else}
+    //Delphi: StretchDraw cannot draw smooth
+    StretchBlt(
+      C.Handle, AX, AY, ASizeX, ASizeY,
+      b.Canvas.Handle, 0, 0, b.Width, b.Height,
+      C.CopyMode);
+    {$endif}
   finally
     b.Free;
   end;
@@ -1095,12 +1107,10 @@ begin
       end;
   end;
 
-  {$ifdef fpc}
-  C.AntialiasingMode:= amOn;
-  {$endif}
-
+  UpdateCanvasAntialiasMode(C);
+  
   //angled tabs
-  if FOptShowAngled then
+  if FOptShowAngled and not FOptShowFlat then
     case FOptPosition of
       atpTop:
         begin
@@ -2827,6 +2837,19 @@ begin
         RL.Left, 0,
         RR.Right, FOptTabHeight));
     end;
+end;
+
+procedure TATTabs.UpdateCanvasAntialiasMode(C: TCanvas);
+var
+  p: TPoint;
+begin
+  {$ifdef fpc}
+  C.AntialiasingMode:= amOn;
+  {$else}
+  GetBrushOrgEx(C.Handle, p);
+  SetStretchBltMode(C.Handle, HALFTONE);
+  SetBrushOrgEx(C.Handle, p.x, p.y, @p);
+  {$endif}
 end;
 
 end.

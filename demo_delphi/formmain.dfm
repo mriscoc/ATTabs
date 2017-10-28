@@ -35,4 +35,22 @@ object Form1: TForm1
     TabOrder = 1
     OnClick = chkShowPlusClick
   end
+  object chkAngled: TCheckBox
+    Left = 72
+    Top = 160
+    Width = 97
+    Height = 17
+    Caption = 'angled tabs'
+    TabOrder = 2
+    OnClick = chkAngledClick
+  end
+  object chkGap: TCheckBox
+    Left = 72
+    Top = 184
+    Width = 97
+    Height = 17
+    Caption = 'gap between tabs'
+    TabOrder = 3
+    OnClick = chkGapClick
+  end
 end
