@@ -97,7 +97,7 @@ Size of X icon lines.
 OptColoredBandSize: integer
 ======
 
-Width of colored band, which is shown on top of colored tab (color is set via TATTabData field).
+Width of colored band, which is shown on edge (edge depends on OptPosition) of colored tab. Color is set via TATTabData field.
 
 OptArrowSize: integer
 ======
@@ -107,17 +107,17 @@ Size of left/right/dropdown arrows.
 OptScrollMarkSizeX: integer
 ======
 
-Size of scroll mark, horizontal. Mark is shown when lot of tabs created, and some tabs don't fit.
+Length of scroll mark. Mark is shown when lot of tabs created, and some tabs don't fit.
 
 OptScrollMarkSizeY: integer
 ======
 
-Size of scroll mark, vertical.
+Width of scroll mark.
 
 OptDropMarkSize: integer
 ======
 
-Width of drag-drop (red) mark. It is shown when you drag a tab to another pos, in the same control.
+Width of drag-drop mark. It is shown when you drag a tab to another pos, in the same control.
 
 OptShowAngled: boolean
 ======
@@ -164,7 +164,7 @@ Show left/right scroll arrows near to each other. Usually they are shown in the 
 OptShowModifiedText: string
 ======
 
-String to shown before tab caption, for modified tab. Modified: bool field in the TATTabData.
+String to show before tab caption, for modified tab. E.g. "*". Modified: bool TATTabData field.
 
 OptShowBorderActiveLow: boolean
 ======
