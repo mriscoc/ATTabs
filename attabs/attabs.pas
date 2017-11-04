@@ -1512,6 +1512,9 @@ begin
     DoPaintAfter(ElemType, -1, C, RRect);
   end;
 
+  if FOptMultiline then
+    FScrollPos:= 0;
+
   DoUpdateTabWidths;
   DoUpdateTabRects;
 
