@@ -181,6 +181,7 @@ const
   _InitOptButtonSize = 16;
   _InitOptTabHeight = 24;
   _InitOptTabWidthMinimal = 40;
+  _InitOptTabWidthMaximal = 300;
   _InitOptTabWidthNormal = 130;
   _InitOptTabWidthMinimalHidesX = 55;
   _InitOptSpaceInitial = 5;
@@ -258,8 +259,10 @@ type
     FOptButtonSize: integer;
     FOptButtonLayout: string;
 
+    FOptVarWidth: boolean;
     FOptTabHeight: integer;
     FOptTabWidthMinimal: integer; //tab minimal width (used when lot of tabs)
+    FOptTabWidthMaximal: integer;
     FOptTabWidthNormal: integer; //tab maximal width (used when only few tabs)
     FOptTabWidthMinimalHidesX: integer; //tab minimal width, after which "x" mark hides for inactive tabs
     FOptSpaceBetweenTabs: integer; //space between nearest tabs
@@ -508,9 +511,11 @@ type
     //options
     property OptButtonLayout: string read FOptButtonLayout write SetOptButtonLayout;
     property OptButtonSize: integer read FOptButtonSize write FOptButtonSize default _InitOptButtonSize;
+    property OptVarWidth: boolean read FOptVarWidth write FOptVarWidth default false;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
     property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal default _InitOptTabWidthMinimal;
+    property OptTabWidthMaximal: integer read FOptTabWidthMaximal write FOptTabWidthMaximal default _InitOptTabWidthMaximal;
     property OptTabWidthMinimalHidesX: integer read FOptTabWidthMinimalHidesX write FOptTabWidthMinimalHidesX default _InitOptTabWidthMinimalHidesX;
     property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
     property OptSpaceBetweenIconCaption: integer read FOptSpaceBetweenIconCaption write FOptSpaceBetweenIconCaption default _InitOptSpaceBetweenIconCaption;
@@ -822,6 +827,7 @@ begin
   FOptIconPosition:= aipIconLefterThanText;
   FOptTabHeight:= _InitOptTabHeight;
   FOptTabWidthMinimal:= _InitOptTabWidthMinimal;
+  FOptTabWidthMaximal:= _InitOptTabWidthMaximal;
   FOptTabWidthNormal:= _InitOptTabWidthNormal;
   FOptTabWidthMinimalHidesX:= _InitOptTabWidthMinimalHidesX;
   FOptSpaceInitial:= _InitOptSpaceInitial;
@@ -1293,15 +1299,38 @@ begin
   R.Top:= FOptSpacer;
   R.Bottom:= R.Top+FOptTabHeight;
 
+  Canvas.Font.Assign(Self.Font);
+
   for i:= 0 to TabCount-1 do
   begin
+    Data:= GetTabData(i);
+    if not Assigned(Data) then Continue;
+
     R.Left:= R.Right;
     if i>0 then
       Inc(R.Left, FOptSpaceBetweenTabs);
+
+    if FOptVarWidth then
+    begin
+      FTabWidth:=
+        Canvas.TextWidth(Data.TabCaption) +
+        2*FOptSpaceBeforeText;
+
+      if Data.TabImageIndex>=0 then
+        if FOptIconPosition in [aipIconLefterThanText, aipIconRighterThanText] then
+          Inc(FTabWidth, FImages.Width);
+
+      if FOptShowXButtons<>atbxShowNone then
+        Inc(FTabWidth, FOptSpaceXSize);
+
+      if FTabWidth<FOptTabWidthMinimal then
+        FTabWidth:= FOptTabWidthMinimal;
+      if FTabWidth>FOptTabWidthMaximal then
+        FTabWidth:= FOptTabWidthMaximal;
+    end;
+
     R.Right:= R.Left + FTabWidth;
-    Data:= GetTabData(i);
-    if Assigned(Data) then
-      Data.TabRect:= R;
+    Data.TabRect:= R;
   end;
 end;
 
@@ -2278,6 +2307,8 @@ procedure TATTabs.DoUpdateTabWidths;
 var
   Value, Count: integer;
 begin
+  if FOptVarWidth then Exit;
+
   Count:= TabCount;
   if Count=0 then Exit;
 
@@ -2305,6 +2336,12 @@ end;
 
 function TATTabs.IsShowX(AIndex: integer): boolean;
 begin
+  if FOptVarWidth then
+  begin
+    Result:= FOptShowXButtons<>atbxShowNone;
+    Exit
+  end;
+
   case FOptShowXButtons of
     atbxShowNone: Result:= false;
     atbxShowAll: Result:= true;

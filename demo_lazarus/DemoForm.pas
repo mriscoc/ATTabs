@@ -16,6 +16,7 @@ type
     btnRight: TButton;
     btnStress: TButton;
     btnToggleSpecial: TButton;
+    chkVarSize: TCheckBox;
     chkCenterCaption: TCheckBox;
     chkShowFlat: TCheckBox;
     comboLayout: TComboBox;
@@ -41,6 +42,7 @@ type
     procedure chkShowFlatChange(Sender: TObject);
     procedure chkShowFullColorChange(Sender: TObject);
     procedure chkShowPlusChange(Sender: TObject);
+    procedure chkVarSizeChange(Sender: TObject);
     procedure comboIconPosChange(Sender: TObject);
     procedure comboLayoutChange(Sender: TObject);
     procedure comboShowXChange(Sender: TObject);
@@ -111,6 +113,7 @@ begin
   t_top.OptTabHeight:= 38;
   t_top.DragMode:= dmAutomatic; //enable drag-drop
   t_top.Images:= ImageList1;
+  t_top.OptVarWidth:= true;
 
   t_top.AddTab(-1, 'Tab');
   t_top.AddTab(-1, 'Tab middle len', nil, false, clGreen, 1);
@@ -243,6 +246,12 @@ end;
 procedure TForm1.chkShowPlusChange(Sender: TObject);
 begin
   t_top.OptShowPlusTab:= chkShowPlus.Checked;
+  t_top.Invalidate;
+end;
+
+procedure TForm1.chkVarSizeChange(Sender: TObject);
+begin
+  t_top.OptVarWidth:= chkVarSize.Checked;
   t_top.Invalidate;
 end;
 
