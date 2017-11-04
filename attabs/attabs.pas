@@ -1696,6 +1696,9 @@ function TATTabs.IsScrollMarkNeeded: boolean;
 var
   R: TRect;
 begin
+  if FOptMultiline then
+    Result:= false
+  else
   if TabCount=0 then
     Result:= false
   else
