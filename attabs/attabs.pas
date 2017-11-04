@@ -1519,7 +1519,7 @@ begin
     case FOptPosition of
       atpTop:
         begin
-          if FMultilineActive then
+          if FOptMultiline then
             RBottom:= Rect(0, ClientHeight-FOptSpacer2, ClientWidth, ClientHeight)
           else
             RBottom:= Rect(0, FOptSpacer+FOptTabHeight, ClientWidth, ClientHeight);
