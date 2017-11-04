@@ -8,6 +8,7 @@ OS independent, fully custom drawn.
 - can show plus pseudo-tab
 - can show scroll arrows if lot of tabs
 - can show flat tabs (Material style)
+- can use multi-line mode
 - can show colored tabs
 - can show drop-down tab menu
 - can show icons/numbers on tabs
