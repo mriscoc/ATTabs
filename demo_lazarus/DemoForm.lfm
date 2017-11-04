@@ -53,7 +53,7 @@ object Form1: TForm1
     Width = 113
     Caption = 'add after current'
     OnClick = btnAddClick
-    TabOrder = 9
+    TabOrder = 10
   end
   object btnDel: TButton
     Left = 256
@@ -62,7 +62,7 @@ object Form1: TForm1
     Width = 75
     Caption = 'del'
     OnClick = btnDelClick
-    TabOrder = 10
+    TabOrder = 11
   end
   object btnColor: TButton
     Left = 336
@@ -71,7 +71,7 @@ object Form1: TForm1
     Width = 75
     Caption = 'color'
     OnClick = btnColorClick
-    TabOrder = 11
+    TabOrder = 12
   end
   object btnLeft: TButton
     Left = 256
@@ -80,7 +80,7 @@ object Form1: TForm1
     Width = 75
     Caption = '<'
     OnClick = btnLeftClick
-    TabOrder = 14
+    TabOrder = 15
   end
   object btnRight: TButton
     Left = 336
@@ -89,7 +89,7 @@ object Form1: TForm1
     Width = 75
     Caption = '>'
     OnClick = btnRightClick
-    TabOrder = 15
+    TabOrder = 16
   end
   object EditInfo: TEdit
     Left = 416
@@ -97,7 +97,7 @@ object Form1: TForm1
     Top = 288
     Width = 225
     OnChange = EditInfoChange
-    TabOrder = 16
+    TabOrder = 17
   end
   object chkShowPlus: TCheckBox
     Left = 136
@@ -127,7 +127,7 @@ object Form1: TForm1
     Width = 113
     Caption = 'toggle modified'
     OnClick = btnModifyClick
-    TabOrder = 13
+    TabOrder = 14
   end
   object chkShowFullColor: TCheckBox
     Left = 136
@@ -146,7 +146,7 @@ object Form1: TForm1
     Width = 208
     Caption = 'stress (300 tabs)'
     OnClick = btnStressClick
-    TabOrder = 12
+    TabOrder = 13
   end
   object Label4: TLabel
     Left = 456
@@ -170,7 +170,7 @@ object Form1: TForm1
     )
     OnChange = comboShowXChange
     Style = csDropDownList
-    TabOrder = 7
+    TabOrder = 8
   end
   object Label5: TLabel
     Left = 456
@@ -202,7 +202,7 @@ object Form1: TForm1
     )
     OnChange = comboLayoutChange
     Style = csDropDownList
-    TabOrder = 8
+    TabOrder = 9
   end
   object chkShowFlat: TCheckBox
     Left = 136
@@ -248,7 +248,7 @@ object Form1: TForm1
     )
     OnChange = comboIconPosChange
     Style = csDropDownList
-    TabOrder = 17
+    TabOrder = 18
   end
   object btnToggleSpecial: TButton
     Left = 136
@@ -257,7 +257,7 @@ object Form1: TForm1
     Width = 113
     Caption = 'toggle special'
     OnClick = btnToggleSpecialClick
-    TabOrder = 18
+    TabOrder = 19
   end
   object chkVarSize: TCheckBox
     Left = 136
@@ -280,6 +280,16 @@ object Form1: TForm1
     Caption = 'multi-line'
     OnChange = chkMultilineChange
     TabOrder = 5
+  end
+  object chkMultilineBtm: TCheckBox
+    Left = 304
+    Height = 23
+    Top = 128
+    Width = 145
+    AutoSize = False
+    Caption = 'multi-line'
+    OnChange = chkMultilineBtmChange
+    TabOrder = 7
   end
   object ImageList1: TImageList
     left = 624
