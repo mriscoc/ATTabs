@@ -1278,7 +1278,7 @@ procedure TATTabs.DoUpdateTabRects;
 var
   Data: TATTabData;
   R: TRect;
-  NMaybePlusWidth: integer;
+  NWidthPlus: integer;
   i: integer;
 begin
   //left/right tabs
@@ -1305,8 +1305,11 @@ begin
 
   //top/bottom tabs
   FMultilineActive:= false;
-  R:= GetTabRect_Plus;
-  NMaybePlusWidth:= IfThen(FOptShowPlusTab, R.Right-R.Left);
+  NWidthPlus:= 0;
+  if FOptShowPlusTab then
+    NWidthPlus:= GetTabRectWidth(true);
+  if FOptMultiline then
+    FTabWidth:= FOptTabWidthNormal;
 
   R.Left:= FRealIndentLeft;
   R.Right:= R.Left;
@@ -1341,16 +1344,16 @@ begin
         FTabWidth:= FOptTabWidthMinimal;
       if FTabWidth>FOptTabWidthMaximal then
         FTabWidth:= FOptTabWidthMaximal;
-
-      if FOptMultiline then
-        if R.Left+FTabWidth+FRealIndentRight+NMaybePlusWidth >= ClientWidth then
-        begin
-          FMultilineActive:= true;
-          R.Left:= FRealIndentLeft;
-          R.Top:= R.Bottom+FOptSpaceBetweenRows;
-          R.Bottom:= R.Top+FOptTabHeight;
-        end;
     end;
+
+    if FOptMultiline then
+      if R.Left+FTabWidth+FRealIndentRight+NWidthPlus >= ClientWidth then
+      begin
+        FMultilineActive:= true;
+        R.Left:= FRealIndentLeft;
+        R.Top:= R.Bottom+FOptSpaceBetweenRows;
+        R.Bottom:= R.Top+FOptTabHeight;
+      end;
 
     R.Right:= R.Left + FTabWidth;
     Data.TabRect:= R;
