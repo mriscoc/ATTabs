@@ -2336,12 +2336,6 @@ end;
 
 function TATTabs.IsShowX(AIndex: integer): boolean;
 begin
-  if FOptVarWidth then
-  begin
-    Result:= FOptShowXButtons<>atbxShowNone;
-    Exit
-  end;
-
   case FOptShowXButtons of
     atbxShowNone: Result:= false;
     atbxShowAll: Result:= true;
@@ -2350,9 +2344,10 @@ begin
     else Result:= false;
   end;
 
-  if FOptPosition in [atpTop, atpBottom] then
-    if FTabWidth<FOptTabWidthMinimalHidesX then
-      Result:= false;
+  if not FOptVarWidth then
+    if FOptPosition in [atpTop, atpBottom] then
+      if FTabWidth<FOptTabWidthMinimalHidesX then
+        Result:= false;
 end;
 
 procedure TATTabs.DoTabDrop;
