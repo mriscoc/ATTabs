@@ -1346,7 +1346,7 @@ begin
         FTabWidth:= FOptTabWidthMaximal;
     end;
 
-    if FOptMultiline then
+    if FOptMultiline and (i>0) then
       if R.Left+FTabWidth+FRealIndentRight+NWidthPlus >= ClientWidth then
       begin
         FMultilineActive:= true;
