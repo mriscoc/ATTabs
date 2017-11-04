@@ -33,6 +33,13 @@ OptVarWidth: boolean
 
 Allow variable width tabs. Only for top/bottom OptPosition.
 
+OptMultiline: boolean
+=======
+
+Allow auto-sizing of control's height and multi-line mode. Only for top/bottom OptPosition.
+In this mode, OptSpacer is indent from top, OptSpacer2 is indent from bottom.
+Note: after you turn off this prop, you need to restore control's height.
+
 OptTabHeight: integer
 ======
 
@@ -62,6 +69,11 @@ OptSpaceBetweenTabs: integer
 ======
 
 Indent (pixels) between nearest tabs.
+
+OptSpaceBetweenRows: integer
+======
+
+For multi-line mode, indent between horizontal tab rows.
 
 OptSpaceBetweenIconCaption: integer
 ======
