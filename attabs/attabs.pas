@@ -1329,6 +1329,7 @@ begin
 
     if FOptVarWidth then
     begin
+      Canvas.Font.Style:= Data.TabFontStyle;
       FTabWidth:=
         Canvas.TextWidth(Data.TabCaption) +
         2*FOptSpaceBeforeText;
