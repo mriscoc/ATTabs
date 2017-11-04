@@ -28,6 +28,11 @@ OptIconPosition: enum
 Position of icon (from ImageList) relative to caption of tab.
 You can set icon above text, icon below text, etc.
 
+OptVarWidth: boolean
+======
+
+Allow variable width tabs. Only for top/bottom OptPosition.
+
 OptTabHeight: integer
 ======
 
@@ -36,12 +41,17 @@ Height of tab-rect area. Usually smaller than control height to show indents abo
 OptTabWidthNormal: integer
 ======
 
-Normal width of a tab, when small count of tabs is created.
+Normal width of a tab, when small count of tabs is created. Only for fixed width tabs.
 
 OptTabWidthMinimal: integer
 ======
 
 Smallest width of a tab, used when lot of tabs is created (so some tabs don't fit).
+
+OptTabWidthMaximal: integer
+======
+
+For OptVarWidth mode, it is maximal width of tabs.
 
 OptTabWidthMinimalHidesX: integer
 ======
