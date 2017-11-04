@@ -189,7 +189,7 @@ const
   _InitOptSpaceBetweenTabs = 0;
   _InitOptSpaceBetweenIconCaption = 0;
   _InitOptSpacer = 4;
-  _InitOptSpacer2 = 15;
+  _InitOptSpacer2 = 10;
   _InitOptSpaceXRight = 10;
   _InitOptSpaceXInner = 3;
   _InitOptSpaceXSize = 12;
@@ -260,6 +260,7 @@ type
     FOptButtonLayout: string;
 
     FOptVarWidth: boolean;
+    FOptMultiline: boolean;
     FOptTabHeight: integer;
     FOptTabWidthMinimal: integer; //tab minimal width (used when lot of tabs)
     FOptTabWidthMaximal: integer;
@@ -315,6 +316,7 @@ type
     FTabList: TList;
     FTabCaptions: TStrings;
     FTabMenu: TATTabPopupMenu;
+    FMultilineActive: boolean;
 
     FRealIndentLeft: integer;
     FRealIndentRight: integer;
@@ -512,6 +514,7 @@ type
     property OptButtonLayout: string read FOptButtonLayout write SetOptButtonLayout;
     property OptButtonSize: integer read FOptButtonSize write FOptButtonSize default _InitOptButtonSize;
     property OptVarWidth: boolean read FOptVarWidth write FOptVarWidth default false;
+    property OptMultiline: boolean read FOptMultiline write FOptMultiline default false;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
     property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal default _InitOptTabWidthMinimal;
@@ -1269,10 +1272,12 @@ end;
 
 procedure TATTabs.DoUpdateTabRects;
 var
-  i: integer;
   Data: TATTabData;
   R: TRect;
+  NMaybePlusWidth: integer;
+  i: integer;
 begin
+  //left/right tabs
   if FOptPosition in [atpLeft, atpRight] then
   begin
     R.Left:= IfThen(FOptPosition=atpLeft, FOptSpacer, FOptSpacer2+1);
@@ -1293,6 +1298,11 @@ begin
 
     exit;
   end;
+
+  //top/bottom tabs
+  FMultilineActive:= false;
+  R:= GetTabRect_Plus;
+  NMaybePlusWidth:= IfThen(FOptShowPlusTab, R.Right-R.Left);
 
   R.Left:= FRealIndentLeft;
   R.Right:= R.Left;
@@ -1327,11 +1337,23 @@ begin
         FTabWidth:= FOptTabWidthMinimal;
       if FTabWidth>FOptTabWidthMaximal then
         FTabWidth:= FOptTabWidthMaximal;
+
+      if FOptMultiline then
+        if R.Left+FTabWidth+FRealIndentRight+NMaybePlusWidth >= ClientWidth then
+        begin
+          FMultilineActive:= true;
+          R.Left:= FRealIndentLeft;
+          R.Top:= R.Bottom+FOptSpacer;
+          R.Bottom:= R.Top+FOptTabHeight;
+        end;
     end;
 
     R.Right:= R.Left + FTabWidth;
     Data.TabRect:= R;
   end;
+
+  if FOptMultiline then
+    Height:= R.Bottom+FOptSpacer2;
 end;
 
 function TATTabs.GetTabRect_Plus: TRect;
@@ -1490,7 +1512,10 @@ begin
     case FOptPosition of
       atpTop:
         begin
-          RBottom:= Rect(0, FOptSpacer+FOptTabHeight, ClientWidth, ClientHeight);
+          if FMultilineActive then
+            RBottom:= Rect(0, ClientHeight-FOptSpacer2, ClientWidth, ClientHeight)
+          else
+            RBottom:= Rect(0, FOptSpacer+FOptTabHeight, ClientWidth, ClientHeight);
           C.Brush.Color:= FColorTabActive;
           C.FillRect(RBottom);
           DrawLine(C, RBottom.Left, RBottom.Top, RBottom.Right, RBottom.Top, FColorBorderActive);
@@ -1843,7 +1868,9 @@ begin
   for i:= 0 to TabCount-1 do
   begin
     R1:= GetTabRect(i);
-    if R1.Left>Pnt.X then exit;
+    if not FOptMultiline then
+      if R1.Left>Pnt.X then exit;
+
     if PtInRect(R1, Pnt) then
     begin
       Result:= i;

@@ -16,6 +16,7 @@ type
     btnRight: TButton;
     btnStress: TButton;
     btnToggleSpecial: TButton;
+    chkMultiline: TCheckBox;
     chkVarSize: TCheckBox;
     chkCenterCaption: TCheckBox;
     chkShowFlat: TCheckBox;
@@ -38,6 +39,7 @@ type
     procedure btnStressClick(Sender: TObject);
     procedure btnToggleSpecialClick(Sender: TObject);
     procedure chkCenterCaptionChange(Sender: TObject);
+    procedure chkMultilineChange(Sender: TObject);
     procedure chkNumsChange(Sender: TObject);
     procedure chkShowFlatChange(Sender: TObject);
     procedure chkShowFullColorChange(Sender: TObject);
@@ -218,6 +220,12 @@ begin
     t_top.OptCaptionAlignment:= taCenter
   else
     t_top.OptCaptionAlignment:= taLeftJustify;
+  t_top.Invalidate;
+end;
+
+procedure TForm1.chkMultilineChange(Sender: TObject);
+begin
+  t_top.OptMultiline:= chkMultiline.Checked;
   t_top.Invalidate;
 end;
 
