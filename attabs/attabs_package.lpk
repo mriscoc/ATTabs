@@ -10,9 +10,9 @@
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Description Value="Lite OS-independant tabs"/>
+    <Description Value="Powerful OS-independant tab control"/>
     <License Value="MPL 2.0, LGPL"/>
-    <Version Major="1" Minor="4"/>
+    <Version Major="1" Minor="5"/>
     <Files Count="2">
       <Item1>
         <Filename Value="attabs_register.pas"/>
