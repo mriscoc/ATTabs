@@ -12,11 +12,15 @@ type
     chkShowPlus: TCheckBox;
     chkAngled: TCheckBox;
     chkGap: TCheckBox;
+    chkVarWidth: TCheckBox;
+    chkMultiline: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure chkFlatClick(Sender: TObject);
     procedure chkShowPlusClick(Sender: TObject);
     procedure chkAngledClick(Sender: TObject);
     procedure chkGapClick(Sender: TObject);
+    procedure chkVarWidthClick(Sender: TObject);
+    procedure chkMultilineClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,9 +42,9 @@ begin
   t.Parent:= Self;
   t.Align:= alTop;
 
-  t.AddTab(-1, 'tab0');
-  t.AddTab(-1, 'tab1');
-  t.AddTab(-1, 'tab2');
+  t.AddTab(-1, 'tab first');
+  t.AddTab(-1, 'tab more');
+  t.AddTab(-1, 'tab long caption');
   t.OnTabPlusClick:= TabPlusClick;
 
   t.ColorBg:= clWhite;
@@ -76,6 +80,18 @@ end;
 procedure TForm1.chkGapClick(Sender: TObject);
 begin
   t.OptSpaceBetweenTabs:= IfThen(chkGap.Checked, 6, 0);
+  t.Invalidate;
+end;
+
+procedure TForm1.chkVarWidthClick(Sender: TObject);
+begin
+  t.OptVarWidth:= chkVarWidth.Checked;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkMultilineClick(Sender: TObject);
+begin
+  t.OptMultiline:= chkMultiline.Checked;
   t.Invalidate;
 end;
 
