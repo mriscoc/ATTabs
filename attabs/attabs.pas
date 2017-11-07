@@ -190,7 +190,7 @@ const
   _InitOptSpaceInitial = 5;
   _InitOptSpaceBeforeText = 6;
   _InitOptSpaceBetweenTabs = 0;
-  _InitOptSpaceBetweenRows = 4;
+  _InitOptSpaceBetweenLines = 4;
   _InitOptSpaceBetweenIconCaption = 0;
   _InitOptSpacer = 4;
   _InitOptSpacer2 = 10;
@@ -277,7 +277,7 @@ type
     FOptTabWidthNormal: integer; //tab maximal width (used when only few tabs)
     FOptTabWidthMinimalHidesX: integer; //tab minimal width, after which "x" mark hides for inactive tabs
     FOptSpaceBetweenTabs: integer; //space between nearest tabs
-    FOptSpaceBetweenRows: integer;
+    FOptSpaceBetweenLines: integer;
     FOptSpaceBetweenIconCaption: integer;
     FOptSpaceInitial: integer; //space between first tab and left control edge
     FOptSpaceBeforeText: integer; //space between text and tab left edge
@@ -539,7 +539,7 @@ type
     property OptTabWidthMaximal: integer read FOptTabWidthMaximal write FOptTabWidthMaximal default _InitOptTabWidthMaximal;
     property OptTabWidthMinimalHidesX: integer read FOptTabWidthMinimalHidesX write FOptTabWidthMinimalHidesX default _InitOptTabWidthMinimalHidesX;
     property OptSpaceBetweenTabs: integer read FOptSpaceBetweenTabs write FOptSpaceBetweenTabs default _InitOptSpaceBetweenTabs;
-    property OptSpaceBetweenRows: integer read FOptSpaceBetweenRows write FOptSpaceBetweenRows default _InitOptSpaceBetweenRows;
+    property OptSpaceBetweenLines: integer read FOptSpaceBetweenLines write FOptSpaceBetweenLines default _InitOptSpaceBetweenLines;
     property OptSpaceBetweenIconCaption: integer read FOptSpaceBetweenIconCaption write FOptSpaceBetweenIconCaption default _InitOptSpaceBetweenIconCaption;
     property OptSpaceInitial: integer read FOptSpaceInitial write FOptSpaceInitial default _InitOptSpaceInitial;
     property OptSpaceBeforeText: integer read FOptSpaceBeforeText write FOptSpaceBeforeText default _InitOptSpaceBeforeText;
@@ -861,7 +861,7 @@ begin
   FOptSpaceInitial:= _InitOptSpaceInitial;
   FOptSpaceBeforeText:= _InitOptSpaceBeforeText;
   FOptSpaceBetweenTabs:= _InitOptSpaceBetweenTabs;
-  FOptSpaceBetweenRows:= _InitOptSpaceBetweenRows;
+  FOptSpaceBetweenLines:= _InitOptSpaceBetweenLines;
   FOptSpaceBetweenIconCaption:= _InitOptSpaceBetweenIconCaption;
   FOptSpacer:= _InitOptSpacer;
   FOptSpacer2:= _InitOptSpacer2;
@@ -1377,7 +1377,7 @@ begin
       begin
         FMultilineActive:= true;
         R.Left:= FRealIndentLeft;
-        R.Top:= R.Bottom+FOptSpaceBetweenRows;
+        R.Top:= R.Bottom+FOptSpaceBetweenLines;
         R.Bottom:= R.Top+FOptTabHeight;
       end;
 

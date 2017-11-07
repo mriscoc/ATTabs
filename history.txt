@@ -5,6 +5,7 @@
 + add: prop ColorFontHot
 + add: prop OptActiveFontStyle, OptActiveFontStyleUsed
 + add: prop OptHotFontStyle, OptHotFontStyleUsed
+* changed: renamed prop to OptSpaceBetweenLines
 
 2017.11.05
 + add: prop OptVarWidth
