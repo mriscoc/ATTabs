@@ -165,6 +165,7 @@ const
   _InitTabColorActiveMark = $C04040;
   _InitTabColorFontModified = $A00000;
   _InitTabColorFontActive = clNone;
+  _InitTabColorFontHot = clNone;
   _InitTabColorBorderActive = $A0A0A0;
   _InitTabColorBorderPassive = $A07070;
   _InitTabColorCloseBg = clNone;
@@ -250,6 +251,7 @@ type
     FColorActiveMark: TColor;
     FColorFontModified: TColor;
     FColorFontActive: TColor;
+    FColorFontHot: TColor;
     FColorCloseBg: TColor; //color of small square with "x" mark, inactive
     FColorCloseBgOver: TColor; //color of small square with "x" mark, mouse-over
     FColorCloseBorderOver: TColor; //color of 1px border of "x" mark, mouse-over
@@ -378,8 +380,9 @@ type
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
       AColorBg, AColorBorder, AColorBorderLow, AColorHilite, AColorCloseBg,
-  AColorCloseBorder, AColorCloseXMark: TColor; AShowCloseBtn, ATabModified,
-  ATabActive: boolean; AImageIndex: integer; AFontStyle: TFontStyles);
+  AColorCloseBorder, AColorCloseXMark, AColorFont: TColor; AShowCloseBtn,
+  ATabModified, ATabActive: boolean; AImageIndex: integer;
+  AFontStyle: TFontStyles);
     procedure DoPaintArrowTo(C: TCanvas; ATyp: TATTabTriangle; ARect: TRect;
       AColorArr, AColorBg: TColor);
     procedure DoPaintUserButtons(C: TCanvas);
@@ -513,6 +516,7 @@ type
     property ColorActiveMark: TColor read FColorActiveMark write FColorActiveMark default _InitTabColorActiveMark;
     property ColorFontModified: TColor read FColorFontModified write FColorFontModified default _InitTabColorFontModified;
     property ColorFontActive: TColor read FColorFontActive write FColorFontActive default _InitTabColorFontActive;
+    property ColorFontHot: TColor read FColorFontHot write FColorFontHot default _InitTabColorFontHot;
     property ColorCloseBg: TColor read FColorCloseBg write FColorCloseBg default _InitTabColorCloseBg;
     property ColorCloseBgOver: TColor read FColorCloseBgOver write FColorCloseBgOver default _InitTabColorCloseBgOver;
     property ColorCloseBorderOver: TColor read FColorCloseBorderOver write FColorCloseBorderOver default _InitTabColorCloseBorderOver;
@@ -830,6 +834,7 @@ begin
   FColorActiveMark:= _InitTabColorActiveMark;
   FColorFontModified:= _InitTabColorFontModified;
   FColorFontActive:= _InitTabColorFontActive;
+  FColorFontHot:= _InitTabColorFontHot;
   FColorBorderActive:= _InitTabColorBorderActive;
   FColorBorderPassive:= _InitTabColorBorderPassive;
   FColorCloseBg:= _InitTabColorCloseBg;
@@ -953,7 +958,7 @@ end;
 
 procedure TATTabs.DoPaintTabTo(
   C: TCanvas; ARect: TRect; const ACaption: TATTabString;
-  AColorBg, AColorBorder, AColorBorderLow, AColorHilite, AColorCloseBg, AColorCloseBorder, AColorCloseXMark: TColor;
+  AColorBg, AColorBorder, AColorBorderLow, AColorHilite, AColorCloseBg, AColorCloseBorder, AColorCloseXMark, AColorFont: TColor;
   AShowCloseBtn, ATabModified, ATabActive: boolean;
   AImageIndex: integer;
   AFontStyle: TFontStyles);
@@ -1042,11 +1047,7 @@ begin
   begin
     C.Font.Assign(Self.Font);
     C.Font.Style:= AFontStyle;
-    if ATabActive and (FColorFontActive<>clNone) then
-      C.Font.Color:= FColorFontActive
-    else
-    if ATabModified then
-      C.Font.Color:= FColorFontModified;
+    C.Font.Color:= AColorFont;
 
     TempCaption:= IfThen(ATabModified, FOptShowModifiedText) + ACaption;
     Extent:= C.TextExtent(TempCaption);
@@ -1497,7 +1498,7 @@ end;
 procedure TATTabs.DoPaintTo(C: TCanvas);
 var
   RRect, RBottom: TRect;
-  NColorXBg, NColorXBorder, NColorXMark: TColor;
+  NColorXBg, NColorXBorder, NColorXMark, NColorFont: TColor;
   ElemType: TATTabElemType;
   Data: TATTabData;
   NFontStyle: TFontStyles;
@@ -1585,6 +1586,7 @@ begin
     NColorXBg:= clNone;
     NColorXBorder:= clNone;
     NColorXMark:= clWhite;
+    NColorFont:= Font.Color;
     if FTabIndexOver=TabIndexPlus then
       ElemType:= aeTabPlusOver
     else
@@ -1600,6 +1602,7 @@ begin
         NColorXBg,
         NColorXBorder,
         NColorXMark,
+        NColorFont,
         false,
         false,
         false,
@@ -1632,6 +1635,14 @@ begin
         else
           NFontStyle:= Data.TabFontStyle;
 
+        if (FColorFontHot<>clNone) and (i=FTabIndexOver) then
+          NColorFont:= FColorFontHot
+        else
+        if Data.TabModified then
+          NColorFont:= FColorFontModified
+        else
+          NColorFont:= Font.Color;
+
         DoPaintTabTo(C, RRect,
           Format(FOptShowNumberPrefix, [i+1]) + Data.TabCaption,
           IfThen((i=FTabIndexOver) and not _IsDrag, FColorTabOver, FColorTabPassive),
@@ -1641,6 +1652,7 @@ begin
           NColorXBg,
           NColorXBorder,
           NColorXMark,
+          NColorFont,
           IsShowX(i),
           Data.TabModified,
           false,
@@ -1667,6 +1679,14 @@ begin
       else
         NFontStyle:= Data.TabFontStyle;
 
+      if FColorFontActive<>clNone then
+        NColorFont:= FColorFontActive
+      else
+      if Data.TabModified then
+        NColorFont:= FColorFontModified
+      else
+        NColorFont:= Font.Color;
+
       DoPaintTabTo(C, RRect,
         Format(FOptShowNumberPrefix, [i+1]) + Data.TabCaption,
         FColorTabActive,
@@ -1676,6 +1696,7 @@ begin
         NColorXBg,
         NColorXBorder,
         NColorXMark,
+        NColorFont,
         IsShowX(i),
         Data.TabModified,
         true,
