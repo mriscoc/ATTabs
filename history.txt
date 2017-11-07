@@ -1,11 +1,12 @@
 
 2017.11.07
++ add: can set special font color/ font style for hot (mouse-over) tabs, and active tab
+  + add: prop ColorFontActive
+  + add: prop ColorFontHot
+  + add: prop OptActiveFontStyle, OptActiveFontStyleUsed
+  + add: prop OptHotFontStyle, OptHotFontStyleUsed
 + add: custom-draw event called for spacer (rect below tabs) too
-+ add: prop ColorFontActive
-+ add: prop ColorFontHot
-+ add: prop OptActiveFontStyle, OptActiveFontStyleUsed
-+ add: prop OptHotFontStyle, OptHotFontStyleUsed
-* changed: renamed prop to OptSpaceBetweenLines
+* renamed prop to OptSpaceBetweenLines
 
 2017.11.05
 + add: prop OptVarWidth
