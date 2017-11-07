@@ -1355,7 +1355,7 @@ begin
     begin
       Canvas.Font.Style:= Data.TabFontStyle;
       FTabWidth:=
-        Canvas.TextWidth(Data.TabCaption) +
+        Canvas.TextWidth(Data.TabCaption + FOptShowModifiedText) +
         2*FOptSpaceBeforeText;
 
       if Data.TabImageIndex>=0 then
