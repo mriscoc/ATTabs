@@ -204,6 +204,8 @@ const
   _InitOptDropMarkSize = 6;
   _InitOptActiveFontStyle = [fsUnderline];
   _InitOptActiveFontStyleUsed = false;
+  _InitOptHotFontStyle = [fsUnderline];
+  _InitOptHotFontStyleUsed = false;
 
   _InitOptShowFlat = false;
   _InitOptPosition = atpTop;
@@ -308,6 +310,8 @@ type
     FOptShowAngled: boolean;
     FOptActiveFontStyle: TFontStyles;
     FOptActiveFontStyleUsed: boolean;
+    FOptHotFontStyle: TFontStyles;
+    FOptHotFontStyleUsed: boolean;
 
     FOptMouseMiddleClickClose: boolean; //enable close tab by middle-click
     FOptMouseDoubleClickClose: boolean;
@@ -567,6 +571,8 @@ type
     property OptShowNumberPrefix: TATTabString read FOptShowNumberPrefix write FOptShowNumberPrefix;
     property OptActiveFontStyle: TFontStyles read FOptActiveFontStyle write FOptActiveFontStyle default _InitOptActiveFontStyle;
     property OptActiveFontStyleUsed: boolean read FOptActiveFontStyleUsed write FOptActiveFontStyleUsed default _InitOptActiveFontStyleUsed;
+    property OptHotFontStyle: TFontStyles read FOptHotFontStyle write FOptHotFontStyle default _InitOptHotFontStyle;
+    property OptHotFontStyleUsed: boolean read FOptHotFontStyleUsed write FOptHotFontStyleUsed default _InitOptHotFontStyleUsed;
 
     property OptMouseMiddleClickClose: boolean read FOptMouseMiddleClickClose write FOptMouseMiddleClickClose default _InitOptMouseMiddleClickClose;
     property OptMouseDoubleClickClose: boolean read FOptMouseDoubleClickClose write FOptMouseDoubleClickClose default _InitOptMouseDoubleClickClose;
@@ -867,8 +873,10 @@ begin
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
   FOptDropMarkSize:= _InitOptDropMarkSize;
   FAngleTangent:= _InitOptShowAngleTangent;
-  FOptActiveFontStyleUsed:= _InitOptActiveFontStyleUsed;
   FOptActiveFontStyle:= _InitOptActiveFontStyle;
+  FOptActiveFontStyleUsed:= _InitOptActiveFontStyleUsed;
+  FOptHotFontStyle:= _InitOptHotFontStyle;
+  FOptHotFontStyleUsed:= _InitOptHotFontStyleUsed;
 
   FOptShowFlat:= _InitOptShowFlat;
   FOptPosition:= _InitOptPosition;
@@ -1033,16 +1041,12 @@ begin
   if RectText.Right-RectText.Left>=8 then
   begin
     C.Font.Assign(Self.Font);
+    C.Font.Style:= AFontStyle;
     if ATabActive and (FColorFontActive<>clNone) then
       C.Font.Color:= FColorFontActive
     else
     if ATabModified then
       C.Font.Color:= FColorFontModified;
-
-    if ATabActive and FOptActiveFontStyleUsed then
-      C.Font.Style:= FOptActiveFontStyle
-    else
-      C.Font.Style:= AFontStyle;
 
     TempCaption:= IfThen(ATabModified, FOptShowModifiedText) + ACaption;
     Extent:= C.TextExtent(TempCaption);
@@ -1496,6 +1500,7 @@ var
   NColorXBg, NColorXBorder, NColorXMark: TColor;
   ElemType: TATTabElemType;
   Data: TATTabData;
+  NFontStyle: TFontStyles;
   i: integer;
 begin
   ElemType:= aeBackground;
@@ -1612,13 +1617,21 @@ begin
     begin
       RRect:= GetTabRect(i);
       GetTabCloseColor(i, RRect, NColorXBg, NColorXBorder, NColorXMark);
+
       if i=FTabIndexOver then
         ElemType:= aeTabPassiveOver
       else
         ElemType:= aeTabPassive;
+
       if IsPaintNeeded(ElemType, i, C, RRect) then
       begin
         Data:= TATTabData(FTabList[i]);
+
+        if FOptHotFontStyleUsed and (i=FTabIndexOver) then
+          NFontStyle:= FOptHotFontStyle
+        else
+          NFontStyle:= Data.TabFontStyle;
+
         DoPaintTabTo(C, RRect,
           Format(FOptShowNumberPrefix, [i+1]) + Data.TabCaption,
           IfThen((i=FTabIndexOver) and not _IsDrag, FColorTabOver, FColorTabPassive),
@@ -1632,7 +1645,7 @@ begin
           Data.TabModified,
           false,
           Data.TabImageIndex,
-          Data.TabFontStyle
+          NFontStyle
           );
         DoPaintAfter(ElemType, i, C, RRect);
       end;
@@ -1644,9 +1657,16 @@ begin
   begin
     RRect:= GetTabRect(i);
     GetTabCloseColor(i, RRect, NColorXBg, NColorXBorder, NColorXMark);
+
     if IsPaintNeeded(aeTabActive, i, C, RRect) then
     begin
       Data:= TATTabData(FTabList[i]);
+
+      if FOptActiveFontStyleUsed then
+        NFontStyle:= FOptActiveFontStyle
+      else
+        NFontStyle:= Data.TabFontStyle;
+
       DoPaintTabTo(C, RRect,
         Format(FOptShowNumberPrefix, [i+1]) + Data.TabCaption,
         FColorTabActive,
@@ -1660,7 +1680,7 @@ begin
         Data.TabModified,
         true,
         Data.TabImageIndex,
-        Data.TabFontStyle
+        NFontStyle
         );
       DoPaintAfter(aeTabActive, i, C, RRect);
     end;  

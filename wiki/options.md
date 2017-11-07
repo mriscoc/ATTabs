@@ -213,6 +213,16 @@ OptActiveFontStyleUsed: boolean
 
 Enable to use OptActiveFontStyle.
 
+OptHotFontStyle: TFontStyles
+======
+
+Font style, e.g. `[fsUnderline]`, which is used for caption of passive mouse-over tab.
+
+OptHotFontStyleUsed: boolean
+=====
+
+Enable to use OptHotFontStyle.
+
 OptMouseMiddleClickClose: boolean
 ======
 
