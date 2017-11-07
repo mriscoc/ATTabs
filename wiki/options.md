@@ -203,6 +203,16 @@ OptShowNumberPrefix: TATTabString
 
 String with `%d`, which makes numbered prefix for all tabs. Eg, `'%d) '` makes prefix with number and bracket. If empty, no prefix used.
 
+OptActiveFontStyle: TFontStyles
+======
+
+Font style, e.g. `[fsUnderline]`, which is used for caption of active tab.
+
+OptActiveFontStyleUsed: boolean
+=====
+
+Enable to use OptActiveFontStyle.
+
 OptMouseMiddleClickClose: boolean
 ======
 
