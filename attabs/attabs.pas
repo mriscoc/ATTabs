@@ -373,8 +373,8 @@ type
     procedure DoPaintTo(C: TCanvas);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
-      ATabBg, ATabBorder, ATabBorderLow, ATabHilite, ATabCloseBg,
-  ATabCloseBorder, ATabCloseXMark: TColor; ACloseBtn, AModified,
+      AColorBg, AColorBorder, AColorBorderLow, AColorHilite, AColorCloseBg,
+  AColorCloseBorder, AColorCloseXMark: TColor; AShowCloseBtn, ATabModified,
   ATabActive: boolean; AImageIndex: integer; AFontStyle: TFontStyles);
     procedure DoPaintArrowTo(C: TCanvas; ATyp: TATTabTriangle; ARect: TRect;
       AColorArr, AColorBg: TColor);
@@ -945,8 +945,8 @@ end;
 
 procedure TATTabs.DoPaintTabTo(
   C: TCanvas; ARect: TRect; const ACaption: TATTabString;
-  ATabBg, ATabBorder, ATabBorderLow, ATabHilite, ATabCloseBg, ATabCloseBorder, ATabCloseXMark: TColor;
-  ACloseBtn, AModified, ATabActive: boolean;
+  AColorBg, AColorBorder, AColorBorderLow, AColorHilite, AColorCloseBg, AColorCloseBorder, AColorCloseXMark: TColor;
+  AShowCloseBtn, ATabModified, ATabActive: boolean;
   AImageIndex: integer;
   AFontStyle: TFontStyles);
 var
@@ -964,18 +964,18 @@ begin
   if ARect.Right<=0 then exit;
 
   if FOptShowFlat then
-    ATabBg:= ColorBg;
+    AColorBg:= ColorBg;
 
-  if FOptShowEntireColor and (ATabHilite<>clNone) then
-    ATabBg:= ATabHilite;
+  if FOptShowEntireColor and (AColorHilite<>clNone) then
+    AColorBg:= AColorHilite;
 
-  C.Pen.Color:= ATabBg;
-  C.Brush.Color:= ATabBg;
+  C.Pen.Color:= AColorBg;
+  C.Brush.Color:= AColorBg;
 
   RectText:= Rect(ARect.Left, ARect.Top, ARect.Right, ARect.Bottom);
   bNeedMoreSpace:= (RectText.Right-RectText.Left<=30) and (ACaption<>'');
   NIndentL:= IfThen(not bNeedMoreSpace, FOptSpaceBeforeText, 2);
-  NIndentR:= NIndentL+IfThen(ACloseBtn, FOptSpaceXRight);
+  NIndentR:= NIndentL+IfThen(AShowCloseBtn, FOptSpaceXRight);
   C.FillRect(RectText);
   RectText:= Rect(ARect.Left+NIndentL, ARect.Top, ARect.Right-NIndentR, ARect.Bottom);
 
@@ -1036,7 +1036,7 @@ begin
     if ATabActive and (FColorFontActive<>clNone) then
       C.Font.Color:= FColorFontActive
     else
-    if AModified then
+    if ATabModified then
       C.Font.Color:= FColorFontModified;
 
     if ATabActive and FOptActiveFontStyleUsed then
@@ -1044,7 +1044,7 @@ begin
     else
       C.Font.Style:= AFontStyle;
 
-    TempCaption:= IfThen(AModified, FOptShowModifiedText) + ACaption;
+    TempCaption:= IfThen(ATabModified, FOptShowModifiedText) + ACaption;
     Extent:= C.TextExtent(TempCaption);
 
     NIndentTop:= (RectText.Bottom-RectText.Top-Extent.cy) div 2 + 1;
@@ -1106,36 +1106,36 @@ begin
     atpTop:
       begin
         if not FOptShowAngled then
-          DrawLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
+          DrawLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, AColorBorder);
         if not FOptShowAngled then
-          DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
-        DrawLine(C, PL1.X, PL1.Y, PR1.X, PL1.Y, ATabBorder);
-        if ATabBorderLow<>clNone then
-          DrawLine(C, PL2.X, ARect.Bottom, PR2.X, ARect.Bottom, ATabBorderLow)
+          DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, AColorBorder);
+        DrawLine(C, PL1.X, PL1.Y, PR1.X, PL1.Y, AColorBorder);
+        if AColorBorderLow<>clNone then
+          DrawLine(C, PL2.X, ARect.Bottom, PR2.X, ARect.Bottom, AColorBorderLow)
         else
-          DrawLine(C, PL2.X+1, ARect.Bottom, PR2.X-1, ARect.Bottom, ATabBg);
+          DrawLine(C, PL2.X+1, ARect.Bottom, PR2.X-1, ARect.Bottom, AColorBg);
       end;
     atpBottom:
       begin
-        DrawLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, ATabBorder);
-        DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, ATabBorder);
-        DrawLine(C, PL2.X, PL2.Y+1, PR2.X, PL2.Y+1, ATabBorder);
-        if ATabBorderLow<>clNone then
-          DrawLine(C, PL1.X, ARect.Top, PR1.X, ARect.Top, ATabBorderLow)
+        DrawLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y+1, AColorBorder);
+        DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, AColorBorder);
+        DrawLine(C, PL2.X, PL2.Y+1, PR2.X, PL2.Y+1, AColorBorder);
+        if AColorBorderLow<>clNone then
+          DrawLine(C, PL1.X, ARect.Top, PR1.X, ARect.Top, AColorBorderLow)
       end;
     atpLeft:
       begin
-        DrawLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, ATabBorder);
-        DrawLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, ATabBorder);
-        DrawLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y, ATabBorder);
-        DrawLine(C, PR1.X+1, PR1.Y+1, PR1.X+1, PR2.Y-1, IfThen(ATabBorderLow<>clNone, ATabBorderLow, ATabBg));
+        DrawLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, AColorBorder);
+        DrawLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, AColorBorder);
+        DrawLine(C, PL1.X, PL1.Y, PL2.X, PL2.Y, AColorBorder);
+        DrawLine(C, PR1.X+1, PR1.Y+1, PR1.X+1, PR2.Y-1, IfThen(AColorBorderLow<>clNone, AColorBorderLow, AColorBg));
       end;
     atpRight:
       begin
-        DrawLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, ATabBorder);
-        DrawLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, ATabBorder);
-        DrawLine(C, PL1.X-1, PL1.Y+1, PL1.X-1, PL2.Y-1, IfThen(ATabBorderLow<>clNone, ATabBorderLow, ATabBg));
-        DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y, ATabBorder);
+        DrawLine(C, PL1.X, PL1.Y, PR1.X, PR1.Y, AColorBorder);
+        DrawLine(C, PL2.X, PL2.Y, PR2.X, PR2.Y, AColorBorder);
+        DrawLine(C, PL1.X-1, PL1.Y+1, PL1.X-1, PL2.Y-1, IfThen(AColorBorderLow<>clNone, AColorBorderLow, AColorBg));
+        DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y, AColorBorder);
       end;
   end;
 
@@ -1153,8 +1153,8 @@ begin
             FOptTabHeight+IfThen(ATabActive, 1),
             cSmoothScale,
             ampnTopLeft,
-            ATabBg,
-            ATabBorder);
+            AColorBg,
+            AColorBorder);
           DrawTriangleRectFramed(C,
             ARect.Right-1,
             ARect.Top,
@@ -1162,8 +1162,8 @@ begin
             FOptTabHeight+IfThen(ATabActive, 1),
             cSmoothScale,
             ampnTopRight,
-            ATabBg,
-            ATabBorder);
+            AColorBg,
+            AColorBorder);
         end;
       atpBottom:
         begin
@@ -1174,8 +1174,8 @@ begin
             FOptTabHeight,
             cSmoothScale,
             ampnBottomLeft,
-            ATabBg,
-            ATabBorder);
+            AColorBg,
+            AColorBorder);
           DrawTriangleRectFramed(C,
             ARect.Right-1,
             ARect.Top+IfThen(not ATabActive, 1),
@@ -1183,27 +1183,27 @@ begin
             FOptTabHeight,
             cSmoothScale,
             ampnBottomRight,
-            ATabBg,
-            ATabBorder);
+            AColorBg,
+            AColorBorder);
         end;
     end;
 
   //colored band
   if not FOptShowEntireColor then
-    if ATabHilite<>clNone then
-      DoPaintColoredBand(C, PL1, PL2, PR1, PR2, ATabHilite);
+    if AColorHilite<>clNone then
+      DoPaintColoredBand(C, PL1, PL2, PR1, PR2, AColorHilite);
 
   //"close" button
-  if ACloseBtn then
+  if AShowCloseBtn then
   begin
-    if ATabCloseBg<>clNone then
+    if AColorCloseBg<>clNone then
       ElemType:= aeTabIconXOver
     else
       ElemType:= aeTabIconX;
     RectText:= GetTabRect_X(ARect);
     if IsPaintNeeded(ElemType, -1, C, RectText) then
     begin
-      DoPaintXTo(C, RectText, ATabBg, ATabCloseBg, ATabCloseBorder, ATabCloseXMark);
+      DoPaintXTo(C, RectText, AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark);
       DoPaintAfter(ElemType, -1, C, RectText);
     end;
   end;
