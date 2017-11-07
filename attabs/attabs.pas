@@ -144,18 +144,18 @@ type
 
 //int constants for GetTabAt
 const
-  TabIndexNone = -1; //none tab
-  TabIndexPlus = -2;
-  TabIndexPlusBtn = -3;
-  TabIndexCloseBtn = -4;
-  TabIndexArrowMenu = -5;
-  TabIndexArrowScrollLeft = -6;
-  TabIndexArrowScrollRight = -7;
-  TabIndexUser0 = -10;
-  TabIndexUser1 = -11;
-  TabIndexUser2 = -12;
-  TabIndexUser3 = -13;
-  TabIndexUser4 = -14;
+  cTabIndexNone = -1; //none tab
+  cTabIndexPlus = -2;
+  cTabIndexPlusBtn = -3;
+  cTabIndexCloseBtn = -4;
+  cTabIndexArrowMenu = -5;
+  cTabIndexArrowScrollLeft = -6;
+  cTabIndexArrowScrollRight = -7;
+  cTabIndexUser0 = -10;
+  cTabIndexUser1 = -11;
+  cTabIndexUser2 = -12;
+  cTabIndexUser3 = -13;
+  cTabIndexUser4 = -14;
 
 const
   _InitTabColorBg = $585858;
@@ -1587,7 +1587,7 @@ begin
     NColorXBorder:= clNone;
     NColorXMark:= clWhite;
     NColorFont:= Font.Color;
-    if FTabIndexOver=TabIndexPlus then
+    if FTabIndexOver=cTabIndexPlus then
       ElemType:= aeTabPlusOver
     else
       ElemType:= aeTabPlus;
@@ -1595,7 +1595,7 @@ begin
     begin
       DoPaintTabTo(C, RRect,
         '',
-        IfThen((FTabIndexOver=TabIndexPlus) and not _IsDrag, FColorTabOver, FColorTabPassive),
+        IfThen((FTabIndexOver=cTabIndexPlus) and not _IsDrag, FColorTabOver, FColorTabPassive),
         FColorBorderPassive,
         FColorBorderActive,
         clNone,
@@ -1880,61 +1880,61 @@ begin
 
   if PtInRect(FRectArrowLeft, Pnt) then
   begin
-    Result:= TabIndexArrowScrollLeft;
+    Result:= cTabIndexArrowScrollLeft;
     Exit
   end;
 
   if PtInRect(FRectArrowRight, Pnt) then
   begin
-    Result:= TabIndexArrowScrollRight;
+    Result:= cTabIndexArrowScrollRight;
     Exit
   end;
 
   if PtInRect(FRectArrowDown, Pnt) then
   begin
-    Result:= TabIndexArrowMenu;
+    Result:= cTabIndexArrowMenu;
     Exit
   end;
 
   if PtInRect(FRectButtonPlus, Pnt) then
   begin
-    Result:= TabIndexPlusBtn;
+    Result:= cTabIndexPlusBtn;
     Exit
   end;
 
   if PtInRect(FRectButtonClose, Pnt) then
   begin
-    Result:= TabIndexCloseBtn;
+    Result:= cTabIndexCloseBtn;
     Exit
   end;
 
   if PtInRect(FRectButtonUser0, Pnt) then
   begin
-    Result:= TabIndexUser0;
+    Result:= cTabIndexUser0;
     Exit
   end;
 
   if PtInRect(FRectButtonUser1, Pnt) then
   begin
-    Result:= TabIndexUser1;
+    Result:= cTabIndexUser1;
     Exit
   end;
 
   if PtInRect(FRectButtonUser2, Pnt) then
   begin
-    Result:= TabIndexUser2;
+    Result:= cTabIndexUser2;
     Exit
   end;
 
   if PtInRect(FRectButtonUser3, Pnt) then
   begin
-    Result:= TabIndexUser3;
+    Result:= cTabIndexUser3;
     Exit
   end;
 
   if PtInRect(FRectButtonUser4, Pnt) then
   begin
-    Result:= TabIndexUser4;
+    Result:= cTabIndexUser4;
     Exit
   end;
 
@@ -1956,7 +1956,7 @@ begin
   if FOptShowPlusTab then
     if PtInRect(GetTabRect_Plus, Pnt) then
     begin
-      Result:= TabIndexPlus;
+      Result:= cTabIndexPlus;
       Exit
     end;
 end;
@@ -2035,7 +2035,7 @@ begin
   if FMouseDownButton=mbLeft then
   begin
     case FTabIndexOver of
-      TabIndexArrowMenu:
+      cTabIndexArrowMenu:
         begin
           EndDrag(false);
           FTabIndexOver:= -1;
@@ -2043,25 +2043,25 @@ begin
           ShowTabMenu;
         end;
 
-      TabIndexArrowScrollLeft:
+      cTabIndexArrowScrollLeft:
         DoScrollLeft;
 
-      TabIndexArrowScrollRight:
+      cTabIndexArrowScrollRight:
         DoScrollRight;
 
-      TabIndexUser0:
+      cTabIndexUser0:
         DoClickUser(0);
-      TabIndexUser1:
+      cTabIndexUser1:
         DoClickUser(1);
-      TabIndexUser2:
+      cTabIndexUser2:
         DoClickUser(2);
-      TabIndexUser3:
+      cTabIndexUser3:
         DoClickUser(3);
-      TabIndexUser4:
+      cTabIndexUser4:
         DoClickUser(4);
 
-      TabIndexPlus,
-      TabIndexPlusBtn:
+      cTabIndexPlus,
+      cTabIndexPlusBtn:
         begin
           EndDrag(false);
           FTabIndexOver:= -1;
@@ -2069,7 +2069,7 @@ begin
             FOnTabPlusClick(Self);
         end;
 
-      TabIndexCloseBtn:
+      cTabIndexCloseBtn:
         begin
           DeleteTab(FTabIndex, true, true);
         end
@@ -2687,7 +2687,7 @@ var
   R: TRect;
   NColor: TColor;
 begin
-  bOver:= FTabIndexOver=TabIndexPlusBtn;
+  bOver:= FTabIndexOver=cTabIndexPlusBtn;
   if bOver then
     ElemType:= aeButtonPlusOver
   else
@@ -2715,7 +2715,7 @@ var
   R: TRect;
   NColor: TColor;
 begin
-  bOver:= FTabIndexOver=TabIndexCloseBtn;
+  bOver:= FTabIndexOver=cTabIndexCloseBtn;
   if bOver then
     ElemType:= aeButtonCloseOver
   else
@@ -2742,7 +2742,7 @@ var
   bOver: boolean;
   ElemType: TATTabElemType;
 begin
-  bOver:= FTabIndexOver=TabIndexArrowMenu;
+  bOver:= FTabIndexOver=cTabIndexArrowMenu;
   if bOver then
     ElemType:= aeArrowDropdownOver
   else
@@ -2769,7 +2769,7 @@ var
   ElemType: TATTabElemType;
   R: TRect;
 begin
-  bOver:= FTabIndexOver=TabIndexArrowScrollLeft;
+  bOver:= FTabIndexOver=cTabIndexArrowScrollLeft;
   if bOver then
     ElemType:= aeArrowScrollLeftOver
   else
@@ -2798,7 +2798,7 @@ var
   ElemType: TATTabElemType;
   R: TRect;
 begin
-  bOver:= FTabIndexOver=TabIndexArrowScrollRight;
+  bOver:= FTabIndexOver=cTabIndexArrowScrollRight;
   if bOver then
     ElemType:= aeArrowScrollRightOver
   else
@@ -2883,11 +2883,11 @@ begin
   for i:= 0 to 4 do
   begin
     case i of
-      0: begin NIndex:= TabIndexUser0; R:= FRectButtonUser0; end;
-      1: begin NIndex:= TabIndexUser1; R:= FRectButtonUser1; end;
-      2: begin NIndex:= TabIndexUser2; R:= FRectButtonUser2; end;
-      3: begin NIndex:= TabIndexUser3; R:= FRectButtonUser3; end;
-      4: begin NIndex:= TabIndexUser4; R:= FRectButtonUser4; end;
+      0: begin NIndex:= cTabIndexUser0; R:= FRectButtonUser0; end;
+      1: begin NIndex:= cTabIndexUser1; R:= FRectButtonUser1; end;
+      2: begin NIndex:= cTabIndexUser2; R:= FRectButtonUser2; end;
+      3: begin NIndex:= cTabIndexUser3; R:= FRectButtonUser3; end;
+      4: begin NIndex:= cTabIndexUser4; R:= FRectButtonUser4; end;
       else Break;
     end;
 
