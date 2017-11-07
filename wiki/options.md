@@ -70,10 +70,10 @@ OptSpaceBetweenTabs: integer
 
 Indent (pixels) between nearest tabs.
 
-OptSpaceBetweenRows: integer
+OptSpaceBetweenLines: integer
 ======
 
-For multi-line mode, indent between horizontal tab rows.
+For multi-line mode, indent between horizontal tab lines.
 
 OptSpaceBetweenIconCaption: integer
 ======
