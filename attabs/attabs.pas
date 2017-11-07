@@ -164,6 +164,7 @@ const
   _InitTabColorTabOver = $A08080;
   _InitTabColorActiveMark = $C04040;
   _InitTabColorFontModified = $A00000;
+  _InitTabColorFontActive = clNone;
   _InitTabColorBorderActive = $A0A0A0;
   _InitTabColorBorderPassive = $A07070;
   _InitTabColorCloseBg = clNone;
@@ -201,6 +202,8 @@ const
   _InitOptScrollMarkSizeX = 20;
   _InitOptScrollMarkSizeY = 3;
   _InitOptDropMarkSize = 6;
+  _InitOptActiveFontStyle = [fsUnderline];
+  _InitOptActiveFontStyleUsed = false;
 
   _InitOptShowFlat = false;
   _InitOptPosition = atpTop;
@@ -244,6 +247,7 @@ type
     FColorTabOver: TColor; //color of inactive tabs, mouse-over
     FColorActiveMark: TColor;
     FColorFontModified: TColor;
+    FColorFontActive: TColor;
     FColorCloseBg: TColor; //color of small square with "x" mark, inactive
     FColorCloseBgOver: TColor; //color of small square with "x" mark, mouse-over
     FColorCloseBorderOver: TColor; //color of 1px border of "x" mark, mouse-over
@@ -302,6 +306,8 @@ type
     FOptShowScrollMark: boolean;
     FOptShowDropMark: boolean;
     FOptShowAngled: boolean;
+    FOptActiveFontStyle: TFontStyles;
+    FOptActiveFontStyleUsed: boolean;
 
     FOptMouseMiddleClickClose: boolean; //enable close tab by middle-click
     FOptMouseDoubleClickClose: boolean;
@@ -502,6 +508,7 @@ type
     property ColorTabOver: TColor read FColorTabOver write FColorTabOver default _InitTabColorTabOver;
     property ColorActiveMark: TColor read FColorActiveMark write FColorActiveMark default _InitTabColorActiveMark;
     property ColorFontModified: TColor read FColorFontModified write FColorFontModified default _InitTabColorFontModified;
+    property ColorFontActive: TColor read FColorFontActive write FColorFontActive default _InitTabColorFontActive;
     property ColorCloseBg: TColor read FColorCloseBg write FColorCloseBg default _InitTabColorCloseBg;
     property ColorCloseBgOver: TColor read FColorCloseBgOver write FColorCloseBgOver default _InitTabColorCloseBgOver;
     property ColorCloseBorderOver: TColor read FColorCloseBorderOver write FColorCloseBorderOver default _InitTabColorCloseBorderOver;
@@ -558,6 +565,8 @@ type
     property OptShowBorderActiveLow: boolean read FOptShowBorderActiveLow write FOptShowBorderActiveLow default _InitOptShowBorderActiveLow;
     property OptShowEntireColor: boolean read FOptShowEntireColor write FOptShowEntireColor default _InitOptShowEntireColor;
     property OptShowNumberPrefix: TATTabString read FOptShowNumberPrefix write FOptShowNumberPrefix;
+    property OptActiveFontStyle: TFontStyles read FOptActiveFontStyle write FOptActiveFontStyle default _InitOptActiveFontStyle;
+    property OptActiveFontStyleUsed: boolean read FOptActiveFontStyleUsed write FOptActiveFontStyleUsed default _InitOptActiveFontStyleUsed;
 
     property OptMouseMiddleClickClose: boolean read FOptMouseMiddleClickClose write FOptMouseMiddleClickClose default _InitOptMouseMiddleClickClose;
     property OptMouseDoubleClickClose: boolean read FOptMouseDoubleClickClose write FOptMouseDoubleClickClose default _InitOptMouseDoubleClickClose;
@@ -814,6 +823,7 @@ begin
   FColorTabOver:= _InitTabColorTabOver;
   FColorActiveMark:= _InitTabColorActiveMark;
   FColorFontModified:= _InitTabColorFontModified;
+  FColorFontActive:= _InitTabColorFontActive;
   FColorBorderActive:= _InitTabColorBorderActive;
   FColorBorderPassive:= _InitTabColorBorderPassive;
   FColorCloseBg:= _InitTabColorCloseBg;
@@ -857,6 +867,8 @@ begin
   FOptScrollMarkSizeY:= _InitOptScrollMarkSizeY;
   FOptDropMarkSize:= _InitOptDropMarkSize;
   FAngleTangent:= _InitOptShowAngleTangent;
+  FOptActiveFontStyleUsed:= _InitOptActiveFontStyleUsed;
+  FOptActiveFontStyle:= _InitOptActiveFontStyle;
 
   FOptShowFlat:= _InitOptShowFlat;
   FOptPosition:= _InitOptPosition;
@@ -1021,9 +1033,16 @@ begin
   if RectText.Right-RectText.Left>=8 then
   begin
     C.Font.Assign(Self.Font);
+    if ATabActive and (FColorFontActive<>clNone) then
+      C.Font.Color:= FColorFontActive
+    else
     if AModified then
       C.Font.Color:= FColorFontModified;
-    C.Font.Style:= AFontStyle;
+
+    if ATabActive and FOptActiveFontStyleUsed then
+      C.Font.Style:= FOptActiveFontStyle
+    else
+      C.Font.Style:= AFontStyle;
 
     TempCaption:= IfThen(AModified, FOptShowModifiedText) + ACaption;
     Extent:= C.TextExtent(TempCaption);
