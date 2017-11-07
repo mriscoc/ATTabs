@@ -60,6 +60,7 @@ type
 type
   TATTabElemType = (
     aeBackground,
+    aeSpacerRect,
     aeTabActive,
     aeTabPassive,
     aeTabPassiveOver,
@@ -1499,6 +1500,7 @@ procedure TATTabs.DoPaintTo(C: TCanvas);
 var
   RRect, RBottom: TRect;
   NColorXBg, NColorXBorder, NColorXMark, NColorFont: TColor;
+  NLineX1, NLineY1, NLineX2, NLineY2: integer;
   ElemType: TATTabElemType;
   Data: TATTabData;
   NFontStyle: TFontStyles;
@@ -1545,6 +1547,8 @@ begin
 
   //paint spacer rect
   if not FOptShowFlat then
+  begin
+    ElemType:= aeSpacerRect;
     case FOptPosition of
       atpTop:
         begin
@@ -1552,32 +1556,45 @@ begin
             RBottom:= Rect(0, ClientHeight-FOptSpacer2, ClientWidth, ClientHeight)
           else
             RBottom:= Rect(0, FOptSpacer+FOptTabHeight, ClientWidth, ClientHeight);
-          C.Brush.Color:= FColorTabActive;
-          C.FillRect(RBottom);
-          DrawLine(C, RBottom.Left, RBottom.Top, RBottom.Right, RBottom.Top, FColorBorderActive);
+          NLineX1:= RBottom.Left;
+          NLineY1:= RBottom.Top;
+          NLineX2:= RBottom.Right;
+          NLineY2:= RBottom.Top;
         end;
       atpBottom:
         begin
           RBottom:= Rect(0, 0, ClientWidth, FOptSpacer);
-          C.Brush.Color:= FColorTabActive;
-          C.FillRect(RBottom);
-          DrawLine(C, RBottom.Left, RBottom.Bottom, RBottom.Right, RBottom.Bottom, FColorBorderActive);
+          NLineX1:= RBottom.Left;
+          NLineY1:= RBottom.Bottom;
+          NLineX2:= RBottom.Right;
+          NLineY2:= RBottom.Bottom;
         end;
       atpLeft:
         begin
           RBottom:= Rect(ClientWidth-FOptSpacer2, 0, ClientWidth, ClientHeight);
-          C.Brush.Color:= FColorTabActive;
-          C.FillRect(RBottom);
-          DrawLine(C, RBottom.Left, RBottom.Top, RBottom.Left, RBottom.Bottom, FColorBorderActive);
+          NLineX1:= RBottom.Left;
+          NLineY1:= RBottom.Top;
+          NLineX2:= RBottom.Left;
+          NLineY2:= RBottom.Bottom;
         end;
       atpRight:
         begin
           RBottom:= Rect(0, 0, FOptSpacer2, ClientHeight);
-          C.Brush.Color:= FColorTabActive;
-          C.FillRect(RBottom);
-          DrawLine(C, RBottom.Right, RBottom.Top, RBottom.Right, RBottom.Bottom, FColorBorderActive);
+          NLineX1:= RBottom.Right;
+          NLineY1:= RBottom.Top;
+          NLineX2:= RBottom.Right;
+          NLineY2:= RBottom.Bottom;
         end;
     end;
+
+    if IsPaintNeeded(ElemType, -1, C, RBottom) then
+    begin
+      C.Brush.Color:= FColorTabActive;
+      C.FillRect(RBottom);
+      DrawLine(C, NLineX1, NLineY1, NLineX2, NLineY2, FColorBorderActive);
+      DoPaintAfter(ElemType, -1, C, RBottom);
+    end;
+  end;
 
   //paint "plus" tab
   if FOptShowPlusTab then
