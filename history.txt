@@ -9,9 +9,9 @@
 * renamed prop to OptSpaceBetweenLines
 
 2017.11.05
-+ add: prop OptVarWidth
-+ add: prop OptMultiline
-+ add: prop OptSpaceBetweenRows
++ add: tabs can be wrappable to several lines: prop OptMultiline
++ add: tabs can be auto-sized to captions: prop OptVarWidth
++ add: prop OptSpaceBetweenRows for multi-line mode
 
 2017.10.28
 + add: Delphi compatible
