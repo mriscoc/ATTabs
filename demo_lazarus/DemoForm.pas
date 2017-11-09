@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, attabs, LCLProc, LCLType;
+  Dialogs, ExtCtrls, StdCtrls, LCLProc, LCLType, attabs;
 
 type
   { TForm1 }

@@ -1,4 +1,7 @@
 
+2017.11.09
++ add: IDE designer can design all props of Tabs items: caption/color/modified/fontstyle/etc.
+
 2017.11.07
 + add: can set special font color/ font style for hot (mouse-over) tabs, and active tab
   + add: prop ColorFontActive

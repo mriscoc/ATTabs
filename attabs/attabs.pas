@@ -43,18 +43,29 @@ type
 type
   { TATTabData }
 
-  TATTabData = class
+  TATTabData = class(TCollectionItem)
+  private
+    FTabCaption: TATTabString;
+    FTabObject: TObject;
+    FTabColor: TColor;
+    FTabModified: boolean;
+    FTabSpecial: boolean;
+    FTabRect: TRect;
+    FTabImageIndex: integer;
+    FTabPopupMenu: TPopupMenu;
+    FTabFontStyle: TFontStyles;
   public
-    TabCaption: TATTabString;
-    TabObject: TObject;
-    TabColor: TColor;
-    TabModified: boolean;
-    TabSpecial: boolean;
-    TabRect: TRect;
-    TabImageIndex: integer;
-    TabPopupMenu: TPopupMenu;
-    TabFontStyle: TFontStyles;
-    constructor Create; virtual;
+    constructor Create(ACollection: TCollection); override;
+    property TabObject: TObject read FTabObject write FTabObject;
+    property TabRect: TRect read FTabRect write FTabRect;
+    property TabSpecial: boolean read FTabSpecial write FTabSpecial default false;
+  published
+    property TabCaption: TATTabString read FTabCaption write FTabCaption;
+    property TabColor: TColor read FTabColor write FTabColor default clNone;
+    property TabModified: boolean read FTabModified write FTabModified default false;
+    property TabImageIndex: integer read FTabImageIndex write FTabImageIndex default -1;
+    property TabFontStyle: TFontStyles read FTabFontStyle write FTabFontStyle default [];
+    property TabPopupMenu: TPopupMenu read FTabPopupMenu write FTabPopupMenu;
   end;
 
 type
@@ -328,8 +339,7 @@ type
     FTabIndexLoaded: integer;
     FTabIndexOver: integer;
     FTabIndexDrop: integer;
-    FTabList: TList;
-    FTabCaptions: TStrings;
+    FTabList: TCollection;
     FTabMenu: TATTabPopupMenu;
     FMultilineActive: boolean;
 
@@ -394,9 +404,7 @@ type
     procedure DoScrollAnimation(APosTo: integer);
     function GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
     function GetInitialVerticalIndent: integer;
-    function GetTabs: TStrings;
     function IsScrollMarkNeeded: boolean;
-    procedure UpdateTabCaptions;
     function GetMaxScrollPos: integer;
     function GetRectOfButton(AButton: TATTabButton): TRect;
     function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
@@ -484,6 +492,7 @@ type
     property PopupMenu;
     property ShowHint;
     property Visible;
+    property Tabs: TCollection read FTabList write FTabList;
 
     property OnDragDrop;
     property OnDragOver;
@@ -504,7 +513,6 @@ type
     //new
     property DoubleBuffered;
     property Images: TImageList read FImages write FImages;
-    property Tabs: TStrings read GetTabs write SetTabs;
     property TabIndex: integer read FTabIndex write SetTabIndex default 0;
 
     //colors
@@ -791,12 +799,11 @@ end;
 
 { TATTabData }
 
-constructor TATTabData.Create;
+constructor TATTabData.Create(ACollection: TCollection);
 begin
   inherited;
   TabColor:= clNone;
   TabImageIndex:= -1;
-  TabPopupMenu:= nil;
   TabFontStyle:= [];
 end;
 
@@ -910,8 +917,7 @@ begin
 
   FTabIndex:= 0;
   FTabIndexOver:= -1;
-  FTabList:= TList.Create;
-  FTabCaptions:= TStringList.Create;
+  FTabList:= TCollection.Create(TATTabData);
   FTabMenu:= nil;
   FScrollPos:= 0;
 end;
@@ -922,14 +928,7 @@ begin
 end;
 
 procedure TATTabs.Clear;
-var
-  i: integer;
 begin
-  for i:= TabCount-1 downto 0 do
-  begin
-    TObject(FTabList[i]).Free;
-    FTabList[i]:= nil;
-  end;
   FTabList.Clear;
   FTabIndex:= 0;
 end;
@@ -937,7 +936,6 @@ end;
 destructor TATTabs.Destroy;
 begin
   Clear;
-  FreeAndNil(FTabCaptions);
   FreeAndNil(FTabList);
   FreeAndNil(FBitmap);
   inherited;
@@ -1645,7 +1643,7 @@ begin
 
       if IsPaintNeeded(ElemType, i, C, RRect) then
       begin
-        Data:= TATTabData(FTabList[i]);
+        Data:= TATTabData(FTabList.Items[i]);
 
         if FOptHotFontStyleUsed and (i=FTabIndexOver) then
           NFontStyle:= FOptHotFontStyle
@@ -1689,7 +1687,7 @@ begin
 
     if IsPaintNeeded(aeTabActive, i, C, RRect) then
     begin
-      Data:= TATTabData(FTabList[i]);
+      Data:= TATTabData(FTabList.Items[i]);
 
       if FOptActiveFontStyleUsed then
         NFontStyle:= FOptActiveFontStyle
@@ -2163,7 +2161,12 @@ procedure TATTabs.AddTab(
 var
   Data: TATTabData;
 begin
-  Data:= TATTabData.Create;
+  Data:= TATTabData(FTabList.Add);
+  if IsIndexOk(AIndex) then
+    Data.Index:= AIndex
+  else
+    AIndex:= TabCount-1;
+
   Data.TabCaption:= ACaption;
   Data.TabObject:= AObject;
   Data.TabModified:= AModified;
@@ -2171,14 +2174,6 @@ begin
   Data.TabImageIndex:= AImageIndex;
   Data.TabPopupMenu:= APopupMenu;
   Data.TabFontStyle:= AFontStyle;
-
-  if IsIndexOk(AIndex) then
-    FTabList.Insert(AIndex, Data)
-  else
-  begin
-    FTabList.Add(Data);
-    AIndex:= TabCount-1;
-  end;
 
   Invalidate;
 
@@ -2208,7 +2203,6 @@ begin
 
   if IsIndexOk(AIndex) then
   begin
-    TObject(FTabList[AIndex]).Free;
     FTabList.Delete(AIndex);
 
     //need to call OnTabClick
@@ -2261,7 +2255,7 @@ end;
 function TATTabs.GetTabData(AIndex: integer): TATTabData;
 begin
   if IsIndexOk(AIndex) then
-    Result:= TATTabData(FTabList[AIndex])
+    Result:= TATTabData(FTabList.Items[AIndex])
   else
     Result:= nil;
 end;
@@ -2310,30 +2304,6 @@ begin
   for i:= 0 to High(AData) do
     if AData[i]=ABtn then
       begin Result:= i; exit; end;
-end;
-
-function TATTabs.GetTabs: TStrings;
-begin
-  Result:= FTabCaptions;
-  UpdateTabCaptions;
-end;
-
-procedure TATTabs.UpdateTabCaptions;
-var
-  D: TATTabData;
-  S: string;
-  i: integer;
-begin
-  FTabCaptions.Clear;
-  for i:= 0 to TabCount-1 do
-  begin
-    D:= GetTabData(i);
-    if Assigned(D) then
-      S:= D.TabCaption
-    else
-      S:= '?';
-    FTabCaptions.Add(S);
-  end;
 end;
 
 function TATTabs.GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
@@ -2404,7 +2374,7 @@ begin
   begin
     mi:= TATTabMenuItem.Create(Self);
     mi.Tag:= i;
-    mi.Caption:= TATTabData(FTabList[i]).TabCaption;
+    mi.Caption:= TATTabData(FTabList.Items[i]).TabCaption;
     mi.OnClick:= TabMenuClick;
     //mi.RadioItem:= true; //bug in Lazarus/gtk2
     mi.Checked:= i=FTabIndex;
@@ -2479,7 +2449,7 @@ begin
     NTo:= TabCount-1;
   if NFrom=NTo then Exit;  
 
-  FTabList.Move(NFrom, NTo);
+  FTabList.Items[NFrom].Index:= NTo;
   SetTabIndex(NTo);
 
   if Assigned(FOnTabMove) then
@@ -2492,7 +2462,7 @@ begin
   if not IsIndexOk(ATo) then exit;
   if AFrom=ATo then exit;
 
-  FTabList.Move(AFrom, ATo);
+  FTabList.Items[AFrom].Index:= ATo;
   if AActivateThen then
     SetTabIndex(ATo);
 end;
@@ -2921,15 +2891,8 @@ begin
 end;
 
 procedure TATTabs.Loaded;
-var
-  i: integer;
 begin
   inherited;
-
-  Clear;
-  for i:= 0 to FTabCaptions.Count-1 do
-    AddTab(-1, FTabCaptions[i]);
-
   TabIndex:= FTabIndexLoaded;
 end;
 
