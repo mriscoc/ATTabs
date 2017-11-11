@@ -10,9 +10,21 @@
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Description Value="Powerful OS-independant tab control"/>
+    <Description Value="Delphi/Lazarus component for lite tabs. OS independent, fully custom drawn.
+- can show x-icons in many styles
+- can show plus pseudo-tab
+- can show scroll arrows if lot of tabs
+- can show flat tabs (Material style)
+- can use multi-line mode
+- can show colored tabs
+- can show drop-down tab menu
+- can show icons/numbers on tabs
+- can confirm tab closing
+- allow tab owner-draw
+- drag-drop tabs, also to another control
+etc."/>
     <License Value="MPL 2.0, LGPL"/>
-    <Version Major="1" Minor="5"/>
+    <Version Major="1" Minor="6"/>
     <Files Count="2">
       <Item1>
         <Filename Value="attabs_register.pas"/>
