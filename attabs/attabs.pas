@@ -409,7 +409,6 @@ type
     function GetRectOfButton(AButton: TATTabButton): TRect;
     function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
     function GetScrollPageSize: integer;
-    procedure SetTabs(AValue: TStrings);
     procedure SetOptButtonLayout(const AValue: string);
     procedure SetTabIndex(AIndex: integer);
     procedure GetTabCloseColor(AIndex: integer; const ARect: TRect; var AColorXBg,
@@ -1864,16 +1863,6 @@ begin
         end;
       end;
   end;
-end;
-
-procedure TATTabs.SetTabs(AValue: TStrings);
-var
-  i: integer;
-begin
-  Clear;
-  for i:= 0 to AValue.Count-1 do
-    AddTab(-1, AValue[i]);
-  Invalidate;
 end;
 
 procedure TATTabs.SetOptButtonLayout(const AValue: string);
