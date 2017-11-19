@@ -1,6 +1,6 @@
 
 2017.11.19
-- fix: OptShowFlat mode: hilite bar in multi-line mode
+- fix: active bar position in OptShowFlat+OptMultiline mode
 
 2017.11.09
 + add: IDE designer can design all props of Tabs items: caption/color/modified/fontstyle/etc.
