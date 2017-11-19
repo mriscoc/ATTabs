@@ -1095,9 +1095,9 @@ begin
       C.Brush.Color:= ColorActiveMark;
       case FOptPosition of
         atpTop:
-          C.FillRect(Rect(PL2.X, ClientHeight-FOptActiveMarkSize, PR2.X, ClientHeight));
+          C.FillRect(Rect(PL2.X, ARect.Bottom-FOptActiveMarkSize, PR2.X, ARect.Bottom));
         atpBottom:
-          C.FillRect(Rect(PL1.X, 0, PR1.X, FOptActiveMarkSize));
+          C.FillRect(Rect(PL1.X, ARect.Top, PR1.X, ARect.Top+FOptActiveMarkSize));
         atpLeft:
           C.FillRect(Rect(ClientWidth-FOptActiveMarkSize, PR1.Y, ClientWidth, PR2.Y));
         atpRight:

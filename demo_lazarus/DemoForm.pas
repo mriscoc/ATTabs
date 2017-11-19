@@ -69,6 +69,7 @@ type
     procedure TabClick(Sender: TObject);
     procedure TabPlusClick(Sender: TObject);
     procedure Tab2PlusClick(Sender: TObject);
+    procedure Tab3PlusClick(Sender: TObject);
     procedure TabClose(Sender: TObject; ATabIndex: Integer;
       var ACanClose, ACanContinie: boolean);
     procedure TabDrawAfter_Bottom(Sender: TObject;
@@ -134,6 +135,7 @@ begin
   t_cust.Font.Color:= clNavy;
   t_cust.Font.Size:= 12;
   t_cust.Height:= 56;
+  t_cust.OnTabPlusClick:= Tab3PlusClick;
   t_cust.OnTabDrawBefore:= TabDrawBefore_Bottom;
   t_cust.OnTabDrawAfter:= TabDrawAfter_Bottom;
   t_cust.ColorBg:= $F9EADB;
@@ -341,6 +343,11 @@ end;
 procedure TForm1.Tab2PlusClick(Sender: TObject);
 begin
   t_fox.AddTab(t_fox.TabIndex+1, 'test');
+end;
+
+procedure TForm1.Tab3PlusClick(Sender: TObject);
+begin
+  t_cust.AddTab(t_cust.TabIndex+1, 'test');
 end;
 
 
