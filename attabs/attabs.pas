@@ -426,7 +426,8 @@ type
     function GetTabWidth_Plus_Raw: integer;
     procedure DoUpdateTabRects;
     procedure DoUpdateTabWidths;
-    procedure DoUpdateTabRectsToFillLine(AIndexFrom, AIndexTo: integer);
+    procedure DoUpdateTabRectsToFillLine(AIndexFrom, AIndexTo: integer;
+      ALastLine: boolean);
     procedure DoUpdateCanvasAntialiasMode(C: TCanvas);
     procedure DoTabDrop;
     procedure DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
@@ -1389,13 +1390,16 @@ begin
         R.Bottom:= R.Top+FOptTabHeight;
 
         if FOptFillWidth then
-          DoUpdateTabRectsToFillLine(NIndexLineStart, i-1);
+          DoUpdateTabRectsToFillLine(NIndexLineStart, i-1, false);
         NIndexLineStart:= i;
       end;
 
     R.Right:= R.Left + FTabWidth;
     Data.TabRect:= R;
   end;
+
+  if FOptFillWidth then
+    DoUpdateTabRectsToFillLine(NIndexLineStart, TabCount-1, true);
 
   if FOptMultiline then
     Height:= R.Bottom+FOptSpacer2;
@@ -2969,15 +2973,23 @@ begin
   {$endif}
 end;
 
-procedure TATTabs.DoUpdateTabRectsToFillLine(AIndexFrom, AIndexTo: integer);
+procedure TATTabs.DoUpdateTabRectsToFillLine(AIndexFrom, AIndexTo: integer; ALastLine: boolean);
 var
-  NDelta, i: integer;
+  NDelta, NWidthOfPlus, i: integer;
   D: TATTabData;
   R: TRect;
 begin
   D:= GetTabData(AIndexTo);
   if D=nil then exit;
-  NDelta:= (ClientWidth - FRealIndentRight - D.TabRect.Right {- GetTabRectWidth(true)}) div (AIndexTo-AIndexFrom+1);
+
+  if ALastLine and FOptShowPlusTab then
+    NWidthOfPlus:= GetTabRectWidth(true)
+  else
+    NWidthOfPlus:= 0;
+
+  NDelta:=
+    (ClientWidth - FRealIndentRight - D.TabRect.Right - NWidthOfPlus)
+    div (AIndexTo-AIndexFrom+1);
 
   for i:= AIndexFrom to AIndexTo do
   begin
@@ -2987,9 +2999,9 @@ begin
     Inc(R.Left, (i-AIndexFrom)*NDelta);
     Inc(R.Right, (i+1-AIndexFrom)*NDelta);
 
-    //width of last tab isnot precise. fix it.
+    //width of last tab is not precise (+-2pixels). fix it.
     if i=AIndexTo then
-      R.Right:= ClientWidth-FRealIndentRight;
+      R.Right:= ClientWidth - FRealIndentRight - NWidthOfPlus;
 
     D.TabRect:= R;
   end;
