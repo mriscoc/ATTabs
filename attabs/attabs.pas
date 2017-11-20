@@ -54,11 +54,13 @@ type
     FTabImageIndex: integer;
     FTabPopupMenu: TPopupMenu;
     FTabFontStyle: TFontStyles;
+    FTabStartsNewLine: boolean;
   public
     constructor Create(ACollection: TCollection); override;
     property TabObject: TObject read FTabObject write FTabObject;
     property TabRect: TRect read FTabRect write FTabRect;
     property TabSpecial: boolean read FTabSpecial write FTabSpecial default false;
+    property TabStartsNewLine: boolean read FTabStartsNewLine write FTabStartsNewLine;
   published
     property TabCaption: TATTabString read FTabCaption write FTabCaption;
     property TabColor: TColor read FTabColor write FTabColor default clNone;
@@ -1344,6 +1346,7 @@ begin
   begin
     Data:= GetTabData(i);
     if not Assigned(Data) then Continue;
+    Data.TabStartsNewLine:= false;
 
     R.Left:= R.Right;
     if i>0 then
@@ -1375,6 +1378,7 @@ begin
     if FOptMultiline and (i>0) then
       if R.Left+FTabWidth+FRealIndentRight+NWidthPlus >= ClientWidth then
       begin
+        Data.TabStartsNewLine:= true;
         FMultilineActive:= true;
         R.Left:= FRealIndentLeft;
         R.Top:= R.Bottom+FOptSpaceBetweenLines;
