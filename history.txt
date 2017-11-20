@@ -1,5 +1,6 @@
 
-2017.11.19
+2017.11.20
+- fix: OptVarWidth didn't consider option OptShowNumberPrefix
 - fix: active bar position in OptShowFlat+OptMultiline mode
 
 2017.11.09

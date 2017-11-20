@@ -17,7 +17,8 @@ type
     btnStress: TButton;
     btnToggleSpecial: TButton;
     chkMultiline: TCheckBox;
-    chkMultilineBtm: TCheckBox;
+    chkMultiline_Bottom: TCheckBox;
+    chkVarSize_Bottom: TCheckBox;
     chkVarSize: TCheckBox;
     chkCenterCaption: TCheckBox;
     chkShowFlat: TCheckBox;
@@ -28,7 +29,7 @@ type
     chkShowPlus: TCheckBox;
     ImageList1: TImageList;
     Label1: TLabel;
-    chkNums: TCheckBox;
+    chkNums_Bottom: TCheckBox;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
@@ -40,13 +41,14 @@ type
     procedure btnStressClick(Sender: TObject);
     procedure btnToggleSpecialClick(Sender: TObject);
     procedure chkCenterCaptionChange(Sender: TObject);
-    procedure chkMultilineBtmChange(Sender: TObject);
+    procedure chkMultiline_BottomChange(Sender: TObject);
     procedure chkMultilineChange(Sender: TObject);
-    procedure chkNumsChange(Sender: TObject);
+    procedure chkNums_BottomChange(Sender: TObject);
     procedure chkShowFlatChange(Sender: TObject);
     procedure chkShowFullColorChange(Sender: TObject);
     procedure chkShowPlusChange(Sender: TObject);
     procedure chkVarSizeChange(Sender: TObject);
+    procedure chkVarSize_BottomChange(Sender: TObject);
     procedure comboIconPosChange(Sender: TObject);
     procedure comboLayoutChange(Sender: TObject);
     procedure comboShowXChange(Sender: TObject);
@@ -227,10 +229,9 @@ begin
   t_top.Invalidate;
 end;
 
-procedure TForm1.chkMultilineBtmChange(Sender: TObject);
+procedure TForm1.chkMultiline_BottomChange(Sender: TObject);
 begin
-  t_cust.OptVarWidth:= chkMultilineBtm.Checked;
-  t_cust.OptMultiline:= chkMultilineBtm.Checked;
+  t_cust.OptMultiline:= chkMultiline_Bottom.Checked;
   t_cust.Invalidate;
 end;
 
@@ -240,9 +241,9 @@ begin
   t_top.Invalidate;
 end;
 
-procedure TForm1.chkNumsChange(Sender: TObject);
+procedure TForm1.chkNums_BottomChange(Sender: TObject);
 begin
-  t_cust.OptShowNumberPrefix:= IfThen(chkNums.Checked, '%d. ', '');
+  t_cust.OptShowNumberPrefix:= IfThen(chkNums_Bottom.Checked, '%d. ', '');
   t_cust.Invalidate;
 end;
 
@@ -272,6 +273,12 @@ procedure TForm1.chkVarSizeChange(Sender: TObject);
 begin
   t_top.OptVarWidth:= chkVarSize.Checked;
   t_top.Invalidate;
+end;
+
+procedure TForm1.chkVarSize_BottomChange(Sender: TObject);
+begin
+  t_cust.OptVarWidth:= chkVarSize_Bottom.Checked;
+  t_cust.Invalidate;
 end;
 
 procedure TForm1.comboIconPosChange(Sender: TObject);
