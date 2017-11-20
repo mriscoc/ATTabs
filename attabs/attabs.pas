@@ -284,6 +284,7 @@ type
 
     FOptVarWidth: boolean;
     FOptMultiline: boolean;
+    FOptFillWidth: boolean;
     FOptTabHeight: integer;
     FOptTabWidthMinimal: integer; //tab minimal width (used when lot of tabs)
     FOptTabWidthMaximal: integer;
@@ -423,11 +424,12 @@ type
       AIndex: integer; ACanvas: TCanvas; const ARect: TRect): boolean;
     procedure TabMenuClick(Sender: TObject);
     function GetTabWidth_Plus_Raw: integer;
+    procedure DoUpdateTabRects;
     procedure DoUpdateTabWidths;
+    procedure DoUpdateTabRectsToFillLine(AIndexFrom, AIndexTo: integer);
+    procedure DoUpdateCanvasAntialiasMode(C: TCanvas);
     procedure DoTabDrop;
     procedure DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
-    procedure DoUpdateTabRects;
-    procedure UpdateCanvasAntialiasMode(C: TCanvas);
 
   public
     constructor Create(AOnwer: TComponent); override;
@@ -542,6 +544,7 @@ type
     property OptButtonSize: integer read FOptButtonSize write FOptButtonSize default _InitOptButtonSize;
     property OptVarWidth: boolean read FOptVarWidth write FOptVarWidth default false;
     property OptMultiline: boolean read FOptMultiline write FOptMultiline default false;
+    property OptFillWidth: boolean read FOptFillWidth write FOptFillWidth default false;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
     property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal default _InitOptTabWidthMinimal;
@@ -1144,7 +1147,7 @@ begin
       end;
   end;
 
-  UpdateCanvasAntialiasMode(C);
+  DoUpdateCanvasAntialiasMode(C);
   
   //angled tabs
   if FOptShowAngled and not FOptShowFlat then
@@ -1302,8 +1305,7 @@ procedure TATTabs.DoUpdateTabRects;
 var
   Data: TATTabData;
   R: TRect;
-  NWidthPlus: integer;
-  i: integer;
+  NWidthPlus, NIndexLineStart, i: integer;
 begin
   //left/right tabs
   if FOptPosition in [atpLeft, atpRight] then
@@ -1340,6 +1342,7 @@ begin
   R.Top:= FOptSpacer;
   R.Bottom:= R.Top+FOptTabHeight;
 
+  NIndexLineStart:= 0;
   Canvas.Font.Assign(Self.Font);
 
   for i:= 0 to TabCount-1 do
@@ -1380,9 +1383,14 @@ begin
       begin
         Data.TabStartsNewLine:= true;
         FMultilineActive:= true;
+
         R.Left:= FRealIndentLeft;
         R.Top:= R.Bottom+FOptSpaceBetweenLines;
         R.Bottom:= R.Top+FOptTabHeight;
+
+        if FOptFillWidth then
+          DoUpdateTabRectsToFillLine(NIndexLineStart, i-1);
+        NIndexLineStart:= i;
       end;
 
     R.Right:= R.Left + FTabWidth;
@@ -2948,7 +2956,7 @@ begin
     end;
 end;
 
-procedure TATTabs.UpdateCanvasAntialiasMode(C: TCanvas);
+procedure TATTabs.DoUpdateCanvasAntialiasMode(C: TCanvas);
 var
   p: TPoint;
 begin
@@ -2959,6 +2967,32 @@ begin
   SetStretchBltMode(C.Handle, HALFTONE);
   SetBrushOrgEx(C.Handle, p.x, p.y, @p);
   {$endif}
+end;
+
+procedure TATTabs.DoUpdateTabRectsToFillLine(AIndexFrom, AIndexTo: integer);
+var
+  NDelta, i: integer;
+  D: TATTabData;
+  R: TRect;
+begin
+  D:= GetTabData(AIndexTo);
+  if D=nil then exit;
+  NDelta:= (ClientWidth - FRealIndentRight - D.TabRect.Right {- GetTabRectWidth(true)}) div (AIndexTo-AIndexFrom+1);
+
+  for i:= AIndexFrom to AIndexTo do
+  begin
+    D:= GetTabData(i);
+    if D=nil then Continue;
+    R:= D.TabRect;
+    Inc(R.Left, (i-AIndexFrom)*NDelta);
+    Inc(R.Right, (i+1-AIndexFrom)*NDelta);
+
+    //width of last tab isnot precise. fix it.
+    if i=AIndexTo then
+      R.Right:= ClientWidth-FRealIndentRight;
+
+    D.TabRect:= R;
+  end;
 end;
 
 end.
