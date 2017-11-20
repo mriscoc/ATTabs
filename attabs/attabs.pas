@@ -224,6 +224,7 @@ const
 
   _InitOptShowFlat = false;
   _InitOptPosition = atpTop;
+  _InitOptFillWidthLastToo = true;
   _InitOptShowNumberPrefix = '';
   _InitOptShowScrollMark = true;
   _InitOptShowDropMark = true;
@@ -285,6 +286,7 @@ type
     FOptVarWidth: boolean;
     FOptMultiline: boolean;
     FOptFillWidth: boolean;
+    FOptFillWidthLastToo: boolean;
     FOptTabHeight: integer;
     FOptTabWidthMinimal: integer; //tab minimal width (used when lot of tabs)
     FOptTabWidthMaximal: integer;
@@ -546,6 +548,7 @@ type
     property OptVarWidth: boolean read FOptVarWidth write FOptVarWidth default false;
     property OptMultiline: boolean read FOptMultiline write FOptMultiline default false;
     property OptFillWidth: boolean read FOptFillWidth write FOptFillWidth default false;
+    property OptFillWidthLastToo: boolean read FOptFillWidthLastToo write FOptFillWidthLastToo default _InitOptFillWidthLastToo;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
     property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal default _InitOptTabWidthMinimal;
@@ -865,6 +868,8 @@ begin
   FOptButtonSize:= _InitOptButtonSize;
   FOptCaptionAlignment:= taLeftJustify;
   FOptIconPosition:= aipIconLefterThanText;
+  FOptFillWidth:= false;
+  FOptFillWidthLastToo:= _InitOptFillWidthLastToo;
   FOptTabHeight:= _InitOptTabHeight;
   FOptTabWidthMinimal:= _InitOptTabWidthMinimal;
   FOptTabWidthMaximal:= _InitOptTabWidthMaximal;
@@ -1398,7 +1403,7 @@ begin
     Data.TabRect:= R;
   end;
 
-  if FOptFillWidth then
+  if FOptFillWidth and FOptFillWidthLastToo then
     DoUpdateTabRectsToFillLine(NIndexLineStart, TabCount-1, true);
 
   if FOptMultiline then
