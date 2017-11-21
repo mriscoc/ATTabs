@@ -224,7 +224,8 @@ const
 
   _InitOptShowFlat = false;
   _InitOptPosition = atpTop;
-  _InitOptFillWidthLastToo = true;
+  _InitOptFillWidth = true;
+  _InitOptFillWidthLastToo = false;
   _InitOptShowNumberPrefix = '';
   _InitOptShowScrollMark = true;
   _InitOptShowDropMark = true;
@@ -547,7 +548,7 @@ type
     property OptButtonSize: integer read FOptButtonSize write FOptButtonSize default _InitOptButtonSize;
     property OptVarWidth: boolean read FOptVarWidth write FOptVarWidth default false;
     property OptMultiline: boolean read FOptMultiline write FOptMultiline default false;
-    property OptFillWidth: boolean read FOptFillWidth write FOptFillWidth default false;
+    property OptFillWidth: boolean read FOptFillWidth write FOptFillWidth default _InitOptFillWidth;
     property OptFillWidthLastToo: boolean read FOptFillWidthLastToo write FOptFillWidthLastToo default _InitOptFillWidthLastToo;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
@@ -868,7 +869,7 @@ begin
   FOptButtonSize:= _InitOptButtonSize;
   FOptCaptionAlignment:= taLeftJustify;
   FOptIconPosition:= aipIconLefterThanText;
-  FOptFillWidth:= false;
+  FOptFillWidth:= _InitOptFillWidth;
   FOptFillWidthLastToo:= _InitOptFillWidthLastToo;
   FOptTabHeight:= _InitOptTabHeight;
   FOptTabWidthMinimal:= _InitOptTabWidthMinimal;
