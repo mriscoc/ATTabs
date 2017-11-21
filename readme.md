@@ -19,7 +19,7 @@ OS independent, fully custom drawn.
 
 Picture of demo:
 
-![img](img/demo.png?raw=true)
+![img](img/attabs_demo.png?raw=true)
 
 #### Documentation
 
