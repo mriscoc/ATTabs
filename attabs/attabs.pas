@@ -1070,39 +1070,34 @@ begin
 
     NIndentTop:= (RectText.Bottom-RectText.Top-Extent.cy) div 2 + 1;
 
-    case FOptCaptionAlignment of
-      taCenter:
-        RectText.Left:= Max(
-          RectText.Left,
-          (RectText.Left+RectText.Right-Extent.cx) div 2
-          );
-      taRightJustify:
-        RectText.Left:= Max(
-          RectText.Left,
-          RectText.Right-Extent.cx
-          );
-    end;
-
-    {$ifdef WIDE}
-    ExtTextOutW(C.Handle,
-      RectText.Left,
-      RectText.Top+NIndentTop,
-      ETO_CLIPPED{+ETO_OPAQUE},
-      @RectText,
-      PWChar(TempCaption),
-      Length(TempCaption),
-      nil);
-    {$else}
     for i:= 0 to FCaptionList.Count-1 do
-      ExtTextOut(C.Handle,
-        RectText.Left,
+    begin
+      //calculate center position for each FCaptionList[i]
+      case FOptCaptionAlignment of
+        taLeftJustify:
+          NIndentL:= RectText.Left;
+        taCenter:
+          NIndentL:= Max(
+            RectText.Left,
+            (RectText.Left+RectText.Right-C.TextWidth(FCaptionList[i])) div 2
+            );
+        taRightJustify:
+          NIndentL:= Max(
+            RectText.Left,
+            RectText.Right-C.TextWidth(FCaptionList[i])
+            );
+      end;
+
+      {$ifdef WIDE}ExtTextOutW{$else}ExtTextOut{$endif}(
+        C.Handle,
+        NIndentL,
         RectText.Top+NIndentTop+i*NLineHeight,
-        ETO_CLIPPED{+ETO_OPAQUE},
+        ETO_CLIPPED,
         @RectText,
-        PChar(FCaptionList[i]),
+        {$ifdef WIDE}PWideChar{$else}PChar{$endif}(FCaptionList[i]),
         Length(FCaptionList[i]),
         nil);
-    {$endif}
+    end;
   end;
 
   //borders
