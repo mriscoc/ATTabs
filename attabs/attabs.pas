@@ -347,6 +347,7 @@ type
     FTabIndexDrop: integer;
     FTabList: TCollection;
     FTabMenu: TATTabPopupMenu;
+    FCaptionList: TStringList;
     FMultilineActive: boolean;
 
     FRealIndentLeft: integer;
@@ -427,11 +428,12 @@ type
       AIndex: integer; ACanvas: TCanvas; const ARect: TRect): boolean;
     procedure TabMenuClick(Sender: TObject);
     function GetTabWidth_Plus_Raw: integer;
-    procedure DoUpdateTabRects;
     procedure DoUpdateTabWidths;
-    procedure DoUpdateTabRectsToFillLine(AIndexFrom, AIndexTo: integer;
-      ALastLine: boolean);
+    procedure DoUpdateTabRects(C: TCanvas);
+    procedure DoUpdateTabRectsToFillLine(AIndexFrom, AIndexTo: integer; ALastLine: boolean);
     procedure DoUpdateCanvasAntialiasMode(C: TCanvas);
+    procedure DoUpdateCaptionProps(C: TCanvas; const ACaption: string;
+      out ALineHeight: integer; out ATextSize: TSize);
     procedure DoTabDrop;
     procedure DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
 
@@ -931,6 +933,8 @@ begin
   FTabList:= TCollection.Create(TATTabData);
   FTabMenu:= nil;
   FScrollPos:= 0;
+  FCaptionList:= TStringList.Create;
+  FCaptionList.TextLineBreakStyle:= tlbsLF;
 end;
 
 function TATTabs.CanFocus: boolean;
@@ -947,6 +951,7 @@ end;
 destructor TATTabs.Destroy;
 begin
   Clear;
+  FreeAndNil(FCaptionList);
   FreeAndNil(FTabList);
   FreeAndNil(FBitmap);
   inherited;
@@ -975,11 +980,12 @@ procedure TATTabs.DoPaintTabTo(
 var
   PL1, PL2, PR1, PR2: TPoint;
   RectText: TRect;
-  NIndentL, NIndentR, NIndentTop: integer;
+  NIndentL, NIndentR, NIndentTop, NLineHeight: integer;
   ElemType: TATTabElemType;
   TempCaption: TATTabString;
   Extent: TSize;
   bNeedMoreSpace: boolean;
+  i: integer;
 begin
   //optimize for 200 tabs
   if ARect.Left>=ClientWidth then exit;
@@ -1060,7 +1066,7 @@ begin
     C.Font.Color:= AColorFont;
 
     TempCaption:= IfThen(ATabModified, FOptShowModifiedText) + ACaption;
-    Extent:= C.TextExtent(TempCaption);
+    DoUpdateCaptionProps(C, TempCaption, NLineHeight, Extent);
 
     NIndentTop:= (RectText.Bottom-RectText.Top-Extent.cy) div 2 + 1;
 
@@ -1087,14 +1093,15 @@ begin
       Length(TempCaption),
       nil);
     {$else}
-    ExtTextOut(C.Handle,
-      RectText.Left,
-      RectText.Top+NIndentTop,
-      ETO_CLIPPED{+ETO_OPAQUE},
-      @RectText,
-      PChar(TempCaption),
-      Length(TempCaption),
-      nil);
+    for i:= 0 to FCaptionList.Count-1 do
+      ExtTextOut(C.Handle,
+        RectText.Left,
+        RectText.Top+NIndentTop+i*NLineHeight,
+        ETO_CLIPPED{+ETO_OPAQUE},
+        @RectText,
+        PChar(FCaptionList[i]),
+        Length(FCaptionList[i]),
+        nil);
     {$endif}
   end;
 
@@ -1308,11 +1315,13 @@ begin
   end;
 end;
 
-procedure TATTabs.DoUpdateTabRects;
+procedure TATTabs.DoUpdateTabRects(C: TCanvas);
 var
+  TempCaption: string;
   Data: TATTabData;
   R: TRect;
-  NWidthPlus, NIndexLineStart, i: integer;
+  Extent: TSize;
+  NWidthPlus, NIndexLineStart, NLineHeight, i: integer;
 begin
   //left/right tabs
   if FOptPosition in [atpLeft, atpRight] then
@@ -1348,9 +1357,7 @@ begin
   R.Right:= R.Left;
   R.Top:= FOptSpacer;
   R.Bottom:= R.Top+FOptTabHeight;
-
   NIndexLineStart:= 0;
-  Canvas.Font.Assign(Self.Font);
 
   for i:= 0 to TabCount-1 do
   begin
@@ -1364,13 +1371,14 @@ begin
 
     if FOptVarWidth then
     begin
-      Canvas.Font.Style:= Data.TabFontStyle;
-      FTabWidth:=
-        Canvas.TextWidth(
-          Format(FOptShowNumberPrefix, [i+1]) +
-          Data.TabCaption +
-          FOptShowModifiedText) +
-        2*FOptSpaceBeforeText;
+      C.Font.Style:= Data.TabFontStyle;
+      TempCaption:=
+        Format(FOptShowNumberPrefix, [i+1]) +
+        Data.TabCaption +
+        FOptShowModifiedText;
+
+      DoUpdateCaptionProps(C, TempCaption, NLineHeight, Extent);
+      FTabWidth:= Extent.CX + 2*FOptSpaceBeforeText;
 
       if Data.TabImageIndex>=0 then
         if FOptIconPosition in [aipIconLefterThanText, aipIconRighterThanText] then
@@ -1564,8 +1572,9 @@ begin
   if FOptMultiline then
     FScrollPos:= 0;
 
+  C.Font.Assign(Self.Font);
   DoUpdateTabWidths;
-  DoUpdateTabRects;
+  DoUpdateTabRects(C);
 
   //paint spacer rect
   if not FOptShowFlat then
@@ -3010,6 +3019,24 @@ begin
       R.Right:= ClientWidth - FRealIndentRight - NWidthOfPlus;
 
     D.TabRect:= R;
+  end;
+end;
+
+procedure TATTabs.DoUpdateCaptionProps(C: TCanvas; const ACaption: string;
+  out ALineHeight: integer; out ATextSize: TSize);
+var
+  Ex: TSize;
+  i: integer;
+begin
+  ALineHeight:= 0;
+  ATextSize:= Size(0, 0);
+  FCaptionList.Text:= ACaption;
+  for i:= 0 to FCaptionList.Count-1 do
+  begin
+    Ex:= C.TextExtent(FCaptionList[i]);
+    Inc(ATextSize.CY, Ex.CY);
+    ALineHeight:= Max(ALineHeight, Ex.CY);
+    ATextSize.CX:= Max(ATextSize.CX, Ex.CX);
   end;
 end;
 

@@ -1,4 +1,7 @@
 
+2017.11.21
++ add: supported multi-line tab captions, with #10 char
+
 2017.11.20
 + add: multi-line tabs can auto-fill control by width, prop OptFillWidth
 - fix: OptVarWidth didn't consider option OptShowNumberPrefix
