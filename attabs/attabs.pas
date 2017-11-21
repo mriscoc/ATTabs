@@ -981,7 +981,7 @@ procedure TATTabs.DoPaintTabTo(
 var
   PL1, PL2, PR1, PR2: TPoint;
   RectText: TRect;
-  NIndentL, NIndentR, NIndentTop, NLineHeight: integer;
+  NIndentL, NIndentR, NIndentTop, NLineHeight, NLineWidth: integer;
   ElemType: TATTabElemType;
   TempCaption: TATTabString;
   Extent: TSize;
@@ -1073,20 +1073,34 @@ begin
 
     for i:= 0 to FCaptionList.Count-1 do
     begin
-      //calculate center position for each FCaptionList[i]
+      //calculate center pos for each FCaptionList[i]
       case FOptCaptionAlignment of
         taLeftJustify:
           NIndentL:= RectText.Left;
+
         taCenter:
-          NIndentL:= Max(
-            RectText.Left,
-            (RectText.Left+RectText.Right-C.TextWidth(FCaptionList[i])) div 2
-            );
+          begin
+            if FCaptionList.Count<2 then
+              NLineWidth:= Extent.cx
+            else
+              NLineWidth:= C.TextWidth(FCaptionList[i]);
+            NIndentL:= Max(
+              RectText.Left,
+              (RectText.Left+RectText.Right-NLineWidth) div 2
+              );
+          end;
+
         taRightJustify:
-          NIndentL:= Max(
-            RectText.Left,
-            RectText.Right-C.TextWidth(FCaptionList[i])
-            );
+          begin
+            if FCaptionList.Count<2 then
+              NLineWidth:= Extent.cx
+            else
+              NLineWidth:= C.TextWidth(FCaptionList[i]);
+            NIndentL:= Max(
+              RectText.Left,
+              RectText.Right-NLineWidth
+              );
+          end;
       end;
 
       DoTextOut(C,
