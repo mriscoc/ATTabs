@@ -395,6 +395,7 @@ type
     procedure DoPaintButtonsBG(C: TCanvas);
     procedure DoPaintColoredBand(C: TCanvas; PL1, PL2, PR1, PR2: TPoint; AColor: TColor);
     procedure DoPaintTo(C: TCanvas);
+    procedure DoTextOut(C: TCanvas; AX, AY: integer; const AClipRect: TRect; const AText: string);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
       AColorBg, AColorBorder, AColorBorderLow, AColorHilite, AColorCloseBg,
@@ -1088,15 +1089,11 @@ begin
             );
       end;
 
-      {$ifdef WIDE}ExtTextOutW{$else}ExtTextOut{$endif}(
-        C.Handle,
+      DoTextOut(C,
         NIndentL,
         RectText.Top+NIndentTop+i*NLineHeight,
-        ETO_CLIPPED,
-        @RectText,
-        {$ifdef WIDE}PWideChar{$else}PChar{$endif}(FCaptionList[i]),
-        Length(FCaptionList[i]),
-        nil);
+        RectText,
+        FCaptionList[i]);
     end;
   end;
 
@@ -1767,6 +1764,21 @@ begin
 
   if FOptShowScrollMark then
     DoPaintScrollMark(C);
+end;
+
+procedure TATTabs.DoTextOut(C: TCanvas; AX, AY: integer;
+  const AClipRect: TRect; const AText: string);
+var
+  Str: WideString;
+begin
+  {$ifdef WIDE}
+  Str:= UTF8Decode(AText);
+  ExtTextOut(C.Handle, AX, AY, ETO_CLIPPED, @AClipRect,
+    PWideChar(Str), Length(Str), nil);
+  {$else}
+  ExtTextOut(C.Handle, AX, AY, ETO_CLIPPED, @AClipRect,
+    PChar(AText), Length(AText), nil);
+  {$endif}
 end;
 
 procedure TATTabs.DoPaintDropMark(C: TCanvas);
