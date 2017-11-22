@@ -935,7 +935,9 @@ begin
   FTabMenu:= nil;
   FScrollPos:= 0;
   FCaptionList:= TStringList.Create;
+  {$ifdef FPC}
   FCaptionList.TextLineBreakStyle:= tlbsLF;
+  {$endif}
 end;
 
 function TATTabs.CanFocus: boolean;
@@ -1787,7 +1789,7 @@ var
 begin
   {$ifdef WIDE}
   Str:= UTF8Decode(AText);
-  ExtTextOut(C.Handle, AX, AY, ETO_CLIPPED, @AClipRect,
+  ExtTextOutW(C.Handle, AX, AY, ETO_CLIPPED, @AClipRect,
     PWideChar(Str), Length(Str), nil);
   {$else}
   ExtTextOut(C.Handle, AX, AY, ETO_CLIPPED, @AClipRect,
@@ -3050,7 +3052,8 @@ var
   i: integer;
 begin
   ALineHeight:= 0;
-  ATextSize:= Size(0, 0);
+  ATextSize.cx:= 0;
+  ATextSize.cy:= 0;
   FCaptionList.Text:= ACaption;
   for i:= 0 to FCaptionList.Count-1 do
   begin
