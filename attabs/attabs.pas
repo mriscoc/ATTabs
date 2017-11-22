@@ -433,7 +433,7 @@ type
     procedure DoUpdateTabRects(C: TCanvas);
     procedure DoUpdateTabRectsToFillLine(AIndexFrom, AIndexTo: integer; ALastLine: boolean);
     procedure DoUpdateCanvasAntialiasMode(C: TCanvas);
-    procedure DoUpdateCaptionProps(C: TCanvas; const ACaption: string;
+    procedure DoUpdateCaptionProps(C: TCanvas; const ACaption: TATTabString;
       out ALineHeight: integer; out ATextSize: TSize);
     procedure DoTabDrop;
     procedure DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
@@ -3045,19 +3045,29 @@ begin
   end;
 end;
 
-procedure TATTabs.DoUpdateCaptionProps(C: TCanvas; const ACaption: string;
+procedure TATTabs.DoUpdateCaptionProps(C: TCanvas; const ACaption: TATTabString;
   out ALineHeight: integer; out ATextSize: TSize);
 var
   Ex: TSize;
+  StrW: WideString;
   i: integer;
 begin
   ALineHeight:= 0;
   ATextSize.cx:= 0;
   ATextSize.cy:= 0;
-  FCaptionList.Text:= ACaption;
+  FCaptionList.Text:=
+    {$ifdef WIDE}UTF8Encode{$endif}
+    (ACaption);
+
   for i:= 0 to FCaptionList.Count-1 do
   begin
+    {$ifdef WIDE}
+    StrW:= UTF8Decode(FCaptionList[i]);
+    Windows.GetTextExtentPoint32W(C.Handle, PWideChar(StrW), Length(StrW), Ex);
+    {$else}
     Ex:= C.TextExtent(FCaptionList[i]);
+    {$endif}
+
     Inc(ATextSize.CY, Ex.CY);
     ALineHeight:= Max(ALineHeight, Ex.CY);
     ATextSize.CX:= Max(ATextSize.CX, Ex.CX);
