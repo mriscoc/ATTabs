@@ -57,8 +57,8 @@ begin
   t.Height:= 50;
 
   t.AddTab(-1, 'tab first', nil, true, clGreen);
-  t.AddTab(-1, 'tab more');
-  t.AddTab(-1, 'tab'#10'multiline'#10'caption', nil, false, clRed);
+  t.AddTab(-1, WideString('юникод строка ')+WideChar($1020)+WideChar($2020));
+  t.AddTab(-1, 'tab'#10'multiline'#10'caption', nil, false, clYellow);
   t.OnTabPlusClick:= TabPlusClick;
 
   t.ColorBg:= clWhite;
