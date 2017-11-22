@@ -4,7 +4,7 @@ Copyright (c) Alexey Torgashin (UVviewsoft.com)
 License: MPL 2.0 or LGPL
 }
 
-unit ATTabs;
+unit attabs;
 
 {$ifdef FPC}
   {$mode delphi}
@@ -1068,7 +1068,9 @@ begin
     C.Font.Style:= AFontStyle;
     C.Font.Color:= AColorFont;
 
-    TempCaption:= IfThen(ATabModified, FOptShowModifiedText) + ACaption;
+    TempCaption:= ACaption;
+    if ATabModified then
+      TempCaption:= FOptShowModifiedText+TempCaption;
     DoUpdateCaptionProps(C, TempCaption, NLineHeight, Extent);
 
     NIndentTop:= (RectText.Bottom-RectText.Top-Extent.cy) div 2 + 1;
@@ -1325,7 +1327,7 @@ end;
 
 procedure TATTabs.DoUpdateTabRects(C: TCanvas);
 var
-  TempCaption: string;
+  TempCaption: TATTabString;
   Data: TATTabData;
   R: TRect;
   Extent: TSize;
@@ -1382,8 +1384,8 @@ begin
       C.Font.Style:= Data.TabFontStyle;
       TempCaption:=
         Format(FOptShowNumberPrefix, [i+1]) +
-        Data.TabCaption +
-        FOptShowModifiedText;
+        FOptShowModifiedText +
+        Data.TabCaption;
 
       DoUpdateCaptionProps(C, TempCaption, NLineHeight, Extent);
       FTabWidth:= Extent.CX + 2*FOptSpaceBeforeText;
