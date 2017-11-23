@@ -1,4 +1,8 @@
 
+2017.11.22
++ add: Delphi package file (.dpk) but w/o icon
+- fix: compiling on Delphi
+
 2017.11.21
 + add: supported multi-line tab captions, with #10 char
 
