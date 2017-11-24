@@ -341,32 +341,32 @@ end;
 
 procedure TfmTest.N12Click(Sender: TObject);
 begin
-  if not Groups.PagesSetIndex(1) then Beep;
+  if not Groups.PagesSetIndex(0) then Beep;
 end;
 
 procedure TfmTest.N21Click(Sender: TObject);
 begin
-  if not Groups.PagesSetIndex(2) then Beep;
+  if not Groups.PagesSetIndex(1) then Beep;
 end;
 
 procedure TfmTest.N31Click(Sender: TObject);
 begin
-  if not Groups.PagesSetIndex(3) then Beep;
+  if not Groups.PagesSetIndex(2) then Beep;
 end;
 
 procedure TfmTest.N41Click(Sender: TObject);
 begin
-  if not Groups.PagesSetIndex(4) then Beep;
+  if not Groups.PagesSetIndex(3) then Beep;
 end;
 
 procedure TfmTest.group51Click(Sender: TObject);
 begin
-  if not Groups.PagesSetIndex(5) then Beep;
+  if not Groups.PagesSetIndex(4) then Beep;
 end;
 
 procedure TfmTest.group61Click(Sender: TObject);
 begin
-  if not Groups.PagesSetIndex(6) then Beep;
+  if not Groups.PagesSetIndex(5) then Beep;
 end;
 
 procedure TfmTest.mNextClick(Sender: TObject);
