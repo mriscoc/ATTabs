@@ -310,11 +310,18 @@ end;
 
 procedure TfmTest.TreeDragDrop(Sender, Source: TObject; X, Y: Integer);
 var
+  Tabs: TATTabs;
   N: TTreeNode;
   S: string;
 begin
   if Source is TMemo then
-    S:= 'text: '+(Source as TMemo).Lines[0];
+    S:= 'text: '+(Source as TMemo).Lines[0]
+  else
+  if Source is TATTabs then
+  begin
+    Tabs:= Source as TATTabs;
+    S:= 'tab: '+Tabs.GetTabData(Tabs.TabIndex).TabCaption;
+  end;
 
   N:= Tree.GetNodeAt(X, Y);
   if N=nil then begin Beep; Exit end;

@@ -2,10 +2,10 @@ object fmTest: TfmTest
   Left = 365
   Height = 442
   Top = 240
-  Width = 791
+  Width = 906
   Caption = 'Groups'
-  ClientHeight = 442
-  ClientWidth = 791
+  ClientHeight = 420
+  ClientWidth = 906
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = -11
@@ -14,14 +14,13 @@ object fmTest: TfmTest
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.7'
+  LCLVersion = '1.9.0.0'
   object Tree: TTreeView
     Left = 0
-    Height = 421
+    Height = 404
     Top = 0
-    Width = 121
+    Width = 170
     Align = alLeft
-    DefaultItemHeight = 16
     DragMode = dmAutomatic
     HideSelection = False
     Indent = 19
@@ -41,9 +40,9 @@ object fmTest: TfmTest
   end
   object Status: TStatusBar
     Left = 0
-    Height = 21
-    Top = 421
-    Width = 791
+    Height = 16
+    Top = 404
+    Width = 906
     Panels = <>
   end
   object PopupMenu1: TPopupMenu
