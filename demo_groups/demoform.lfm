@@ -1,11 +1,11 @@
 object fmTest: TfmTest
-  Left = 365
-  Height = 442
-  Top = 240
-  Width = 906
+  Left = 357
+  Height = 545
+  Top = 137
+  Width = 914
   Caption = 'Groups'
-  ClientHeight = 420
-  ClientWidth = 906
+  ClientHeight = 523
+  ClientWidth = 914
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = -11
@@ -17,7 +17,7 @@ object fmTest: TfmTest
   LCLVersion = '1.9.0.0'
   object Tree: TTreeView
     Left = 0
-    Height = 404
+    Height = 507
     Top = 0
     Width = 170
     Align = alLeft
@@ -41,8 +41,8 @@ object fmTest: TfmTest
   object Status: TStatusBar
     Left = 0
     Height = 16
-    Top = 404
-    Width = 906
+    Top = 507
+    Width = 914
     Panels = <>
   end
   object PopupMenu1: TPopupMenu
