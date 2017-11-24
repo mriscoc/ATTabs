@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, attabs, StdCtrls, math;
+  Dialogs, attabs, StdCtrls, math, XPMan;
 
 type
   TForm1 = class(TForm)
@@ -14,6 +14,13 @@ type
     chkGap: TCheckBox;
     chkVarWidth: TCheckBox;
     chkMultiline: TCheckBox;
+    Label1: TLabel;
+    chkPosTop: TRadioButton;
+    chkPosBtm: TRadioButton;
+    chkPosLeft: TRadioButton;
+    chkPosRight: TRadioButton;
+    chkCenterCaption: TCheckBox;
+    XPManifest1: TXPManifest;
     procedure FormCreate(Sender: TObject);
     procedure chkFlatClick(Sender: TObject);
     procedure chkShowPlusClick(Sender: TObject);
@@ -21,6 +28,11 @@ type
     procedure chkGapClick(Sender: TObject);
     procedure chkVarWidthClick(Sender: TObject);
     procedure chkMultilineClick(Sender: TObject);
+    procedure chkCenterCaptionClick(Sender: TObject);
+    procedure chkPosTopClick(Sender: TObject);
+    procedure chkPosBtmClick(Sender: TObject);
+    procedure chkPosLeftClick(Sender: TObject);
+    procedure chkPosRightClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -41,10 +53,12 @@ begin
   t:= TATTabs.Create(Self);
   t.Parent:= Self;
   t.Align:= alTop;
+  t.OptTabHeight:= 40;
+  t.Height:= 50;
 
-  t.AddTab(-1, 'tab first');
-  t.AddTab(-1, 'tab more');
-  t.AddTab(-1, 'tab long caption');
+  t.AddTab(-1, 'tab first', nil, true, clGreen);
+  t.AddTab(-1, WideString('юникод строка ')+WideChar($1020)+WideChar($2020));
+  t.AddTab(-1, 'tab'#10'multiline'#10'caption', nil, false, clYellow);
   t.OnTabPlusClick:= TabPlusClick;
 
   t.ColorBg:= clWhite;
@@ -92,6 +106,47 @@ end;
 procedure TForm1.chkMultilineClick(Sender: TObject);
 begin
   t.OptMultiline:= chkMultiline.Checked;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkCenterCaptionClick(Sender: TObject);
+begin
+  if chkCenterCaption.Checked then
+    t.OptCaptionAlignment:= taCenter
+  else
+    t.OptCaptionAlignment:= taLeftJustify;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkPosTopClick(Sender: TObject);
+begin
+  t.Align:= alTop;
+  t.OptPosition:= atpTop;
+  t.Height:= 50;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkPosBtmClick(Sender: TObject);
+begin
+  t.Align:= alBottom;
+  t.OptPosition:= atpBottom;
+  t.Height:= 50;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkPosLeftClick(Sender: TObject);
+begin
+  t.Align:= alLeft;
+  t.OptPosition:= atpLeft;
+  t.Width:= 140;
+  t.Invalidate;
+end;
+
+procedure TForm1.chkPosRightClick(Sender: TObject);
+begin
+  t.Align:= alRight;
+  t.OptPosition:= atpRight;
+  t.Width:= 140;
   t.Invalidate;
 end;
 
