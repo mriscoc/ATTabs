@@ -1,4 +1,7 @@
 
+2017.11.24
++ added files of ATGroups repo, with demo_groups, with readme
+
 2017.11.22
 + add: Delphi package file (.dpk) but w/o icon
 - fix: compiling on Delphi
