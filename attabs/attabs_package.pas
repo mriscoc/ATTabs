@@ -8,7 +8,7 @@ unit attabs_package;
 interface
 
 uses
-  attabs_register, ATTabs, LazarusPackageIntf;
+  attabs_register, ATTabs, ATGroups, LazarusPackageIntf;
 
 implementation
 
