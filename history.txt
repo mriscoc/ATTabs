@@ -1,6 +1,6 @@
 
 2018.02.09
-- fix: triangle arrows was painted with pixel error
+- fix: triangle arrows painted with error on scale 125%
 
 2017.11.24
 + added files of ATGroups repo, with demo_groups, with readme
