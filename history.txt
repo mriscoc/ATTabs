@@ -1,4 +1,7 @@
 
+2018.02.09
+- fix: triangle arrows was painted with pixel error
+
 2017.11.24
 + added files of ATGroups repo, with demo_groups, with readme
 
