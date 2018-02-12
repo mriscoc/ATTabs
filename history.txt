@@ -1,4 +1,7 @@
 
+2018.02.12
++ change: ATGroups.AddTab: added param AIndex
+
 2018.02.09
 - fix: triangle arrows painted with error on scale 125%
 
