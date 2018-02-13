@@ -2090,7 +2090,10 @@ begin
   FMouseDownShift:= Shift;
 
   FTabIndexOver:= GetTabAt(X, Y, IsX);
-  SetTabIndex(FTabIndexOver);
+
+  //activate tab only if not X clicked
+  if not IsX then
+    SetTabIndex(FTabIndexOver);
 
   Invalidate;
 end;
