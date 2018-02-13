@@ -1,6 +1,10 @@
 
+2018.02.13
++ add/change: clicking on X of passive tab don't active this tab. only clicking on caption does.
+* change: GetTabAt has additional param
+
 2018.02.12
-+ change: ATGroups.AddTab: added params AIndex, AndActivate; gets int result
+* change: ATGroups.AddTab: added params AIndex, AndActivate; gets int result
 
 2018.02.09
 - fix: triangle arrows painted with error on scale 125%
