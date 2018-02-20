@@ -1,4 +1,7 @@
 
+2018.02.20
+- fix: avoid reduntant OnChange calls
+
 2018.02.13
 + add/change: clicking on X of passive tab don't active this tab. only clicking on caption does.
 * change: GetTabAt has additional param
