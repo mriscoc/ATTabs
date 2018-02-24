@@ -123,10 +123,11 @@ begin
   t_top.DragMode:= dmAutomatic; //enable drag-drop
   t_top.Images:= ImageList1;
   t_top.OptVarWidth:= true;
+  t_top.ShowHint:= true;
 
   t_top.AddTab(-1, 'Tab'#10'multiline');
-  t_top.AddTab(-1, 'Tab middle len', nil, false, clGreen, 1);
-  t_top.AddTab(-1, 'Tab ____________', nil, false, clBlue, 2);
+  t_top.AddTab(-1, 'Tab middle len', nil, false, clGreen, 1, nil, [], 'tab some hint');
+  t_top.AddTab(-1, 'Tab ____________', nil, false, clBlue, 2, nil, [], 'tab another hint');
   t_top.AddTab(-1, 'I'#10'mulline', nil, false, clNone, 0);
   t_top.AddTab(-1, 'I');
   t_top.AddTab(-1, 'I');

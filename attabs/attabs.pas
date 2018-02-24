@@ -347,6 +347,7 @@ type
     FTabIndexLoaded: integer;
     FTabIndexOver: integer;
     FTabIndexDrop: integer;
+    FTabIndexHinted: integer;
     FTabList: TCollection;
     FTabMenu: TATTabPopupMenu;
     FCaptionList: TStringList;
@@ -942,6 +943,7 @@ begin
 
   FTabIndex:= 0;
   FTabIndexOver:= -1;
+  FTabIndexHinted:= -1;
   FTabList:= TCollection.Create(TATTabData);
   FTabMenu:= nil;
   FScrollPos:= 0;
@@ -2196,10 +2198,28 @@ type
 procedure TATTabs.MouseMove(Shift: TShiftState; X, Y: integer);
 var
   IsX: boolean;
+  Data: TATTabData;
 begin
   inherited;
   FTabIndexOver:= GetTabAt(X, Y, IsX);
   FTabIndexDrop:= FTabIndexOver;
+
+  Data:= GetTabData(FTabIndexOver);
+  if Assigned(Data) and (Data.TabHint<>'') and ShowHint then
+  begin
+    Hint:= Data.TabHint;
+    if FTabIndexOver<>FTabIndexHinted then
+    begin
+      FTabIndexHinted:= FTabIndexOver;
+      Application.ActivateHint(Mouse.CursorPos);
+    end;
+  end
+  else
+  begin
+    FTabIndexHinted:= -1;
+    Hint:= '';
+    Application.HideHint;
+  end;
 
   if Assigned(FOnTabOver) then
     FOnTabOver(Self, FTabIndexOver);
@@ -2579,6 +2599,7 @@ procedure TATTabs.CMMouseLeave(var Msg: TMessage);
 begin
   inherited;
   FTabIndexOver:= -1;
+  FTabIndexHinted:= -1;
   Invalidate;
 end;
 
