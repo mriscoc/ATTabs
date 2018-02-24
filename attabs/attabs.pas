@@ -46,6 +46,7 @@ type
   TATTabData = class(TCollectionItem)
   private
     FTabCaption: TATTabString;
+    FTabHint: TATTabString;
     FTabObject: TObject;
     FTabColor: TColor;
     FTabModified: boolean;
@@ -63,6 +64,7 @@ type
     property TabStartsNewLine: boolean read FTabStartsNewLine write FTabStartsNewLine;
   published
     property TabCaption: TATTabString read FTabCaption write FTabCaption;
+    property TabHint: TATTabString read FTabHint write FTabHint;
     property TabColor: TColor read FTabColor write FTabColor default clNone;
     property TabModified: boolean read FTabModified write FTabModified default false;
     property TabImageIndex: integer read FTabImageIndex write FTabImageIndex default -1;
@@ -459,7 +461,8 @@ type
       AColor: TColor = clNone;
       AImageIndex: integer = -1;
       APopupMenu: TPopupMenu = nil;
-      AFontStyle: TFontStyles = []);
+      AFontStyle: TFontStyles = [];
+      const AHint: TATTabString = '');
     procedure Clear;
     function DeleteTab(AIndex: integer; AAllowEvent, AWithCancelBtn: boolean): boolean;
     procedure ShowTabMenu;
@@ -2224,7 +2227,8 @@ procedure TATTabs.AddTab(
   AColor: TColor = clNone;
   AImageIndex: integer = -1;
   APopupMenu: TPopupMenu = nil;
-  AFontStyle: TFontStyles = []);
+  AFontStyle: TFontStyles = [];
+  const AHint: TATTabString = '');
 var
   Data: TATTabData;
 begin
@@ -2235,6 +2239,7 @@ begin
     AIndex:= TabCount-1;
 
   Data.TabCaption:= ACaption;
+  Data.TabHint:= AHint;
   Data.TabObject:= AObject;
   Data.TabModified:= AModified;
   Data.TabColor:= AColor;
@@ -2551,7 +2556,8 @@ begin
     Data.TabColor,
     Data.TabImageIndex,
     Data.TabPopupMenu,
-    Data.TabFontStyle
+    Data.TabFontStyle,
+    Data.TabHint
     );
 
   //correct TabObject parent
