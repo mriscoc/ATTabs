@@ -1,4 +1,7 @@
 
+2018.02.24
++ add: Data.TabHint field; work of per-tab hints on mouse move (tested on demo)
+
 2018.02.20
 - fix: avoid reduntant OnChange calls
 
