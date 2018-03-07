@@ -16,6 +16,7 @@ type
     btnRight: TButton;
     btnStress: TButton;
     btnToggleSpecial: TButton;
+    chkNewNearCurrent: TCheckBox;
     chkFill: TCheckBox;
     chkMultiline: TCheckBox;
     chkMultiline_Bottom: TCheckBox;
@@ -310,8 +311,25 @@ begin
 end;
 
 procedure TForm1.btnAddClick(Sender: TObject);
+var
+  NIndex: integer;
 begin
-  t_top.AddTab(t_top.TabIndex+1, 'test '+StringOfChar('n', Random(20)), nil, false, Random(65000));
+  if chkNewNearCurrent.Checked then
+    NIndex:= t_top.TabIndex+1
+  else
+    NIndex:= -1;
+
+  t_top.AddTab(NIndex,
+    'test '+StringOfChar('n', Random(20)),
+    nil,
+    false,
+    Random(65000)
+    );
+
+  if NIndex>=0 then
+    t_top.TabIndex:= NIndex
+  else
+    t_top.TabIndex:= t_top.TabCount-1;
 end;
 
 procedure TForm1.btnDelClick(Sender: TObject);
