@@ -3113,10 +3113,10 @@ var
   R: TRect;
   NMaxPos: integer;
 begin
-  if FOptMultiline then exit;
+  if not IsScrollMarkNeeded then exit;
 
   //sometimes new tab has not updated Data.TabRect
-  DoUpdateTabRects(Canvas);
+  DoUpdateTabRects(FBitmap.Canvas);
 
   D:= GetTabData(AIndex);
   if D=nil then exit;
@@ -3131,7 +3131,9 @@ begin
           (R.Right-FScrollPos < ClientWidth-FRealIndentRight) then exit;
 
         NMaxPos:= GetMaxScrollPos;
-        FScrollPos:= Min(NMaxPos, Max(0, R.Left - ClientWidth div 2));
+        FScrollPos:= Min(NMaxPos, Max(0,
+          R.Left - ClientWidth div 2
+          ));
       end
     else
       begin
@@ -3140,7 +3142,9 @@ begin
           (R.Bottom-FScrollPos < ClientHeight-FRealIndentRight) then exit;
 
         NMaxPos:= GetMaxScrollPos;
-        FScrollPos:= Min(NMaxPos, Max(0, R.Top - ClientHeight div 2));
+        FScrollPos:= Min(NMaxPos, Max(0,
+          R.Top - ClientHeight div 2
+          ));
       end;
   end;
 
