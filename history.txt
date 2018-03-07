@@ -1,4 +1,7 @@
 
+2018.03.07
++ add: method MakeVisible(); it's used when changing TabIndex
+
 2018.02.24
 + add: Data.TabHint field; work of per-tab hints on mouse move (tested on demo)
 

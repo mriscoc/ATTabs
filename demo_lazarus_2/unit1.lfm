@@ -11,7 +11,7 @@ object Form1: TForm1
   LCLVersion = '1.9.0.0'
   object chkPosTop: TRadioButton
     Left = 208
-    Height = 23
+    Height = 24
     Top = 112
     Width = 46
     Caption = 'top'
@@ -22,7 +22,7 @@ object Form1: TForm1
   end
   object chkPosBottom: TRadioButton
     Left = 208
-    Height = 23
+    Height = 24
     Top = 136
     Width = 70
     Caption = 'bottom'
@@ -31,7 +31,7 @@ object Form1: TForm1
   end
   object chkPosLeft: TRadioButton
     Left = 208
-    Height = 23
+    Height = 24
     Top = 160
     Width = 45
     Caption = 'left'
@@ -40,7 +40,7 @@ object Form1: TForm1
   end
   object chkPosRight: TRadioButton
     Left = 208
-    Height = 23
+    Height = 24
     Top = 184
     Width = 55
     Caption = 'right'
@@ -49,7 +49,7 @@ object Form1: TForm1
   end
   object chkEmptyBtns: TCheckBox
     Left = 312
-    Height = 23
+    Height = 24
     Top = 112
     Width = 92
     Caption = 'no buttons'
@@ -58,7 +58,7 @@ object Form1: TForm1
   end
   object chkFlat: TCheckBox
     Left = 312
-    Height = 23
+    Height = 24
     Top = 136
     Width = 46
     Caption = 'flat'
@@ -67,7 +67,7 @@ object Form1: TForm1
   end
   object chkFullColor: TCheckBox
     Left = 312
-    Height = 23
+    Height = 24
     Top = 160
     Width = 92
     Caption = 'full colored'
@@ -76,7 +76,7 @@ object Form1: TForm1
   end
   object chkColorAllowVert: TCheckBox
     Left = 312
-    Height = 23
+    Height = 24
     Top = 184
     Width = 156
     Caption = 'color band: allow vert'
@@ -87,7 +87,7 @@ object Form1: TForm1
   end
   object chkAngled: TCheckBox
     Left = 312
-    Height = 23
+    Height = 24
     Top = 208
     Width = 97
     Caption = 'angled tabs'
@@ -96,11 +96,38 @@ object Form1: TForm1
   end
   object chkBetween: TCheckBox
     Left = 312
-    Height = 23
+    Height = 24
     Top = 232
     Width = 147
     Caption = 'space between tabs'
     OnChange = chkBetweenChange
     TabOrder = 9
+  end
+  object btnAddTab: TButton
+    Left = 448
+    Height = 25
+    Top = 112
+    Width = 136
+    Caption = 'add tab'
+    OnClick = btnAddTabClick
+    TabOrder = 10
+  end
+  object btnPrev: TButton
+    Left = 448
+    Height = 25
+    Top = 144
+    Width = 64
+    Caption = '<'
+    OnClick = btnPrevClick
+    TabOrder = 11
+  end
+  object btnNext: TButton
+    Left = 512
+    Height = 25
+    Top = 144
+    Width = 72
+    Caption = '>'
+    OnClick = btnNextClick
+    TabOrder = 12
   end
 end

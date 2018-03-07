@@ -13,6 +13,9 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    btnAddTab: TButton;
+    btnPrev: TButton;
+    btnNext: TButton;
     chkBetween: TCheckBox;
     chkAngled: TCheckBox;
     chkColorAllowVert: TCheckBox;
@@ -23,6 +26,9 @@ type
     chkPosBottom: TRadioButton;
     chkPosLeft: TRadioButton;
     chkPosRight: TRadioButton;
+    procedure btnAddTabClick(Sender: TObject);
+    procedure btnNextClick(Sender: TObject);
+    procedure btnPrevClick(Sender: TObject);
     procedure chkAngledChange(Sender: TObject);
     procedure chkBetweenChange(Sender: TObject);
     procedure chkColorAllowVertChange(Sender: TObject);
@@ -119,6 +125,21 @@ begin
   t.OptShowAngled:= chkAngled.Checked;
   t.OptSpaceInitial:= IfThen(t.OptShowAngled, 10, 4);
   t.Invalidate;
+end;
+
+procedure TForm1.btnAddTabClick(Sender: TObject);
+begin
+  t.AddTab(-1, 'tab'+IntToStr(t.TabCount+1));
+end;
+
+procedure TForm1.btnNextClick(Sender: TObject);
+begin
+  t.SwitchTab(true);
+end;
+
+procedure TForm1.btnPrevClick(Sender: TObject);
+begin
+  t.SwitchTab(false);
 end;
 
 procedure TForm1.chkBetweenChange(Sender: TObject);

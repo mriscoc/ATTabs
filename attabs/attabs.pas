@@ -466,6 +466,7 @@ type
       const AHint: TATTabString = '');
     procedure Clear;
     function DeleteTab(AIndex: integer; AAllowEvent, AWithCancelBtn: boolean): boolean;
+    procedure MakeVisible(AIndex: integer);
     procedure ShowTabMenu;
     procedure SwitchTab(ANext: boolean);
     procedure MoveTab(AFrom, ATo: integer; AActivateThen: boolean);
@@ -2339,6 +2340,8 @@ begin
     end;
 
     FTabIndex:= AIndex;
+
+    MakeVisible(AIndex);
     Invalidate;
     if Assigned(FOnTabClick) then
       FOnTabClick(Self);
@@ -3103,6 +3106,27 @@ begin
     ATextSize.CX:= Max(ATextSize.CX, Ex.CX);
   end;
 end;
+
+procedure TATTabs.MakeVisible(AIndex: integer);
+var
+  Data: TATTabData;
+  R: TRect;
+begin
+  if FOptMultiline then exit;
+  Data:= GetTabData(AIndex);
+  if Data=nil then exit;
+  R:= Data.TabRect;
+
+  case FOptPosition of
+    atpTop, atpBottom:
+      FScrollPos:= Min(GetMaxScrollPos, Max(0, R.Left - Width div 2));
+    else
+      FScrollPos:= Min(GetMaxScrollPos, Max(0, R.Top - Height div 2));
+  end;
+
+  Invalidate;
+end;
+
 
 end.
 
