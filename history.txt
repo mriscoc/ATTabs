@@ -3,6 +3,7 @@
 + add: method MakeVisible (it's called when changing TabIndex)
 + add: method IsTabVisible
 + add: methods GetTabRect*: added param AWithScroll
++ add: method SwitchTab: added param ALoopAtEdge
 - fixed: IsScrollMarkNeeded was wrong for var sized tabs
 
 2018.02.24
