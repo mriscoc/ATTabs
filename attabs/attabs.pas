@@ -3109,19 +3109,32 @@ end;
 
 procedure TATTabs.MakeVisible(AIndex: integer);
 var
-  Data: TATTabData;
+  D: TATTabData;
   R: TRect;
 begin
   if FOptMultiline then exit;
-  Data:= GetTabData(AIndex);
-  if Data=nil then exit;
-  R:= Data.TabRect;
+  D:= GetTabData(AIndex);
+  if D=nil then exit;
+  R:= D.TabRect;
 
   case FOptPosition of
-    atpTop, atpBottom:
-      FScrollPos:= Min(GetMaxScrollPos, Max(0, R.Left - Width div 2));
+    atpTop,
+    atpBottom:
+      begin
+        //already visible?
+        if (R.Left-FScrollPos >= FRealIndentLeft) and
+          (R.Right-FScrollPos < ClientWidth-FRealIndentRight) then exit;
+
+        FScrollPos:= Min(GetMaxScrollPos, Max(0, R.Left - ClientWidth div 2));
+      end
     else
-      FScrollPos:= Min(GetMaxScrollPos, Max(0, R.Top - Height div 2));
+      begin
+        //already visible?
+        if (R.Top-FScrollPos >= FRealIndentLeft) and
+          (R.Bottom-FScrollPos < ClientHeight-FRealIndentRight) then exit;
+
+        FScrollPos:= Min(GetMaxScrollPos, Max(0, R.Top - ClientHeight div 2));
+      end;
   end;
 
   Invalidate;

@@ -1,10 +1,10 @@
 object Form1: TForm1
-  Left = 235
-  Height = 586
-  Top = 129
+  Left = 218
+  Height = 546
+  Top = 105
   Width = 925
   Caption = 'ATTabs demo'
-  ClientHeight = 586
+  ClientHeight = 546
   ClientWidth = 925
   Color = clBtnFace
   Font.Color = clBlack
@@ -115,7 +115,7 @@ object Form1: TForm1
     Left = 304
     Height = 24
     Top = 104
-    Width = 121
+    Width = 115
     Caption = 'show numbers'
     OnChange = chkNums_BottomChange
     TabOrder = 8
@@ -305,7 +305,7 @@ object Form1: TForm1
     Left = 136
     Height = 24
     Top = 248
-    Width = 82
+    Width = 78
     Caption = 'fill width'
     OnChange = chkFillChange
     TabOrder = 6
@@ -314,7 +314,7 @@ object Form1: TForm1
     Left = 136
     Height = 24
     Top = 272
-    Width = 158
+    Width = 153
     Caption = 'add tab near current'
     TabOrder = 7
   end
