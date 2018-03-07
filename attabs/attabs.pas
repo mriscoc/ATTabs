@@ -3111,8 +3111,13 @@ procedure TATTabs.MakeVisible(AIndex: integer);
 var
   D: TATTabData;
   R: TRect;
+  NMaxPos: integer;
 begin
   if FOptMultiline then exit;
+
+  //sometimes new tab has not updated Data.TabRect
+  DoUpdateTabRects(Canvas);
+
   D:= GetTabData(AIndex);
   if D=nil then exit;
   R:= D.TabRect;
@@ -3125,7 +3130,8 @@ begin
         if (R.Left-FScrollPos >= FRealIndentLeft) and
           (R.Right-FScrollPos < ClientWidth-FRealIndentRight) then exit;
 
-        FScrollPos:= Min(GetMaxScrollPos, Max(0, R.Left - ClientWidth div 2));
+        NMaxPos:= GetMaxScrollPos;
+        FScrollPos:= Min(NMaxPos, Max(0, R.Left - ClientWidth div 2));
       end
     else
       begin
@@ -3133,7 +3139,8 @@ begin
         if (R.Top-FScrollPos >= FRealIndentLeft) and
           (R.Bottom-FScrollPos < ClientHeight-FRealIndentRight) then exit;
 
-        FScrollPos:= Min(GetMaxScrollPos, Max(0, R.Top - ClientHeight div 2));
+        NMaxPos:= GetMaxScrollPos;
+        FScrollPos:= Min(NMaxPos, Max(0, R.Top - ClientHeight div 2));
       end;
   end;
 
