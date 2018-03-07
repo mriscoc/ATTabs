@@ -1,6 +1,9 @@
 
 2018.03.07
-+ add: method MakeVisible(); it's used when changing TabIndex
++ add: method MakeVisible; it's called when changing TabIndex
++ add: method: IsTabVisible
++ add: methods GetTabRect*: added param AWithScroll
+- fixed: IsScrollMarkNeeded (was wrong for var sized tabs)
 
 2018.02.24
 + add: Data.TabHint field; work of per-tab hints on mouse move (tested on demo)
