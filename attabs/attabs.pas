@@ -3138,10 +3138,12 @@ var
   D: TATTabData;
   R: TRect;
 begin
-  if not IsScrollMarkNeeded then exit(true);
+  if not IsScrollMarkNeeded then
+    begin Result:= true; exit end;
 
   D:= GetTabData(AIndex);
-  if D=nil then exit(false);
+  if D=nil then
+    begin Result:= false; exit end;
   R:= D.TabRect;
 
   case FOptPosition of
