@@ -7,7 +7,7 @@ package attabs_package_delphi;
 {$DEBUGINFO ON}
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
-{$IOCHECKS ON}
+{$IOCHECKS OFF}
 {$LOCALSYMBOLS ON}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
@@ -22,7 +22,8 @@ package attabs_package_delphi;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$IMPLICITBUILD OFF}
+{$DESCRIPTION 'ATTabs - lite OS-independant tabs'}
+{$IMPLICITBUILD ON}
 
 requires
   rtl,
