@@ -412,7 +412,6 @@ type
       ATabCloseBorder, ATabCloseXMark: TColor);
     procedure DoPaintDropMark(C: TCanvas);
     procedure DoPaintScrollMark(C: TCanvas);
-    procedure DoScrollAnimation(APosTo: integer);
     function GetIndexOfButton(AData: TATTabButtons; ABtn: TATTabButton): integer;
     function GetInitialVerticalIndent: integer;
     function GetButtonsEmpty: boolean;
@@ -477,6 +476,7 @@ type
     procedure MoveTab(AFrom, ATo: integer; AActivateThen: boolean);
     procedure DoScrollLeft;
     procedure DoScrollRight;
+    procedure DoScrollAnimation(APosTo: integer);
 
   protected
     procedure Paint; override;
