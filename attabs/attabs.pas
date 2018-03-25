@@ -2788,6 +2788,8 @@ procedure TATTabs.DoScrollLeft;
 var
   NPos: integer;
 begin
+  if FOptMultiline then exit;
+
   NPos:= Max(0, FScrollPos-GetScrollPageSize);
   if NPos<>FScrollPos then
     DoScrollAnimation(NPos);
@@ -2797,6 +2799,8 @@ procedure TATTabs.DoScrollRight;
 var
   NPos: integer;
 begin
+  if FOptMultiline then exit;
+
   NPos:= GetMaxScrollPos;
   NPos:= Min(NPos, FScrollPos+GetScrollPageSize);
   if NPos<>FScrollPos then
