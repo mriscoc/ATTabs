@@ -3249,7 +3249,10 @@ end;
 
 procedure TATTabs.SetScrollPos(AValue: integer);
 begin
-  AValue:= Max(0, Min(GetMaxScrollPos, AValue));
+  AValue:= Max(0,
+    //Min(GetMaxScrollPos, AValue) //user suggested to not limit ScrollPos by max
+    AValue
+    );
   if FScrollPos=AValue then exit;
   FScrollPos:= AValue;
   Invalidate;
