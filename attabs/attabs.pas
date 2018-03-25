@@ -417,13 +417,13 @@ type
     function GetButtonsEmpty: boolean;
     function IsScrollMarkNeeded: boolean;
     function GetMaxEdgePos: integer;
-    function GetMaxScrollPos: integer;
     function GetRectOfButton(AButton: TATTabButton): TRect;
     function GetRectOfButtonIndex(AIndex: integer; AtLeft: boolean): TRect;
     function GetScrollPageSize: integer;
     procedure SetOptButtonLayout(const AValue: string);
     procedure SetOptMouseDragEnabled(AValue: boolean);
     procedure SetOptVarWidth(AValue: boolean);
+    procedure SetScrollPos(AValue: integer);
     procedure SetTabIndex(AIndex: integer);
     procedure GetTabCloseColor(AIndex: integer; const ARect: TRect; var AColorXBg,
       AColorXBorder, AColorXMark: TColor);
@@ -477,6 +477,8 @@ type
     procedure DoScrollLeft;
     procedure DoScrollRight;
     procedure DoScrollAnimation(APosTo: integer);
+    function GetMaxScrollPos: integer;
+    property ScrollPos: integer read FScrollPos write SetScrollPos;
 
   protected
     procedure Paint; override;
@@ -3215,6 +3217,13 @@ begin
   Invalidate;
 end;
 
+procedure TATTabs.SetScrollPos(AValue: integer);
+begin
+  AValue:= Max(0, Min(GetMaxScrollPos, AValue));
+  if FScrollPos=AValue then exit;
+  FScrollPos:= AValue;
+  Invalidate;
+end;
 
 end.
 
