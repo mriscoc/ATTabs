@@ -3,6 +3,9 @@
 + add: vertical tabs now have variable height if OptVarWidth
 + add: public prop ScrollPos
 + add: public method DoScrollAnimation
++ add: Data (TATTabData) has new props:
+  + TabSpecialWidth (for horz tabs)
+  + TabSpecialHeight (for vert tabs)
 
 2018.03.07
 + add: method MakeVisible (it's called when changing TabIndex)

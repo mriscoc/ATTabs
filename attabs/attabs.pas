@@ -51,6 +51,8 @@ type
     FTabColor: TColor;
     FTabModified: boolean;
     FTabSpecial: boolean;
+    FTabSpecialWidth: integer;
+    FTabSpecialHeight: integer;
     FTabRect: TRect;
     FTabImageIndex: integer;
     FTabPopupMenu: TPopupMenu;
@@ -70,6 +72,8 @@ type
     property TabImageIndex: integer read FTabImageIndex write FTabImageIndex default -1;
     property TabFontStyle: TFontStyles read FTabFontStyle write FTabFontStyle default [];
     property TabPopupMenu: TPopupMenu read FTabPopupMenu write FTabPopupMenu;
+    property TabSpecialWidth: integer read FTabSpecialWidth write FTabSpecialWidth default 0;
+    property TabSpecialHeight: integer read FTabSpecialHeight write FTabSpecialHeight default 0;
   end;
 
 type
@@ -1372,6 +1376,9 @@ begin
       if i>0 then
         Inc(R.Top, FOptSpaceBetweenTabs);
 
+      if Data.TabSpecialHeight>0 then
+        NLineHeight:= Data.TabSpecialHeight
+      else
       if FOptVarWidth then
       begin
         FCaptionList.Text:=
@@ -1416,6 +1423,9 @@ begin
     if i>0 then
       Inc(R.Left, FOptSpaceBetweenTabs);
 
+    if Data.TabSpecialWidth>0 then
+      FTabWidth:= Data.TabSpecialWidth
+    else
     if FOptVarWidth then
     begin
       C.Font.Style:= Data.TabFontStyle;
