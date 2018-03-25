@@ -520,14 +520,16 @@ type
     property Visible;
     property Tabs: TCollection read FTabList write FTabList;
 
+    property OnClick;
+    property OnDblClick;
     property OnDragDrop;
     property OnDragOver;
     property OnEndDrag;
     property OnContextPopup;
-    {$ifdef fpc}
+    //{$ifdef fpc}
     property OnMouseEnter;
     property OnMouseLeave;
-    {$endif}
+    //{$endif}
     property OnMouseMove;
     property OnMouseUp;
     property OnMouseWheel;
