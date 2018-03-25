@@ -1,6 +1,6 @@
 
 2018.03.25
-+ add: vertical tabs now have variable height if OptVarWidth and OptMultiLine
++ add: vertical tabs now have variable height if OptVarWidth
 + add: public prop ScrollPos
 + add: public method DoScrollAnimation
 

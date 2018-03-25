@@ -1372,7 +1372,7 @@ begin
       if i>0 then
         Inc(R.Top, FOptSpaceBetweenTabs);
 
-      if FOptVarWidth and FOptMultiline then
+      if FOptVarWidth then
       begin
         FCaptionList.Text:=
           {$ifdef WIDE}UTF8Encode{$endif}
