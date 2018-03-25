@@ -1357,7 +1357,8 @@ var
   Data: TATTabData;
   R: TRect;
   Extent: TSize;
-  NWidthPlus, NIndexLineStart, NLineHeight, i, j: integer;
+  NWidthPlus, NIndexLineStart, NLineHeight, NWidthSaved: integer;
+  i, j: integer;
 begin
   //left/right tabs
   if FOptPosition in [atpLeft, atpRight] then
@@ -1406,6 +1407,7 @@ begin
     NWidthPlus:= GetTabRectWidth(true);
   if FOptMultiline then
     FTabWidth:= FOptTabWidthNormal;
+  NWidthSaved:= FTabWidth;
 
   R.Left:= FRealIndentLeft;
   R.Right:= R.Left;
@@ -1474,6 +1476,10 @@ begin
 
   if FOptMultiline then
     Height:= R.Bottom+FOptSpacer2;
+
+  //restore FTabWidth for other methods
+  if not FOptVarWidth then
+    FTabWidth:= NWidthSaved;
 end;
 
 function TATTabs.GetTabRect_Plus(AWithScroll: boolean=true): TRect;
