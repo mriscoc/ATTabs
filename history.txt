@@ -1,4 +1,8 @@
 
+2018.03.25
++ add: public prop ScrollPos
++ add: DoScrollAnimation made public
+
 2018.03.07
 + add: method MakeVisible (it's called when changing TabIndex)
 + add: method IsTabVisible
