@@ -1358,7 +1358,7 @@ var
   R: TRect;
   Extent: TSize;
   NWidthPlus, NIndexLineStart, NLineHeight, NWidthSaved: integer;
-  i, j: integer;
+  i: integer;
 begin
   //left/right tabs
   if FOptPosition in [atpLeft, atpRight] then
