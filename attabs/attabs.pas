@@ -1382,13 +1382,8 @@ begin
       else
       if FOptVarWidth then
       begin
-        FCaptionList.Text:=
-          {$ifdef WIDE}UTF8Encode{$endif}
-          (Data.TabCaption);
-
-        NLineHeight:= FOptSpaceBeforeText*2;
-        for j:= 0 to FCaptionList.Count-1 do
-          Inc(NLineHeight, C.TextHeight(FCaptionList[j]));
+        DoUpdateCaptionProps(C, Data.TabCaption, NLineHeight, Extent);
+        NLineHeight:= 2*FOptSpaceBeforeText + Extent.CY;
       end
       else
         NLineHeight:= FOptTabHeight;
