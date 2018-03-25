@@ -1353,7 +1353,7 @@ var
   Data: TATTabData;
   R: TRect;
   Extent: TSize;
-  NWidthPlus, NIndexLineStart, NLineHeight, i: integer;
+  NWidthPlus, NIndexLineStart, NLineHeight, i, j: integer;
 begin
   //left/right tabs
   if FOptPosition in [atpLeft, atpRight] then
@@ -1365,13 +1365,28 @@ begin
 
     for i:= 0 to TabCount-1 do
     begin
+      Data:= GetTabData(i);
+      if not Assigned(Data) then Continue;
+
       R.Top:= R.Bottom;
       if i>0 then
         Inc(R.Top, FOptSpaceBetweenTabs);
-      R.Bottom:= R.Top + FOptTabHeight;
-      Data:= GetTabData(i);
-      if Assigned(Data) then
-        Data.TabRect:= R;
+
+      if FOptVarWidth and FOptMultiline then
+      begin
+        FCaptionList.Text:=
+          {$ifdef WIDE}UTF8Encode{$endif}
+          (Data.TabCaption);
+
+        NLineHeight:= FOptSpaceBeforeText*2;
+        for j:= 0 to FCaptionList.Count-1 do
+          Inc(NLineHeight, C.TextHeight(FCaptionList[j]));
+      end
+      else
+        NLineHeight:= FOptTabHeight;
+
+      R.Bottom:= R.Top + NLineHeight;
+      Data.TabRect:= R;
     end;
 
     exit;
