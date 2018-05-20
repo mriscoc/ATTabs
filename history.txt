@@ -1,4 +1,7 @@
 
+2018.05.20
++ add: ATGroups: add method MoveTabsFromGroupToAnother
+
 2018.03.25
 + add: vertical tabs now have variable height if OptVarWidth
 + add: public prop ScrollPos
