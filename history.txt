@@ -1,4 +1,7 @@
 
+2018.05.21
++ change: ATGroups: OnTabPopup event has 2 more params
+
 2018.05.20
 + add: ATGroups: add method MoveTabsFromGroupToAnother
 
