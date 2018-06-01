@@ -109,7 +109,7 @@ begin
   t_top:= TATTabs.Create(Self);
   t_top.Parent:= Self;
   t_top.Align:= alTop;
-  t_top.Font.Color:= $E0E0E0;
+  t_top.ColorFont:= $E0E0E0;
   t_top.OnTabClick:= TabClick;
   t_top.OnTabPlusClick:= TabPlusClick;
   t_top.OnTabClose:= TabClose;
@@ -138,7 +138,7 @@ begin
   t_cust:= TATTabs.Create(Self);
   t_cust.Parent:= Self;
   t_cust.Align:= alBottom;
-  t_cust.Font.Color:= clNavy;
+  t_cust.ColorFont:= clNavy;
   t_cust.Font.Size:= 12;
   t_cust.Height:= 56;
   t_cust.OnTabPlusClick:= Tab3PlusClick;
@@ -179,7 +179,7 @@ begin
   t_fox.OptShowAngled:= true;
   t_fox.OnTabPlusClick:= Tab2PlusClick;
 
-  t_fox.Font.Color:= clBlack;
+  t_fox.ColorFont:= clBlack;
   t_fox.ColorBg:= $F9EADB;
   t_fox.ColorBorderActive:= $ACA196;
   t_fox.ColorBorderPassive:= $ACA196;
