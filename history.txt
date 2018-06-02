@@ -1,4 +1,7 @@
 
+2018.06.02
+- fix: custom-drawn tabs cannot be painted with x mark
+
 2018.06.01
 * change: instead of Font.Color, now set prop ColorFont
 
