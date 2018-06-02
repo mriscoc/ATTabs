@@ -410,9 +410,9 @@ type
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
       AColorBg, AColorBorder, AColorBorderLow, AColorHilite, AColorCloseBg,
-  AColorCloseBorder, AColorCloseXMark, AColorFont: TColor; AShowCloseBtn,
-  ATabModified, ATabActive: boolean; AImageIndex: integer;
-  AFontStyle: TFontStyles);
+      AColorCloseBorder, AColorCloseXMark, AColorFont: TColor; AShowCloseBtn,
+      ATabModified, ATabActive: boolean; AImageIndex: integer;
+      AFontStyle: TFontStyles);
     procedure DoPaintArrowTo(C: TCanvas; ATyp: TATTabTriangle; ARect: TRect;
       AColorArr: TColor);
     procedure DoPaintUserButtons(C: TCanvas);
@@ -1017,7 +1017,6 @@ var
   PL1, PL2, PR1, PR2: TPoint;
   RectText: TRect;
   NIndentL, NIndentR, NIndentTop, NLineHeight, NLineWidth: integer;
-  ElemType: TATTabElemType;
   TempCaption: TATTabString;
   Extent: TSize;
   bNeedMoreSpace: boolean;
@@ -1257,11 +1256,6 @@ begin
   if not FOptShowEntireColor then
     if AColorHilite<>clNone then
       DoPaintColoredBand(C, PL1, PL2, PR1, PR2, AColorHilite);
-
-  if AShowCloseBtn then
-    DoPaintX(C, ARect,
-      AColorCloseBg<>clNone,
-      AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark);
 end;
 
 procedure TATTabs.DoPaintX(C: TCanvas; const ARect: TRect; AMouseOver: boolean;
@@ -1603,7 +1597,7 @@ end;
 procedure TATTabs.DoPaintTo(C: TCanvas);
 var
   RRect, RBottom: TRect;
-  NColorXBg, NColorXBorder, NColorXMark, NColorFont: TColor;
+  NColorBg, NColorXBg, NColorXBorder, NColorXMark, NColorFont: TColor;
   NLineX1, NLineY1, NLineX2, NLineY2: integer;
   ElemType: TATTabElemType;
   Data: TATTabData;
@@ -1743,6 +1737,11 @@ begin
       RRect:= GetTabRect(i);
       GetTabCloseColor(i, RRect, NColorXBg, NColorXBorder, NColorXMark);
 
+      if (i=FTabIndexOver) and not _IsDrag then
+        NColorBg:= FColorTabOver
+      else
+        NColorBg:= FColorTabPassive;
+
       if i=FTabIndexOver then
         ElemType:= aeTabPassiveOver
       else
@@ -1767,7 +1766,7 @@ begin
 
         DoPaintTabTo(C, RRect,
           Format(FOptShowNumberPrefix, [i+1]) + Data.TabCaption,
-          IfThen((i=FTabIndexOver) and not _IsDrag, FColorTabOver, FColorTabPassive),
+          NColorBg,
           FColorBorderPassive,
           FColorBorderActive,
           Data.TabColor,
@@ -1783,6 +1782,15 @@ begin
           );
         DoPaintAfter(ElemType, i, C, RRect);
       end;
+
+      if IsShowX(i) then
+        DoPaintX(C, RRect,
+          i=FTabIndexOver,
+          NColorBg,
+          NColorXBg,
+          NColorXBorder,
+          NColorXMark
+          );
     end;
 
   //paint active tab
@@ -1795,6 +1803,8 @@ begin
     if IsPaintNeeded(aeTabActive, i, C, RRect) then
     begin
       Data:= TATTabData(FTabList.Items[i]);
+
+      NColorBg:= FColorTabActive;
 
       if FOptActiveFontStyleUsed then
         NFontStyle:= FOptActiveFontStyle
@@ -1811,7 +1821,7 @@ begin
 
       DoPaintTabTo(C, RRect,
         Format(FOptShowNumberPrefix, [i+1]) + Data.TabCaption,
-        FColorTabActive,
+        NColorBg,
         FColorBorderActive,
         IfThen(FOptShowBorderActiveLow, FColorBorderActive, clNone),
         Data.TabColor,
@@ -1826,7 +1836,16 @@ begin
         NFontStyle
         );
       DoPaintAfter(aeTabActive, i, C, RRect);
-    end;  
+    end;
+
+    if IsShowX(i) then
+      DoPaintX(C, RRect,
+        i=FTabIndexOver,
+        NColorBg,
+        NColorXBg,
+        NColorXBorder,
+        NColorXMark
+        );
   end;
 
   //button back

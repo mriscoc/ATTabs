@@ -476,8 +476,6 @@ begin
         C.Pen.Color:= NColor;
         C.Pen.Width:= 1;
         ACanDraw:= false;
-
-        showmessage('x');
       end;
 
     aeTabPassive,
