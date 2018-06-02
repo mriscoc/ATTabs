@@ -468,13 +468,10 @@ begin
     aeTabIconX,
     aeTabIconXOver:
       begin
-        NColor:= C.Pen.Color;
-        C.Pen.Width:= 2;
-        C.Pen.Color:= IfThen(AType=aeTabIconX, clLtGray, clNavy);
-        R:= Rect(ARect.Left+2, ARect.Top+2, ARect.Right-2, ARect.Bottom-2);
-        C.Rectangle(R);
-        C.Pen.Color:= NColor;
-        C.Pen.Width:= 1;
+        C.Font.Name:= 'Courier';
+        C.Font.Size:= 10;
+        C.Font.Color:= IfThen(AType=aeTabIconX, clLtGray, clRed);
+        C.TextOut(ARect.Left-2, ARect.Top-2, 'x');
         ACanDraw:= false;
       end;
 
@@ -492,7 +489,7 @@ begin
           aeTabActive:
             C.Brush.Color:= clGreen;
         end;
-        C.RoundRect(ARect, 8, 8);
+        C.RoundRect(ARect, 22, 22);
         C.Font.Name:= 'Arial';
         C.Font.Size:= 10;
         C.Font.Color:= clWhite;
