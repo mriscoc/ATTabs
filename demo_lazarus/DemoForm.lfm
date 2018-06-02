@@ -16,33 +16,33 @@ object Form1: TForm1
   LCLVersion = '1.9.0.0'
   object Label1: TLabel
     Left = 136
-    Height = 15
+    Height = 16
     Top = 392
-    Width = 350
+    Width = 325
     Caption = 'Note: enabled drag-drop from top tabs to bottom tabs'
     ParentColor = False
   end
   object labStatus: TLabel
     Left = 136
-    Height = 15
+    Height = 16
     Top = 408
-    Width = 45
+    Width = 40
     Caption = 'Status:'
     ParentColor = False
   end
   object Label2: TLabel
     Left = 136
-    Height = 15
+    Height = 16
     Top = 88
-    Width = 57
+    Width = 53
     Caption = 'top tabs:'
     ParentColor = False
   end
   object Label3: TLabel
     Left = 304
-    Height = 15
+    Height = 16
     Top = 88
-    Width = 83
+    Width = 77
     Caption = 'bottom tabs:'
     ParentColor = False
   end
@@ -93,7 +93,7 @@ object Form1: TForm1
   end
   object EditInfo: TEdit
     Left = 416
-    Height = 25
+    Height = 26
     Top = 328
     Width = 209
     OnChange = EditInfoChange
@@ -115,7 +115,7 @@ object Form1: TForm1
     Left = 304
     Height = 24
     Top = 104
-    Width = 115
+    Width = 123
     Caption = 'show numbers'
     OnChange = chkNums_BottomChange
     TabOrder = 8
@@ -150,15 +150,15 @@ object Form1: TForm1
   end
   object Label4: TLabel
     Left = 456
-    Height = 15
+    Height = 16
     Top = 88
-    Width = 123
+    Width = 109
     Caption = 'top tabs: "x" icons:'
     ParentColor = False
   end
   object comboShowX: TComboBox
     Left = 456
-    Height = 25
+    Height = 26
     Top = 104
     Width = 160
     ItemHeight = 0
@@ -174,15 +174,15 @@ object Form1: TForm1
   end
   object Label5: TLabel
     Left = 456
-    Height = 15
+    Height = 16
     Top = 136
-    Width = 91
+    Width = 83
     Caption = 'button layout:'
     ParentColor = False
   end
   object comboLayout: TComboBox
     Left = 456
-    Height = 25
+    Height = 26
     Top = 152
     Width = 160
     DropDownCount = 20
@@ -226,15 +226,15 @@ object Form1: TForm1
   end
   object Label6: TLabel
     Left = 456
-    Height = 15
+    Height = 16
     Top = 184
-    Width = 83
+    Width = 73
     Caption = 'icons layout:'
     ParentColor = False
   end
   object comboIconPos: TComboBox
     Left = 456
-    Height = 25
+    Height = 26
     Top = 200
     Width = 160
     DropDownCount = 20
@@ -305,7 +305,7 @@ object Form1: TForm1
     Left = 136
     Height = 24
     Top = 248
-    Width = 78
+    Width = 84
     Caption = 'fill width'
     OnChange = chkFillChange
     TabOrder = 6
@@ -314,7 +314,7 @@ object Form1: TForm1
     Left = 136
     Height = 24
     Top = 272
-    Width = 153
+    Width = 163
     Caption = 'add tab near current'
     TabOrder = 7
   end

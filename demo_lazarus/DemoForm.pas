@@ -423,10 +423,10 @@ procedure TForm1.TabDrawAfter_Bottom(Sender: TObject;
   C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
 begin
   if ATabIndex<0 then Exit;
-  C.Font.Name:= 'Arial';
-  C.Font.Size:= 9;
-  C.Font.Color:= clBlue;
-  C.TextOut((ARect.Left+ARect.Right) div 2 - 8, ARect.Top+1, Inttostr(ATabIndex));
+  //C.Font.Name:= 'Arial';
+  //C.Font.Size:= 9;
+  //C.Font.Color:= clBlue;
+  //C.TextOut((ARect.Left+ARect.Right) div 2 - 8, ARect.Top+1, Inttostr(ATabIndex));
 end;
 
 procedure TForm1.TabDrawAfter_Top(Sender: TObject; AType: TATTabElemType;
@@ -447,6 +447,7 @@ procedure TForm1.TabDrawBefore_Bottom(Sender: TObject;
   AType: TATTabElemType; ATabIndex: Integer;
   C: TCanvas; const ARect: TRect; var ACanDraw: boolean);
 var
+  D: TATTabData;
   NColor: TColor;
   R: TRect;
 begin
@@ -463,19 +464,46 @@ begin
       ACanDraw:= false;
     end;
     }
+
     aeTabIconX,
     aeTabIconXOver:
-    begin
-      NColor:= C.Pen.Color;
-      C.Pen.Width:= 2;
-      C.Pen.Color:= IfThen(AType=aeTabIconX, clLtGray, clNavy);
-      R:= Rect(ARect.Left+2, ARect.Top+2, ARect.Right-2, ARect.Bottom-2);
-      C.Rectangle(R);
-      C.Pen.Color:= NColor;
-      C.Pen.Width:= 1;
-      ACanDraw:= false;
-    end;
-  end;  
+      begin
+        NColor:= C.Pen.Color;
+        C.Pen.Width:= 2;
+        C.Pen.Color:= IfThen(AType=aeTabIconX, clLtGray, clNavy);
+        R:= Rect(ARect.Left+2, ARect.Top+2, ARect.Right-2, ARect.Bottom-2);
+        C.Rectangle(R);
+        C.Pen.Color:= NColor;
+        C.Pen.Width:= 1;
+        ACanDraw:= false;
+      end;
+
+    aeTabPassive,
+    aeTabPassiveOver,
+    aeTabActive:
+      begin
+        D:= (Sender as TATTabs).GetTabData(ATabIndex);
+        C.Pen.Color:= clYellow;
+        case AType of
+          aeTabPassive:
+            C.Brush.Color:= clGray;
+          aeTabPassiveOver:
+            C.Brush.Color:= $40b040;
+          aeTabActive:
+            C.Brush.Color:= clGreen;
+        end;
+        C.RoundRect(ARect, 8, 8);
+        C.Font.Name:= 'Arial';
+        C.Font.Size:= 10;
+        C.Font.Color:= clWhite;
+        C.TextOut(
+          ARect.Left+4,
+          (ARect.Top+ARect.Bottom-C.TextHeight('W')) div 2,
+          Copy(D.TabCaption, 1, 10)
+          );
+        ACanDraw:= false;
+      end;
+  end;
 end;
 
 procedure TForm1.TabMove(Sender: TObject; NFrom, NTo: Integer);
