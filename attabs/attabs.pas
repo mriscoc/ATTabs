@@ -404,6 +404,8 @@ type
     procedure DoPaintButtonsBG(C: TCanvas);
     procedure DoPaintColoredBand(C: TCanvas; PL1, PL2, PR1, PR2: TPoint; AColor: TColor);
     procedure DoPaintTo(C: TCanvas);
+    procedure DoPaintX(C: TCanvas; const ARect: TRect; AMouseOver: boolean;
+      AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark: TColor);
     procedure DoTextOut(C: TCanvas; AX, AY: integer; const AClipRect: TRect; const AText: string);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
@@ -1256,19 +1258,27 @@ begin
     if AColorHilite<>clNone then
       DoPaintColoredBand(C, PL1, PL2, PR1, PR2, AColorHilite);
 
-  //"close" button
   if AShowCloseBtn then
+    DoPaintX(C, ARect,
+      AColorCloseBg<>clNone,
+      AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark);
+end;
+
+procedure TATTabs.DoPaintX(C: TCanvas; const ARect: TRect; AMouseOver: boolean;
+  AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark: TColor);
+var
+  ElemType: TATTabElemType;
+  RectText: TRect;
+begin
+  if AMouseOver then
+    ElemType:= aeTabIconXOver
+  else
+    ElemType:= aeTabIconX;
+  RectText:= GetTabRect_X(ARect);
+  if IsPaintNeeded(ElemType, -1, C, RectText) then
   begin
-    if AColorCloseBg<>clNone then
-      ElemType:= aeTabIconXOver
-    else
-      ElemType:= aeTabIconX;
-    RectText:= GetTabRect_X(ARect);
-    if IsPaintNeeded(ElemType, -1, C, RectText) then
-    begin
-      DoPaintXTo(C, RectText, AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark);
-      DoPaintAfter(ElemType, -1, C, RectText);
-    end;
+    DoPaintXTo(C, RectText, AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark);
+    DoPaintAfter(ElemType, -1, C, RectText);
   end;
 end;
 
