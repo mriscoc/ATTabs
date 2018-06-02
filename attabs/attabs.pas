@@ -1602,6 +1602,7 @@ var
   ElemType: TATTabElemType;
   Data: TATTabData;
   NFontStyle: TFontStyles;
+  bShowX, bMouseOver: boolean;
   i: integer;
 begin
   ElemType:= aeBackground;
@@ -1737,12 +1738,15 @@ begin
       RRect:= GetTabRect(i);
       GetTabCloseColor(i, RRect, NColorXBg, NColorXBorder, NColorXMark);
 
-      if (i=FTabIndexOver) and not _IsDrag then
+      bMouseOver:= i=FTabIndexOver;
+      bShowX:= IsShowX(i);
+
+      if bMouseOver and not _IsDrag then
         NColorBg:= FColorTabOver
       else
         NColorBg:= FColorTabPassive;
 
-      if i=FTabIndexOver then
+      if bMouseOver then
         ElemType:= aeTabPassiveOver
       else
         ElemType:= aeTabPassive;
@@ -1751,12 +1755,12 @@ begin
       begin
         Data:= TATTabData(FTabList.Items[i]);
 
-        if FOptHotFontStyleUsed and (i=FTabIndexOver) then
+        if FOptHotFontStyleUsed and bMouseOver then
           NFontStyle:= FOptHotFontStyle
         else
           NFontStyle:= Data.TabFontStyle;
 
-        if (FColorFontHot<>clNone) and (i=FTabIndexOver) then
+        if (FColorFontHot<>clNone) and bMouseOver then
           NColorFont:= FColorFontHot
         else
         if Data.TabModified then
@@ -1774,7 +1778,7 @@ begin
           NColorXBorder,
           NColorXMark,
           NColorFont,
-          IsShowX(i),
+          bShowX,
           Data.TabModified,
           false,
           Data.TabImageIndex,
@@ -1783,9 +1787,9 @@ begin
         DoPaintAfter(ElemType, i, C, RRect);
       end;
 
-      if IsShowX(i) then
+      if bShowX then
         DoPaintX(C, RRect,
-          i=FTabIndexOver,
+          bMouseOver,
           NColorBg,
           NColorXBg,
           NColorXBorder,
@@ -1799,6 +1803,9 @@ begin
   begin
     RRect:= GetTabRect(i);
     GetTabCloseColor(i, RRect, NColorXBg, NColorXBorder, NColorXMark);
+
+    bMouseOver:= i=FTabIndexOver;
+    bShowX:= IsShowX(i);
 
     if IsPaintNeeded(aeTabActive, i, C, RRect) then
     begin
@@ -1829,7 +1836,7 @@ begin
         NColorXBorder,
         NColorXMark,
         NColorFont,
-        IsShowX(i),
+        bShowX,
         Data.TabModified,
         true,
         Data.TabImageIndex,
@@ -1838,9 +1845,9 @@ begin
       DoPaintAfter(aeTabActive, i, C, RRect);
     end;
 
-    if IsShowX(i) then
+    if bShowX then
       DoPaintX(C, RRect,
-        i=FTabIndexOver,
+        bMouseOver,
         NColorBg,
         NColorXBg,
         NColorXBorder,
