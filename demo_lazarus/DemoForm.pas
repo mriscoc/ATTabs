@@ -469,9 +469,9 @@ begin
     aeTabIconXOver:
       begin
         C.Font.Name:= 'Courier';
-        C.Font.Size:= 10;
-        C.Font.Color:= IfThen(AType=aeTabIconX, clLtGray, clRed);
-        C.TextOut(ARect.Left-2, ARect.Top-2, 'x');
+        C.Font.Size:= 12;
+        C.Font.Color:= IfThen(AType=aeTabIconX, $303030, clRed);
+        C.TextOut(ARect.Left-3, ARect.Top-3, 'x');
         ACanDraw:= false;
       end;
 

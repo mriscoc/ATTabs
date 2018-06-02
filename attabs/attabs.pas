@@ -404,8 +404,8 @@ type
     procedure DoPaintButtonsBG(C: TCanvas);
     procedure DoPaintColoredBand(C: TCanvas; PL1, PL2, PR1, PR2: TPoint; AColor: TColor);
     procedure DoPaintTo(C: TCanvas);
-    procedure DoPaintX(C: TCanvas; const ARect: TRect; AMouseOver: boolean;
-      AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark: TColor);
+    procedure DoPaintX(C: TCanvas; const ARect: TRect; AColorBg, AColorCloseBg,
+      AColorCloseBorder, AColorCloseXMark: TColor);
     procedure DoTextOut(C: TCanvas; AX, AY: integer; const AClipRect: TRect; const AText: string);
     procedure DoPaintBgTo(C: TCanvas; const ARect: TRect);
     procedure DoPaintTabTo(C: TCanvas; ARect: TRect; const ACaption: TATTabString;
@@ -1258,17 +1258,19 @@ begin
       DoPaintColoredBand(C, PL1, PL2, PR1, PR2, AColorHilite);
 end;
 
-procedure TATTabs.DoPaintX(C: TCanvas; const ARect: TRect; AMouseOver: boolean;
+procedure TATTabs.DoPaintX(C: TCanvas; const ARect: TRect;
   AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark: TColor);
 var
   ElemType: TATTabElemType;
   RectText: TRect;
 begin
-  if AMouseOver then
+  RectText:= GetTabRect_X(ARect);
+
+  if PtInRect(RectText, ScreenToClient(Mouse.CursorPos)) then
     ElemType:= aeTabIconXOver
   else
     ElemType:= aeTabIconX;
-  RectText:= GetTabRect_X(ARect);
+
   if IsPaintNeeded(ElemType, -1, C, RectText) then
   begin
     DoPaintXTo(C, RectText, AColorBg, AColorCloseBg, AColorCloseBorder, AColorCloseXMark);
@@ -1789,7 +1791,6 @@ begin
 
       if bShowX then
         DoPaintX(C, RRect,
-          bMouseOver,
           NColorBg,
           NColorXBg,
           NColorXBorder,
@@ -1847,7 +1848,6 @@ begin
 
     if bShowX then
       DoPaintX(C, RRect,
-        bMouseOver,
         NColorBg,
         NColorXBg,
         NColorXBorder,
