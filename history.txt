@@ -1,4 +1,7 @@
 
+2018.06.05
+- fix: wrong color of X mark in "flat" mode
+
 2018.06.02
 - fix: custom-drawn tabs cannot be painted with x mark
 
