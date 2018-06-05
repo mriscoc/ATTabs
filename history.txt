@@ -1,5 +1,6 @@
 
 2018.06.05
++ add: TATTabData has new prop TabHideXButton (to hide x for some tabs)
 - fix: wrong color of X mark in "flat" mode
 
 2018.06.02
