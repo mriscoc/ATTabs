@@ -104,12 +104,12 @@ type
     procedure TabClose(Sender: TObject; ATabIndex: Integer;
       var ACanClose, ACanContinue: boolean);
     procedure TabAdd(Sender: TObject);
-    procedure AddTab(Pages: TATPages);
-    procedure TabPopup(S: TObject);
-    procedure TabFocus(S: TObject);
-    procedure TabOver(S: TObject; N: Integer);
-    procedure MoveTabTo(Num: Integer);
-    procedure MemoFocus(S: TObject);
+    procedure AddTab(APages: TATPages);
+    procedure TabPopup(Sender: TObject; APages: TATPages; AIndex: integer);
+    procedure TabFocus(Sender: TObject);
+    procedure TabOver(Sender: TObject; N: Integer);
+    procedure MoveTabTo(AIndex: Integer);
+    procedure MemoFocus(Sender: TObject);
   public
     { Public declarations }
     Groups: TATGroups;
@@ -122,7 +122,7 @@ implementation
 
 {$R *.lfm}
 
-procedure TfmTest.AddTab(Pages: TATPages);
+procedure TfmTest.AddTab(APages: TATPages);
 var
   F: TMemo;
   i: Integer;
@@ -138,7 +138,7 @@ begin
   ch:= Chr(Ord('A')+Random(26));
   for i:= 0 to 1+Random(4) do
     F.Lines.Add(StringOfChar(ch, 2+Random(50)));
-  Pages.AddTab(F, 'tab'+ch, false);
+  APages.AddTab(-1, F, 'tab'+ch, false);
 end;
 
 
@@ -174,7 +174,7 @@ end;
 
 procedure TfmTest.mnuMode12HClick(Sender: TObject);
 begin
-  Groups.Mode:= gm1plus2Horz;
+  Groups.Mode:= gm1plus2h;
 end;
 
 procedure TfmTest.mnuTreeToggleClick(Sender: TObject);
@@ -205,7 +205,7 @@ begin
     D.TabObject.Free;
 end;
 
-procedure TfmTest.TabPopup(S: TObject);
+procedure TfmTest.TabPopup(Sender: TObject; APages: TATPages; AIndex: integer);
 var
   D: TATTabData;
   P: TPoint;
@@ -225,57 +225,57 @@ end;
 
 procedure TfmTest.mnuMode2VClick(Sender: TObject);
 begin
-  Groups.Mode:= gm2Horz;
+  Groups.Mode:= gm2v;
 end;
 
 procedure TfmTest.mnuMode2HClick(Sender: TObject);
 begin
-  Groups.Mode:= gm2Vert;
+  Groups.Mode:= gm2h;
 end;
 
 procedure TfmTest.mnuMode3VClick(Sender: TObject);
 begin
-  Groups.Mode:= gm3Horz;
+  Groups.Mode:= gm3v;
 end;
 
 procedure TfmTest.mnuMode3HClick(Sender: TObject);
 begin
-  Groups.Mode:= gm3Vert;
+  Groups.Mode:= gm3h;
 end;
 
 procedure TfmTest.modeMode12VClick(Sender: TObject);
 begin
-  Groups.Mode:= gm1plus2Vert;
+  Groups.Mode:= gm1plus2v;
 end;
 
 procedure TfmTest.mnuMode4VClick(Sender: TObject);
 begin
-  Groups.Mode:= gm4Horz;
+  Groups.Mode:= gm4v;
 end;
 
 procedure TfmTest.mnuMode4HClick(Sender: TObject);
 begin
-  Groups.Mode:= gm4Vert;
+  Groups.Mode:= gm4h;
 end;
 
 procedure TfmTest.mnuMode4GClick(Sender: TObject);
 begin
-  Groups.Mode:= gm4Grid;
+  Groups.Mode:= gm4grid;
 end;
 
 procedure TfmTest.mnuMode6Click(Sender: TObject);
 begin
-  Groups.Mode:= gm6Grid;
+  Groups.Mode:= gm6grid;
 end;
 
 procedure TfmTest.FormShow(Sender: TObject);
 begin
-  Groups.Mode:= gm2Horz;
+  Groups.Mode:= gm2v;
 end;
 
-procedure TfmTest.MoveTabTo(Num: Integer);
+procedure TfmTest.MoveTabTo(AIndex: Integer);
 begin
-  Groups.MoveTab(Groups.PopupPages, Groups.PopupTabIndex, Groups.Pages[Num], -1, false);
+  Groups.MoveTab(Groups.PopupPages, Groups.PopupTabIndex, Groups.Pages[AIndex], -1, false);
 end;
 
 procedure TfmTest.m1Click(Sender: TObject);
@@ -379,20 +379,20 @@ begin
   Groups.MovePopupTabToNext(false);
 end;
 
-procedure TfmTest.TabFocus(S: TObject);
+procedure TfmTest.TabFocus(Sender: TObject);
 var
   D: TATTabData;
 begin
-  D:= (S as TATTabs).GetTabData((S as TATTabs).TabIndex);
+  D:= (Sender as TATTabs).GetTabData((Sender as TATTabs).TabIndex);
   if D<>nil then
   begin
     (D.TabObject as TMemo).SetFocus;
   end;
 end;
 
-procedure TfmTest.MemoFocus(S: TObject);
+procedure TfmTest.MemoFocus(Sender: TObject);
 begin
-  Groups.PagesCurrent:= (S as TMemo).Parent as TATPages;
+  Groups.PagesCurrent:= (Sender as TMemo).Parent as TATPages;
   Caption:= Format('Group: %d', [Groups.PagesIndexOf(Groups.PagesCurrent)]);
 end;
 
@@ -442,7 +442,7 @@ begin
   Groups.CloseTabs(tabCloseAllThisPage, true);
 end;
 
-procedure TfmTest.TabOver(S: TObject; N: Integer);
+procedure TfmTest.TabOver(Sender: TObject; N: Integer);
 begin
   if N>=0 then
     Status.SimpleText:= 'Mouse over tab '+IntToStr(N)
