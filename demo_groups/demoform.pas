@@ -14,6 +14,19 @@ uses
 type
   { TfmTest }
   TfmTest = class(TForm)
+    mnuMode6H: TMenuItem;
+    mnuMode6V: TMenuItem;
+    mnuMode1: TMenuItem;
+    mnuMode12H: TMenuItem;
+    mnuMode2H: TMenuItem;
+    mnuMode2V: TMenuItem;
+    mnuMode3H: TMenuItem;
+    mnuMode3V: TMenuItem;
+    mnuMode4G: TMenuItem;
+    mnuMode4H: TMenuItem;
+    mnuMode4V: TMenuItem;
+    mnuMode6: TMenuItem;
+    modeMode12V: TMenuItem;
     PopupMenu1: TPopupMenu;
     mnuClose: TMenuItem;
     MainMenu1: TMainMenu;
@@ -58,6 +71,8 @@ type
     mnuTreeToggle: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure mnuMode12HClick(Sender: TObject);
+    procedure mnuMode6HClick(Sender: TObject);
+    procedure mnuMode6VClick(Sender: TObject);
     procedure mnuTreeToggleClick(Sender: TObject);
     procedure mnuMode1Click(Sender: TObject);
     procedure mnuMode2VClick(Sender: TObject);
@@ -175,6 +190,16 @@ end;
 procedure TfmTest.mnuMode12HClick(Sender: TObject);
 begin
   Groups.Mode:= gm1plus2h;
+end;
+
+procedure TfmTest.mnuMode6HClick(Sender: TObject);
+begin
+  Groups.Mode:= gm6h;
+end;
+
+procedure TfmTest.mnuMode6VClick(Sender: TObject);
+begin
+  Groups.Mode:= gm6v;
 end;
 
 procedure TfmTest.mnuTreeToggleClick(Sender: TObject);

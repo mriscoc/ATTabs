@@ -4,7 +4,7 @@ object fmTest: TfmTest
   Top = 137
   Width = 914
   Caption = 'Groups'
-  ClientHeight = 523
+  ClientHeight = 522
   ClientWidth = 914
   Color = clBtnFace
   Font.Color = clWindowText
@@ -17,7 +17,7 @@ object fmTest: TfmTest
   LCLVersion = '1.9.0.0'
   object Tree: TTreeView
     Left = 0
-    Height = 507
+    Height = 501
     Top = 0
     Width = 170
     Align = alLeft
@@ -40,8 +40,8 @@ object fmTest: TfmTest
   end
   object Status: TStatusBar
     Left = 0
-    Height = 16
-    Top = 507
+    Height = 21
+    Top = 501
     Width = 914
     Panels = <>
   end
@@ -168,6 +168,14 @@ object fmTest: TfmTest
       object mnuMode4G: TMenuItem
         Caption = '4 grid'
         OnClick = mnuMode4GClick
+      end
+      object mnuMode6V: TMenuItem
+        Caption = '6 vert'
+        OnClick = mnuMode6VClick
+      end
+      object mnuMode6H: TMenuItem
+        Caption = '6 horz'
+        OnClick = mnuMode6HClick
       end
       object mnuMode6: TMenuItem
         Caption = '6 grid'
