@@ -1,5 +1,6 @@
 
 2018.08.30
++ add: ATTabs: event OnTabGetCloseAction which affects what clicking "x" does
 + add: ATTabs: option OptWhichActivateOnClose (right tab or recent tab)
 + add: ATTabs: event OnTabGetTick to support option above
 + add: ATGroups: option above is exposed in SetTabOption()
