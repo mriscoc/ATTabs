@@ -1,7 +1,7 @@
 
 2018.08.30
 + add: ATTabs: option OptWhichActivateOnClose (right tab or recent tab)
-+ add: ATTabs: event OnTabGetTick to support option avobe (for "recent tab")
++ add: ATTabs: event OnTabGetTick to support option above
 + add: ATGroups: option above is exposed in SetTabOption()
 
 2018.08.13
