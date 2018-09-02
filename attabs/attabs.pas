@@ -551,10 +551,10 @@ type
     property OnDragOver;
     property OnEndDrag;
     property OnContextPopup;
-    {$ifdef fpc}
+    //these 2 lines don't compile under Delphi 7
     property OnMouseEnter;
     property OnMouseLeave;
-    {$endif}
+    //
     property OnMouseMove;
     property OnMouseUp;
     property OnMouseWheel;
