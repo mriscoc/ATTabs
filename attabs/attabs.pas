@@ -40,11 +40,6 @@ type
   TATTabPopupMenu = {$ifdef TNT} TTntPopupMenu {$else} TPopupMenu {$endif};
   TATTabMenuItem = {$ifdef TNT} TTntMenuItem {$else} TMenuItem {$endif};
 
-{$ifndef FPC}
-type
-  QWord = Int64;
-{$endif}
-    
 type
   { TATTabData }
 
@@ -161,7 +156,7 @@ type
   TATTabChangeQueryEvent = procedure (Sender: TObject; ANewTabIndex: integer;
     var ACanChange: boolean) of object;
   TATTabClickUserButton = procedure (Sender: TObject; AIndex: integer) of object;
-  TATTabGetTickEvent = function (Sender: TObject; ATabObject: TObject): QWord of object;
+  TATTabGetTickEvent = function (Sender: TObject; ATabObject: TObject): Int64 of object;
   TATTabGetCloseActionEvent = procedure (Sender: TObject; var AAction: TATTabActionOnClose) of object;
 
 type
@@ -470,7 +465,7 @@ type
       out ALineHeight: integer; out ATextSize: TSize);
     procedure DoTabDrop;
     procedure DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
-    function GetTabTick(AIndex: integer): QWord;
+    function GetTabTick(AIndex: integer): Int64;
 
   public
     constructor Create(AOnwer: TComponent); override;
@@ -2423,7 +2418,7 @@ function TATTabs.DeleteTab(AIndex: integer;
   procedure _ActivateRecentTab;
   var
     Idx, i: integer;
-    Tick, TickMax: QWord;
+    Tick, TickMax: Int64;
   begin
     TickMax:= 0;
     Idx:= -1;
@@ -2786,7 +2781,7 @@ begin
     ATabs.TabIndex:= NTabTo;
 end;
 
-function TATTabs.GetTabTick(AIndex: integer): QWord;
+function TATTabs.GetTabTick(AIndex: integer): Int64;
 var
   D: TATTabData;
 begin
