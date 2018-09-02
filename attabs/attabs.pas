@@ -40,6 +40,11 @@ type
   TATTabPopupMenu = {$ifdef TNT} TTntPopupMenu {$else} TPopupMenu {$endif};
   TATTabMenuItem = {$ifdef TNT} TTntMenuItem {$else} TMenuItem {$endif};
 
+{$ifndef FPC}
+type
+  QWord = Int64;
+{$endif}
+    
 type
   { TATTabData }
 
@@ -546,10 +551,10 @@ type
     property OnDragOver;
     property OnEndDrag;
     property OnContextPopup;
-    //{$ifdef fpc}
+    {$ifdef fpc}
     property OnMouseEnter;
     property OnMouseLeave;
-    //{$endif}
+    {$endif}
     property OnMouseMove;
     property OnMouseUp;
     property OnMouseWheel;
@@ -2682,12 +2687,18 @@ begin
   begin
     D:= GetTabData(AIndex);
     if Assigned(D) and D.TabHideXButton then
-      exit(false);
+    begin
+      Result:= false;
+      Exit
+    end;
 
     if not FOptVarWidth then
       if FOptPosition in [atpTop, atpBottom] then
         if FTabWidth<FOptTabWidthMinimalHidesX then
-          exit(false);
+        begin
+          Result:= false;
+          Exit
+        end;
   end;
 end;
 
