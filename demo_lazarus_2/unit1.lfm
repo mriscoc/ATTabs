@@ -136,7 +136,9 @@ object Form1: TForm1
     Top = 256
     Width = 214
     Caption = 'animation for tab add/close'
+    Checked = True
     OnChange = chkAnimChange
+    State = cbChecked
     TabOrder = 10
   end
 end

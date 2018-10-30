@@ -68,6 +68,7 @@ begin
   t.Parent:= Self;
   t.Align:= alTop;
 
+  t.OptAnimationEnabled:= true;
   t.OptMouseDragEnabled:= true;
   t.DragMode:= dmAutomatic;
   t.OnTabPlusClick:= @TabPlusClick;
