@@ -1,4 +1,11 @@
 
+2018.10.30
++ add: animations on tab add/close, which are controlled by new props:
+    OptAnimationEnabled
+    OptAnimationStepHeight
+    OptAnimationStepWidth
+    OptAnimationStepPause
+    
 2018.08.30
 + add: ATTabs: event OnTabGetCloseAction which affects what clicking "x" does
 + add: ATTabs: option OptWhichActivateOnClose (right tab or recent tab)
