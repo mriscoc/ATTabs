@@ -220,9 +220,9 @@ const
 
 const
   _InitOptAnimationEnabled = true;
-  _InitOptAnimationStepHeight = 4;
-  _InitOptAnimationStepWidth = 25;
-  _InitOptAnimationStepPause = 60;
+  _InitOptAnimationStepV = 4;
+  _InitOptAnimationStepH = 25;
+  _InitOptAnimationPause = 60;
   _InitOptButtonLayout = '<>,v';
   _InitOptButtonSize = 16;
   _InitOptTabHeight = 24;
@@ -316,9 +316,9 @@ type
     FOptButtonLayout: string;
 
     FOptAnimationEnabled: boolean;
-    FOptAnimationStepHeight: integer;
-    FOptAnimationStepWidth: integer;
-    FOptAnimationStepPause: integer;
+    FOptAnimationStepV: integer;
+    FOptAnimationStepH: integer;
+    FOptAnimationPause: integer;
 
     FOptVarWidth: boolean;
     FOptMultiline: boolean;
@@ -607,9 +607,9 @@ type
 
     //options
     property OptAnimationEnabled: boolean read FOptAnimationEnabled write FOptAnimationEnabled default _InitOptAnimationEnabled;
-    property OptAnimationStepHeight: integer read FOptAnimationStepHeight write FOptAnimationStepHeight default _InitOptAnimationStepHeight;
-    property OptAnimationStepWidth: integer read FOptAnimationStepWidth write FOptAnimationStepWidth default _InitOptAnimationStepWidth;
-    property OptAnimationStepPause: integer read FOptAnimationStepPause write FOptAnimationStepPause default _InitOptAnimationStepPause;
+    property OptAnimationStepVert: integer read FOptAnimationStepV write FOptAnimationStepV default _InitOptAnimationStepV;
+    property OptAnimationStepHorz: integer read FOptAnimationStepH write FOptAnimationStepH default _InitOptAnimationStepH;
+    property OptAnimationPause: integer read FOptAnimationPause write FOptAnimationPause default _InitOptAnimationPause;
     property OptButtonLayout: string read FOptButtonLayout write SetOptButtonLayout;
     property OptButtonSize: integer read FOptButtonSize write FOptButtonSize default _InitOptButtonSize;
     property OptVarWidth: boolean read FOptVarWidth write SetOptVarWidth default false;
@@ -958,9 +958,9 @@ begin
   FColorScrollMark:= _InitTabColorScrollMark;
 
   FOptAnimationEnabled:= _InitOptAnimationEnabled;
-  FOptAnimationStepHeight:= _InitOptAnimationStepHeight;
-  FOptAnimationStepWidth:= _InitOptAnimationStepWidth;
-  FOptAnimationStepPause:= _InitOptAnimationStepPause;
+  FOptAnimationStepV:= _InitOptAnimationStepV;
+  FOptAnimationStepH:= _InitOptAnimationStepH;
+  FOptAnimationPause:= _InitOptAnimationPause;
 
   FOptButtonLayout:= _InitOptButtonLayout;
   ApplyButtonLayout;
@@ -3475,22 +3475,22 @@ begin
     atpTop,
     atpBottom:
       begin
-        for i:= 0 to FOptTabHeight div FOptAnimationStepHeight-1 do
+        for i:= 0 to FOptTabHeight div FOptAnimationStepV-1 do
         begin
-          Data.OffsetVert:= i*FOptAnimationStepHeight;
+          Data.OffsetVert:= i*FOptAnimationStepV;
           Invalidate;
           Application.ProcessMessages;
-          Sleep(FOptAnimationStepPause);
+          Sleep(FOptAnimationPause);
         end;
       end;
     else
       begin
-        for i:= 0 to FOptTabWidthNormal div FOptAnimationStepWidth-1 do
+        for i:= 0 to FOptTabWidthNormal div FOptAnimationStepH-1 do
         begin
-          Data.OffsetHorz:= i*FOptAnimationStepWidth;
+          Data.OffsetHorz:= i*FOptAnimationStepH;
           Invalidate;
           Application.ProcessMessages;
-          Sleep(FOptAnimationStepPause);
+          Sleep(FOptAnimationPause);
         end;
       end;
   end;
@@ -3513,22 +3513,22 @@ begin
     atpTop,
     atpBottom:
       begin
-        for i:= FOptTabHeight div FOptAnimationStepHeight-1 downto 0 do
+        for i:= FOptTabHeight div FOptAnimationStepV-1 downto 0 do
         begin
-          Data.OffsetVert:= i*FOptAnimationStepHeight;
+          Data.OffsetVert:= i*FOptAnimationStepV;
           Invalidate;
           Application.ProcessMessages;
-          Sleep(FOptAnimationStepPause);
+          Sleep(FOptAnimationPause);
         end;
       end;
     else
       begin
-        for i:= FOptTabWidthNormal div FOptAnimationStepWidth-1 downto 0 do
+        for i:= FOptTabWidthNormal div FOptAnimationStepH-1 downto 0 do
         begin
-          Data.OffsetHorz:= i*FOptAnimationStepWidth;
+          Data.OffsetHorz:= i*FOptAnimationStepH;
           Invalidate;
           Application.ProcessMessages;
-          Sleep(FOptAnimationStepPause);
+          Sleep(FOptAnimationPause);
         end;
       end;
   end;
