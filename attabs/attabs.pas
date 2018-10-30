@@ -3485,7 +3485,7 @@ begin
       end;
     else
       begin
-        for i:= 0 to Data.TabRectOrig.Width div FOptAnimationStepWidth-1 do
+        for i:= 0 to FOptTabWidthNormal div FOptAnimationStepWidth-1 do
         begin
           Data.OffsetHorz:= i*FOptAnimationStepWidth;
           Invalidate;
@@ -3523,7 +3523,7 @@ begin
       end;
     else
       begin
-        for i:= Data.TabRectOrig.Width div FOptAnimationStepWidth-1 downto 0 do
+        for i:= FOptTabWidthNormal div FOptAnimationStepWidth-1 downto 0 do
         begin
           Data.OffsetHorz:= i*FOptAnimationStepWidth;
           Invalidate;
