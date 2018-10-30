@@ -219,7 +219,7 @@ const
   _InitTabColorScrollMark = _InitTabColorDropMark;
 
 const
-  _InitOptAnimationEnabled = true;
+  _InitOptAnimationEnabled = false;
   _InitOptAnimationStepV = 4;
   _InitOptAnimationStepH = 25;
   _InitOptAnimationPause = 60;
