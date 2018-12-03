@@ -1507,7 +1507,8 @@ begin
           Inc(FTabWidth, FImages.Width);
 
       if FOptShowXButtons<>atbxShowNone then
-        Inc(FTabWidth, FOptSpaceXSize);
+        if not Data.TabHideXButton then
+          Inc(FTabWidth, FOptSpaceXSize);
 
       if FTabWidth<FOptTabWidthMinimal then
         FTabWidth:= FOptTabWidthMinimal;
