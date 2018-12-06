@@ -693,9 +693,11 @@ var
   cTabsMouseMinDistanceToDrag: integer = 10; //mouse must move >=N pixels to start drag-drop
   cTabsMouseMaxDistanceToClick: integer = 4; //if mouse moves during mouse-down >=N pixels, dont click
 
-function CalcTruncatedCaption(
-    const AStr: string;
-    AMode: TATTabTruncateCaption; C: TCanvas; AWidth: integer): string;
+  function _ShortenStringEx(C: TCanvas;
+    const Text: string;
+    Mode: TATTabTruncateCaption;
+    Width: integer;
+    const DotsString: string = #$2026): string;
 
 implementation
 
@@ -889,46 +891,51 @@ begin
   end;
 end;
 
-function CalcTruncatedCaption(const AStr: string; AMode: TATTabTruncateCaption;
-  C: TCanvas; AWidth: integer): string;
+function _ShortenStringEx(C: TCanvas;
+  const Text: string;
+  Mode: TATTabTruncateCaption;
+  Width: integer;
+  const DotsString: string = #$2026): string;
 const
-  cDots: WideChar = #$2026; //ellipsis char
   cMinLen = 3;
 var
-  S, S1: UnicodeString;
-  N: integer;
+  S, STemp: UnicodeString;
+  N, i: integer;
 begin
-  if AMode=attcNone then exit(AStr);
-  if C.TextWidth(AStr)<=AWidth then exit(AStr);
+  if Mode=attcNone then exit(Text);
+  if C.TextWidth(Text)<=Width then exit(Text);
 
-  S:= UTF8Decode(AStr);
-  case AMode of
+  S:= UTF8Decode(Text);
+  STemp:= S;
+
+  case Mode of
     attcDotsLeft:
       begin
-        S:= cDots+S;
         repeat
-          Delete(S, 2, 1);
-        until (Length(S)<=cMinLen) or (C.TextWidth(UTF8Encode(S))<=AWidth);
+          Delete(STemp, 1, 1);
+          S:= DotsString+STemp;
+        until (Length(S)<=cMinLen) or (C.TextWidth(UTF8Encode(S))<=Width);
       end;
 
     attcDotsMiddle:
       begin
-        S1:= S;
-        repeat
-          N:= (Length(S1)+1) div 2;
-          Delete(S1, N, 1);
-          S:= Copy(S1, 1, N-1)+cDots+Copy(S1, N, MaxInt);
-        until (Length(S)<=cMinLen) or (C.TextWidth(UTF8Encode(S))<=AWidth);
+        for i:= 2 to $FFFF do
+        begin
+          N:= (Length(STemp)+1) div 2 - i div 2;
+          S:= Copy(STemp, 1, N)+DotsString+Copy(STemp, N+i, MaxInt);
+          if (Length(S)<=cMinLen) or (C.TextWidth(UTF8Encode(S))<=Width) then Break;
+        end;
       end;
 
     attcDotsRight:
       begin
-        S:= S+cDots;
         repeat
-          Delete(S, Length(S)-1, 1);
-        until (Length(S)<=cMinLen) or (C.TextWidth(UTF8Encode(S))<=AWidth);
+          SetLength(STemp, Length(STemp)-1);
+          S:= STemp+DotsString;
+        until (Length(S)<=cMinLen) or (C.TextWidth(UTF8Encode(S))<=Width);
       end;
   end;
+
   Result:= UTF8Encode(S);
 end;
 
@@ -1249,7 +1256,7 @@ begin
         NIndentL,
         RectText.Top+NIndentTop+i*NLineHeight,
         RectText,
-        CalcTruncatedCaption(FCaptionList[i], FOptTruncateCaption, C, RectText.Width)
+        _ShortenStringEx(C, FCaptionList[i], FOptTruncateCaption, RectText.Width)
         );
     end;
   end;
