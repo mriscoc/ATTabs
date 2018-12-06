@@ -24,6 +24,7 @@ type
     chkVarSize: TCheckBox;
     chkCenterCaption: TCheckBox;
     chkShowFlat: TCheckBox;
+    comboTruncate: TComboBox;
     comboLayout: TComboBox;
     comboIconPos: TComboBox;
     comboShowX: TComboBox;
@@ -35,6 +36,7 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
+    Label7: TLabel;
     labStatus: TLabel;
     btnModify: TButton;
     Label2: TLabel;
@@ -55,6 +57,7 @@ type
     procedure comboIconPosChange(Sender: TObject);
     procedure comboLayoutChange(Sender: TObject);
     procedure comboShowXChange(Sender: TObject);
+    procedure comboTruncateChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure btnDelClick(Sender: TObject);
@@ -307,6 +310,12 @@ end;
 procedure TForm1.comboShowXChange(Sender: TObject);
 begin
   t_top.OptShowXButtons:= TATTabShowClose(comboShowX.ItemIndex);
+  t_top.Invalidate;
+end;
+
+procedure TForm1.comboTruncateChange(Sender: TObject);
+begin
+  t_top.OptTruncateCaption:= TATTabTruncateCaption(comboTruncate.ItemIndex);
   t_top.Invalidate;
 end;
 

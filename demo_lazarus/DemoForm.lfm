@@ -53,7 +53,7 @@ object Form1: TForm1
     Width = 113
     Caption = 'add tab'
     OnClick = btnAddClick
-    TabOrder = 14
+    TabOrder = 15
   end
   object btnDel: TButton
     Left = 256
@@ -62,7 +62,7 @@ object Form1: TForm1
     Width = 75
     Caption = 'del'
     OnClick = btnDelClick
-    TabOrder = 15
+    TabOrder = 16
   end
   object btnColor: TButton
     Left = 336
@@ -71,7 +71,7 @@ object Form1: TForm1
     Width = 75
     Caption = 'color'
     OnClick = btnColorClick
-    TabOrder = 16
+    TabOrder = 17
   end
   object btnLeft: TButton
     Left = 256
@@ -80,7 +80,7 @@ object Form1: TForm1
     Width = 75
     Caption = '<'
     OnClick = btnLeftClick
-    TabOrder = 19
+    TabOrder = 20
   end
   object btnRight: TButton
     Left = 336
@@ -89,7 +89,7 @@ object Form1: TForm1
     Width = 75
     Caption = '>'
     OnClick = btnRightClick
-    TabOrder = 20
+    TabOrder = 21
   end
   object EditInfo: TEdit
     Left = 416
@@ -97,7 +97,7 @@ object Form1: TForm1
     Top = 328
     Width = 209
     OnChange = EditInfoChange
-    TabOrder = 21
+    TabOrder = 22
   end
   object chkShowPlus: TCheckBox
     Left = 136
@@ -127,7 +127,7 @@ object Form1: TForm1
     Width = 113
     Caption = 'toggle modified'
     OnClick = btnModifyClick
-    TabOrder = 18
+    TabOrder = 19
   end
   object chkShowFullColor: TCheckBox
     Left = 136
@@ -146,7 +146,7 @@ object Form1: TForm1
     Width = 208
     Caption = 'stress (300 tabs)'
     OnClick = btnStressClick
-    TabOrder = 17
+    TabOrder = 18
   end
   object Label4: TLabel
     Left = 456
@@ -257,7 +257,7 @@ object Form1: TForm1
     Width = 113
     Caption = 'toggle special'
     OnClick = btnToggleSpecialClick
-    TabOrder = 22
+    TabOrder = 23
   end
   object chkVarSize: TCheckBox
     Left = 136
@@ -317,6 +317,33 @@ object Form1: TForm1
     Width = 146
     Caption = 'add tab near current'
     TabOrder = 7
+  end
+  object Label7: TLabel
+    Left = 456
+    Height = 16
+    Top = 232
+    Width = 135
+    Caption = 'truncate long captions:'
+    ParentColor = False
+  end
+  object comboTruncate: TComboBox
+    Left = 456
+    Height = 26
+    Top = 248
+    Width = 160
+    DropDownCount = 20
+    ItemHeight = 0
+    ItemIndex = 0
+    Items.Strings = (
+      'none'
+      'dots - left'
+      'dots - middle'
+      'dots - right'
+    )
+    OnChange = comboTruncateChange
+    Style = csDropDownList
+    TabOrder = 14
+    Text = 'none'
   end
   object ImageList1: TImageList
     left = 640

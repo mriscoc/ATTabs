@@ -48,6 +48,13 @@ type
     atpRight
     );
 
+  TATTabTruncateCaption = (
+    attcNone,
+    attcDotsLeft,
+    attcDotsMiddle,
+    attcDotsRight
+    );
+
 type
   { TATTabData }
 
@@ -314,6 +321,7 @@ type
 
     FOptVarWidth: boolean;
     FOptMultiline: boolean;
+    FOptTruncateCaption: TATTabTruncateCaption;
     FOptFillWidth: boolean;
     FOptFillWidthLastToo: boolean;
     FOptTabHeight: integer;
@@ -610,6 +618,7 @@ type
     property OptMultiline: boolean read FOptMultiline write FOptMultiline default false;
     property OptFillWidth: boolean read FOptFillWidth write FOptFillWidth default _InitOptFillWidth;
     property OptFillWidthLastToo: boolean read FOptFillWidthLastToo write FOptFillWidthLastToo default _InitOptFillWidthLastToo;
+    property OptTruncateCaption: TATTabTruncateCaption read FOptTruncateCaption write FOptTruncateCaption default attcNone;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
     property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal default _InitOptTabWidthMinimal;
@@ -683,6 +692,9 @@ var
   cTabsMouseMinDistanceToDrag: integer = 10; //mouse must move >=N pixels to start drag-drop
   cTabsMouseMaxDistanceToClick: integer = 4; //if mouse moves during mouse-down >=N pixels, dont click
 
+function CalcTruncatedCaption(
+    const AStr: string;
+    AMode: TATTabTruncateCaption; C: TCanvas; AWidth: integer): string;
 
 implementation
 
@@ -876,6 +888,49 @@ begin
   end;
 end;
 
+function CalcTruncatedCaption(const AStr: string; AMode: TATTabTruncateCaption;
+  C: TCanvas; AWidth: integer): string;
+const
+  cDots: WideChar = #$2026; //ellipsis char
+  cMinLen = 3;
+var
+  S, S1: UnicodeString;
+  N: integer;
+begin
+  if AMode=attcNone then exit(AStr);
+  if C.TextWidth(AStr)<=AWidth then exit(AStr);
+
+  S:= UTF8Decode(AStr);
+  case AMode of
+    attcDotsLeft:
+      begin
+        S:= cDots+S;
+        repeat
+          Delete(S, 2, 1);
+        until (Length(S)<=cMinLen) or (C.TextWidth(UTF8Encode(S))<=AWidth);
+      end;
+
+    attcDotsMiddle:
+      begin
+        S1:= S;
+        repeat
+          N:= (Length(S1)+1) div 2;
+          Delete(S1, N, 1);
+          S:= Copy(S1, 1, N-1)+cDots+Copy(S1, N, MaxInt);
+        until (Length(S)<=cMinLen) or (C.TextWidth(UTF8Encode(S))<=AWidth);
+      end;
+
+    attcDotsRight:
+      begin
+        S:= S+cDots;
+        repeat
+          Delete(S, Length(S)-1, 1);
+        until (Length(S)<=cMinLen) or (C.TextWidth(UTF8Encode(S))<=AWidth);
+      end;
+  end;
+  Result:= UTF8Encode(S);
+end;
+
 
 { TATTabData }
 
@@ -949,6 +1004,7 @@ begin
   FOptWhichActivateOnClose:= aocRight;
   FOptFillWidth:= _InitOptFillWidth;
   FOptFillWidthLastToo:= _InitOptFillWidthLastToo;
+  FOptTruncateCaption:= attcNone;
   FOptTabHeight:= _InitOptTabHeight;
   FOptTabWidthMinimal:= _InitOptTabWidthMinimal;
   FOptTabWidthMaximal:= _InitOptTabWidthMaximal;
@@ -1192,7 +1248,8 @@ begin
         NIndentL,
         RectText.Top+NIndentTop+i*NLineHeight,
         RectText,
-        FCaptionList[i]);
+        CalcTruncatedCaption(FCaptionList[i], FOptTruncateCaption, C, RectText.Width)
+        );
     end;
   end;
 
