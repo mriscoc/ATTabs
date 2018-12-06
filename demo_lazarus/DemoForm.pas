@@ -411,6 +411,7 @@ begin
   if LockEdit then Exit;
 
   d.TabCaption:= EditInfo.Text;
+  t_top.Invalidate;
 end;
 
 
