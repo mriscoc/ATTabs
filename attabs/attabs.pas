@@ -218,6 +218,7 @@ const
   _InitTabColorScrollMark = _InitTabColorDropMark;
 
 const
+  _InitOptTruncateCaption = attcDotsMiddle;
   _InitOptAnimationEnabled = false;
   _InitOptAnimationStepV = 4;
   _InitOptAnimationStepH = 25;
@@ -618,7 +619,7 @@ type
     property OptMultiline: boolean read FOptMultiline write FOptMultiline default false;
     property OptFillWidth: boolean read FOptFillWidth write FOptFillWidth default _InitOptFillWidth;
     property OptFillWidthLastToo: boolean read FOptFillWidthLastToo write FOptFillWidthLastToo default _InitOptFillWidthLastToo;
-    property OptTruncateCaption: TATTabTruncateCaption read FOptTruncateCaption write FOptTruncateCaption default attcNone;
+    property OptTruncateCaption: TATTabTruncateCaption read FOptTruncateCaption write FOptTruncateCaption default _InitOptTruncateCaption;
     property OptTabHeight: integer read FOptTabHeight write FOptTabHeight default _InitOptTabHeight;
     property OptTabWidthNormal: integer read FOptTabWidthNormal write FOptTabWidthNormal default _InitOptTabWidthNormal;
     property OptTabWidthMinimal: integer read FOptTabWidthMinimal write FOptTabWidthMinimal default _InitOptTabWidthMinimal;
@@ -1004,7 +1005,7 @@ begin
   FOptWhichActivateOnClose:= aocRight;
   FOptFillWidth:= _InitOptFillWidth;
   FOptFillWidthLastToo:= _InitOptFillWidthLastToo;
-  FOptTruncateCaption:= attcNone;
+  FOptTruncateCaption:= _InitOptTruncateCaption;
   FOptTabHeight:= _InitOptTabHeight;
   FOptTabWidthMinimal:= _InitOptTabWidthMinimal;
   FOptTabWidthMaximal:= _InitOptTabWidthMaximal;
