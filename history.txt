@@ -1,4 +1,7 @@
 
+2018.12.10
+- fix: context menu on macOS
+
 2018.12.08
 + add: property ColorSeparator
 
