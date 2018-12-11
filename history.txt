@@ -1,4 +1,9 @@
 
+2018.12.11
+- fix: clicking on X area with hidden X button must not close tab
+- fix: painting of tab underlines with OptShowAngled
+- fix: compiling in Delphi
+
 2018.12.10
 - fix: context menu on macOS
 
