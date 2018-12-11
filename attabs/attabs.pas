@@ -2339,6 +2339,11 @@ begin
 
   FTabIndexOver:= GetTabAt(X, Y, IsX);
 
+  //maybe X is hidden
+  if (FTabIndexOver>=0) and IsX then
+    if not IsShowX(FTabIndexOver) then
+      IsX:= false;
+
   //activate tab only if not X clicked
   if not IsX then
     if TabIndex<>FTabIndexOver then
