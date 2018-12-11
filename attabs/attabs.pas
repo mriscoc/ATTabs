@@ -703,7 +703,7 @@ var
     const Text: string;
     Mode: TATTabTruncateCaption;
     Width: integer;
-    const DotsString: string = #$2026): string;
+    DotsString: string=''): string;
 
 implementation
 
@@ -901,7 +901,7 @@ function _ShortenStringEx(C: TCanvas;
   const Text: string;
   Mode: TATTabTruncateCaption;
   Width: integer;
-  const DotsString: string = #$2026): string;
+  DotsString: string=''): string;
 const
   cMinLen = 3;
 var
@@ -914,6 +914,9 @@ begin
     Result:= Text;
     exit
   end;
+
+  if DotsString='' then
+    DotsString:= {$ifdef fpc}UTF8Encode{$endif}(#$2026);
 
   S:= Text;
   STemp:= S;
