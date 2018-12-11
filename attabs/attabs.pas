@@ -1168,9 +1168,8 @@ begin
 
   if FOptShowFlat and FOptShowFlatSepar then
   begin
-    C.Pen.Color:= FColorSeparator;
     i:= ARect.Left - FOptSpaceBetweenTabs div 2;
-    C.Line(i, ARect.Top+cIndentSep, i, ARect.Bottom-cIndentSep);
+    DrawLine(C, i, ARect.Top+cIndentSep, i, ARect.Bottom-cIndentSep, FColorSeparator);
   end;
 
   //imagelist
