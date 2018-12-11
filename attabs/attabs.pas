@@ -1279,7 +1279,7 @@ begin
         NIndentL,
         RectText.Top+NIndentTop+i*NLineHeight,
         RectText,
-        _ShortenStringEx(C, FCaptionList[i], FOptTruncateCaption, RectText.Width)
+        _ShortenStringEx(C, FCaptionList[i], FOptTruncateCaption, RectText.Right-RectText.Left)
         );
     end;
   end;
