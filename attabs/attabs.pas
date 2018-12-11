@@ -1310,7 +1310,8 @@ begin
           DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, AColorBorder);
         DrawLine(C, PL1.X, PL1.Y, PR1.X, PL1.Y, AColorBorder);
         if AColorBorderLow<>clNone then
-          DrawLine(C, PL2.X, ARect.Bottom, PR2.X, ARect.Bottom, AColorBorderLow)
+          DrawLine(C, PL2.X-IfThen(FOptShowAngled, FAngleSide), ARect.Bottom,
+                      PR2.X+IfThen(FOptShowAngled, FAngleSide), ARect.Bottom, AColorBorderLow)
         else
           DrawLine(C, PL2.X+1, ARect.Bottom, PR2.X-1, ARect.Bottom, AColorBg);
       end;
@@ -1320,7 +1321,8 @@ begin
         DrawLine(C, PR1.X, PR1.Y, PR2.X, PR2.Y+1, AColorBorder);
         DrawLine(C, PL2.X, PL2.Y+1, PR2.X, PL2.Y+1, AColorBorder);
         if AColorBorderLow<>clNone then
-          DrawLine(C, PL1.X, ARect.Top, PR1.X, ARect.Top, AColorBorderLow)
+          DrawLine(C, PL1.X-IfThen(FOptShowAngled, FAngleSide), ARect.Top,
+                      PR1.X+IfThen(FOptShowAngled, FAngleSide), ARect.Top, AColorBorderLow)
       end;
     atpLeft:
       begin
