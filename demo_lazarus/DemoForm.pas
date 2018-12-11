@@ -16,6 +16,7 @@ type
     btnRight: TButton;
     btnStress: TButton;
     btnToggleSpecial: TButton;
+    chkAngled: TCheckBox;
     chkNewNearCurrent: TCheckBox;
     chkFill: TCheckBox;
     chkMultiline: TCheckBox;
@@ -44,6 +45,7 @@ type
     Label3: TLabel;
     procedure btnStressClick(Sender: TObject);
     procedure btnToggleSpecialClick(Sender: TObject);
+    procedure chkAngledChange(Sender: TObject);
     procedure chkCenterCaptionChange(Sender: TObject);
     procedure chkFillChange(Sender: TObject);
     procedure chkMultiline_BottomChange(Sender: TObject);
@@ -224,6 +226,16 @@ begin
   else
     d.TabFontStyle:= [];
 
+  t_top.Invalidate;
+end;
+
+procedure TForm1.chkAngledChange(Sender: TObject);
+begin
+  t_top.OptShowAngled:= chkAngled.Checked;
+  if t_top.OptShowAngled then
+    t_top.OptSpaceBetweenTabs:= 15
+  else
+    t_top.OptSpaceBetweenTabs:= 0;
   t_top.Invalidate;
 end;
 

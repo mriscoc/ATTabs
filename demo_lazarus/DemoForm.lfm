@@ -1,10 +1,10 @@
 object Form1: TForm1
-  Left = 218
-  Height = 546
-  Top = 105
+  Left = 222
+  Height = 566
+  Top = 167
   Width = 925
   Caption = 'ATTabs demo'
-  ClientHeight = 546
+  ClientHeight = 566
   ClientWidth = 925
   Color = clBtnFace
   Font.Color = clBlack
@@ -17,7 +17,7 @@ object Form1: TForm1
   object Label1: TLabel
     Left = 136
     Height = 16
-    Top = 392
+    Top = 416
     Width = 325
     Caption = 'Note: enabled drag-drop from top tabs to bottom tabs'
     ParentColor = False
@@ -25,7 +25,7 @@ object Form1: TForm1
   object labStatus: TLabel
     Left = 136
     Height = 16
-    Top = 408
+    Top = 432
     Width = 40
     Caption = 'Status:'
     ParentColor = False
@@ -49,55 +49,55 @@ object Form1: TForm1
   object btnAdd: TButton
     Left = 136
     Height = 25
-    Top = 296
+    Top = 320
     Width = 113
     Caption = 'add tab'
     OnClick = btnAddClick
-    TabOrder = 15
+    TabOrder = 16
   end
   object btnDel: TButton
     Left = 256
     Height = 25
-    Top = 296
+    Top = 320
     Width = 75
     Caption = 'del'
     OnClick = btnDelClick
-    TabOrder = 16
+    TabOrder = 17
   end
   object btnColor: TButton
     Left = 336
     Height = 25
-    Top = 296
+    Top = 320
     Width = 75
     Caption = 'color'
     OnClick = btnColorClick
-    TabOrder = 17
+    TabOrder = 18
   end
   object btnLeft: TButton
     Left = 256
     Height = 25
-    Top = 328
+    Top = 352
     Width = 75
     Caption = '<'
     OnClick = btnLeftClick
-    TabOrder = 20
+    TabOrder = 21
   end
   object btnRight: TButton
     Left = 336
     Height = 25
-    Top = 328
+    Top = 352
     Width = 75
     Caption = '>'
     OnClick = btnRightClick
-    TabOrder = 21
+    TabOrder = 22
   end
   object EditInfo: TEdit
     Left = 416
     Height = 26
-    Top = 328
+    Top = 352
     Width = 209
     OnChange = EditInfoChange
-    TabOrder = 22
+    TabOrder = 23
   end
   object chkShowPlus: TCheckBox
     Left = 136
@@ -118,16 +118,16 @@ object Form1: TForm1
     Width = 111
     Caption = 'show numbers'
     OnChange = chkNums_BottomChange
-    TabOrder = 8
+    TabOrder = 9
   end
   object btnModify: TButton
     Left = 136
     Height = 25
-    Top = 328
+    Top = 352
     Width = 113
     Caption = 'toggle modified'
     OnClick = btnModifyClick
-    TabOrder = 19
+    TabOrder = 20
   end
   object chkShowFullColor: TCheckBox
     Left = 136
@@ -142,11 +142,11 @@ object Form1: TForm1
   object btnStress: TButton
     Left = 416
     Height = 25
-    Top = 296
+    Top = 320
     Width = 208
     Caption = 'stress (300 tabs)'
     OnClick = btnStressClick
-    TabOrder = 18
+    TabOrder = 19
   end
   object Label4: TLabel
     Left = 456
@@ -170,7 +170,7 @@ object Form1: TForm1
     )
     OnChange = comboShowXChange
     Style = csDropDownList
-    TabOrder = 11
+    TabOrder = 12
   end
   object Label5: TLabel
     Left = 456
@@ -202,7 +202,7 @@ object Form1: TForm1
     )
     OnChange = comboLayoutChange
     Style = csDropDownList
-    TabOrder = 12
+    TabOrder = 13
   end
   object chkShowFlat: TCheckBox
     Left = 136
@@ -248,16 +248,16 @@ object Form1: TForm1
     )
     OnChange = comboIconPosChange
     Style = csDropDownList
-    TabOrder = 13
+    TabOrder = 14
   end
   object btnToggleSpecial: TButton
     Left = 136
     Height = 25
-    Top = 360
+    Top = 384
     Width = 113
     Caption = 'toggle special'
     OnClick = btnToggleSpecialClick
-    TabOrder = 23
+    TabOrder = 24
   end
   object chkVarSize: TCheckBox
     Left = 136
@@ -289,7 +289,7 @@ object Form1: TForm1
     AutoSize = False
     Caption = 'multi-line'
     OnChange = chkMultiline_BottomChange
-    TabOrder = 10
+    TabOrder = 11
   end
   object chkVarSize_Bottom: TCheckBox
     Left = 304
@@ -299,14 +299,14 @@ object Form1: TForm1
     AutoSize = False
     Caption = 'var width'
     OnChange = chkVarSize_BottomChange
-    TabOrder = 9
+    TabOrder = 10
   end
   object chkFill: TCheckBox
     Left = 136
     Height = 24
     Top = 248
-    Width = 78
-    Caption = 'fill width'
+    Width = 144
+    Caption = 'fill entire tabs width'
     OnChange = chkFillChange
     TabOrder = 6
   end
@@ -341,7 +341,16 @@ object Form1: TForm1
     )
     OnChange = comboTruncateChange
     Style = csDropDownList
-    TabOrder = 14
+    TabOrder = 15
+  end
+  object chkAngled: TCheckBox
+    Left = 136
+    Height = 24
+    Top = 296
+    Width = 96
+    Caption = 'angled tabs'
+    OnChange = chkAngledChange
+    TabOrder = 8
   end
   object ImageList1: TImageList
     left = 640
