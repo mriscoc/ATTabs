@@ -1,4 +1,7 @@
 
+2018.12.12
+- fix: OnDragDrop, OnDragOver must fire
+
 2018.12.11
 - fix: clicking on X area with hidden X button must not close tab
 - fix: painting of tab underlines with OptShowAngled
