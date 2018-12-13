@@ -1588,6 +1588,11 @@ begin
     if FOptVarWidth then
     begin
       C.Font.Style:= Data.TabFontStyle;
+
+      if FOptActiveFontStyleUsed then
+        if i=FTabIndex then
+          C.Font.Style:= FOptActiveFontStyle;
+
       TempCaption:=
         Format(FOptShowNumberPrefix, [i+1]) +
         FOptShowModifiedText +
