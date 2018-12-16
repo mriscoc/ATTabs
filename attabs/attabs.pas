@@ -177,7 +177,8 @@ type
     atbxShowNone,
     atbxShowAll,
     atbxShowActive,
-    atbxShowMouseOver
+    atbxShowMouseOver,
+    atbxShowActiveAndMouseOver
     );
 
 //int constants for GetTabAt
@@ -2817,6 +2818,8 @@ begin
       Result:= AIndex=FTabIndex;
     atbxShowMouseOver:
       Result:= AIndex=FTabIndexOver;
+    atbxShowActiveAndMouseOver:
+      Result:= (AIndex=FTabIndex) or (AIndex=FTabIndexOver);
     else
       Result:= false;
   end;

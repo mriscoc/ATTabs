@@ -1,4 +1,7 @@
 
+2018.12.16
++ add: prop OptShowXButtons has new enum value (show for active + mouseover tabs)
+
 2018.12.12
 - fix: OnDragDrop, OnDragOver must fire
 

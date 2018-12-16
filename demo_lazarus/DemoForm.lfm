@@ -167,6 +167,7 @@ object Form1: TForm1
       'all tabs'
       'active tab'
       'mouse-over tab'
+      'active and mouse-over'
     )
     OnChange = comboShowXChange
     Style = csDropDownList
