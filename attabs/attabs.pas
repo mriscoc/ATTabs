@@ -420,6 +420,11 @@ type
     FHintForArrowLeft: string;
     FHintForArrowRight: string;
     FHintForArrowMenu: string;
+    FHintForUser0: string;
+    FHintForUser1: string;
+    FHintForUser2: string;
+    FHintForUser3: string;
+    FHintForUser4: string;
 
     //events    
     FOnTabClick: TNotifyEvent;
@@ -691,6 +696,11 @@ type
     property OptHintForArrowLeft: string read FHintForArrowLeft write FHintForArrowLeft;
     property OptHintForArrowRight: string read FHintForArrowRight write FHintForArrowRight;
     property OptHintForArrowMenu: string read FHintForArrowMenu write FHintForArrowMenu;
+    property OptHintForUser0: string read FHintForUser0 write FHintForUser0;
+    property OptHintForUser1: string read FHintForUser1 write FHintForUser1;
+    property OptHintForUser2: string read FHintForUser2 write FHintForUser2;
+    property OptHintForUser3: string read FHintForUser3 write FHintForUser3;
+    property OptHintForUser4: string read FHintForUser4 write FHintForUser4;
 
     //events
     property OnTabClick: TNotifyEvent read FOnTabClick write FOnTabClick;
@@ -1096,6 +1106,11 @@ begin
   FHintForArrowLeft:= 'Scroll tabs left';
   FHintForArrowRight:= 'Scroll tabs right';
   FHintForArrowMenu:= 'Show tabs list';
+  FHintForUser0:= '0';
+  FHintForUser1:= '1';
+  FHintForUser2:= '2';
+  FHintForUser3:= '3';
+  FHintForUser4:= '4';
 
   FBitmap:= TBitmap.Create;
   FBitmap.PixelFormat:= pf24bit;
@@ -2516,6 +2531,41 @@ begin
   if ShowHint and (IsX or (FTabIndexOver=cTabIndexCloseBtn)) then
   begin
     Hint:= FHintForX;
+    FTabIndexHinted:= -1;
+    Application.ActivateHint(Mouse.CursorPos);
+  end
+  else
+  if ShowHint and (FTabIndexOver=cTabIndexUser0) then
+  begin
+    Hint:= FHintForUser0;
+    FTabIndexHinted:= -1;
+    Application.ActivateHint(Mouse.CursorPos);
+  end
+  else
+  if ShowHint and (FTabIndexOver=cTabIndexUser1) then
+  begin
+    Hint:= FHintForUser1;
+    FTabIndexHinted:= -1;
+    Application.ActivateHint(Mouse.CursorPos);
+  end
+  else
+  if ShowHint and (FTabIndexOver=cTabIndexUser2) then
+  begin
+    Hint:= FHintForUser2;
+    FTabIndexHinted:= -1;
+    Application.ActivateHint(Mouse.CursorPos);
+  end
+  else
+  if ShowHint and (FTabIndexOver=cTabIndexUser3) then
+  begin
+    Hint:= FHintForUser3;
+    FTabIndexHinted:= -1;
+    Application.ActivateHint(Mouse.CursorPos);
+  end
+  else
+  if ShowHint and (FTabIndexOver=cTabIndexUser4) then
+  begin
+    Hint:= FHintForUser4;
     FTabIndexHinted:= -1;
     Application.ActivateHint(Mouse.CursorPos);
   end

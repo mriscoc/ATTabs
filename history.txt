@@ -5,6 +5,7 @@
 + add: prop OptHintForArrowLeft
 + add: prop OptHintForArrowRight
 + add: prop OptHintForArrowDown
++ add: prop OptHintForUser0...4
 
 2018.12.16
 + add: prop OptShowXButtons has new enum value: "show for active + mouseover tabs"
