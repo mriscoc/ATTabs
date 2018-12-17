@@ -1,6 +1,13 @@
 
+2018.12.17
++ add: prop OptHintForX
++ add: prop OptHintForPlus
++ add: prop OptHintForArrowLeft
++ add: prop OptHintForArrowRight
++ add: prop OptHintForArrowDown
+
 2018.12.16
-+ add: prop OptShowXButtons has new enum value (show for active + mouseover tabs)
++ add: prop OptShowXButtons has new enum value: "show for active + mouseover tabs"
 
 2018.12.12
 - fix: OnDragDrop, OnDragOver must fire
