@@ -417,6 +417,9 @@ type
 
     FHintForX: string;
     FHintForPlus: string;
+    FHintForArrowLeft: string;
+    FHintForArrowRight: string;
+    FHintForArrowMenu: string;
 
     //events    
     FOnTabClick: TNotifyEvent;
@@ -685,6 +688,9 @@ type
 
     property OptHintForX: string read FHintForX write FHintForX;
     property OptHintForPlus: string read FHintForPlus write FHintForPlus;
+    property OptHintForArrowLeft: string read FHintForArrowLeft write FHintForArrowLeft;
+    property OptHintForArrowRight: string read FHintForArrowRight write FHintForArrowRight;
+    property OptHintForArrowMenu: string read FHintForArrowMenu write FHintForArrowMenu;
 
     //events
     property OnTabClick: TNotifyEvent read FOnTabClick write FOnTabClick;
@@ -1087,6 +1093,9 @@ begin
 
   FHintForX:= 'Close tab';
   FHintForPlus:= 'Add tab';
+  FHintForArrowLeft:= 'Scroll tabs left';
+  FHintForArrowRight:= 'Scroll tabs right';
+  FHintForArrowMenu:= 'Show tabs list';
 
   FBitmap:= TBitmap.Create;
   FBitmap.PixelFormat:= pf24bit;
@@ -2476,24 +2485,52 @@ begin
   FTabIndexOver:= GetTabAt(X, Y, IsX);
   FTabIndexDrop:= FTabIndexOver;
 
-  if FTabIndexOver=cTabIndexPlus then
+  if ShowHint and (FTabIndexOver=cTabIndexPlus) then
   begin
     Hint:= FHintForPlus;
     FTabIndexHinted:= -1;
     Application.ActivateHint(Mouse.CursorPos);
   end
   else
-  if IsX then
+  if ShowHint and (FTabIndexOver=cTabIndexPlus) then
+  begin
+    Hint:= FHintForPlus;
+    FTabIndexHinted:= -1;
+    Application.ActivateHint(Mouse.CursorPos);
+  end
+  else
+  if ShowHint and (FTabIndexOver=cTabIndexArrowScrollLeft) then
+  begin
+    Hint:= FHintForArrowLeft;
+    FTabIndexHinted:= -1;
+    Application.ActivateHint(Mouse.CursorPos);
+  end
+  else
+  if ShowHint and (FTabIndexOver=cTabIndexArrowScrollRight) then
+  begin
+    Hint:= FHintForArrowRight;
+    FTabIndexHinted:= -1;
+    Application.ActivateHint(Mouse.CursorPos);
+  end
+  else
+  if ShowHint and (FTabIndexOver=cTabIndexArrowMenu) then
+  begin
+    Hint:= FHintForArrowMenu;
+    FTabIndexHinted:= -1;
+    Application.ActivateHint(Mouse.CursorPos);
+  end
+  else
+  if ShowHint and IsX then
   begin
     Hint:= FHintForX;
     FTabIndexHinted:= -1;
     Application.ActivateHint(Mouse.CursorPos);
   end
   else
-  if FTabIndexOver>=0 then
+  if ShowHint and (FTabIndexOver>=0) then
   begin
     Data:= GetTabData(FTabIndexOver);
-    if Assigned(Data) and (Data.TabHint<>'') and ShowHint then
+    if Assigned(Data) and (Data.TabHint<>'') then
     begin
       Hint:= Data.TabHint;
       if FTabIndexOver<>FTabIndexHinted then
