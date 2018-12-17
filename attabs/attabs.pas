@@ -2485,14 +2485,7 @@ begin
   FTabIndexOver:= GetTabAt(X, Y, IsX);
   FTabIndexDrop:= FTabIndexOver;
 
-  if ShowHint and (FTabIndexOver=cTabIndexPlus) then
-  begin
-    Hint:= FHintForPlus;
-    FTabIndexHinted:= -1;
-    Application.ActivateHint(Mouse.CursorPos);
-  end
-  else
-  if ShowHint and (FTabIndexOver=cTabIndexPlus) then
+  if ShowHint and ((FTabIndexOver=cTabIndexPlus) or (FTabIndexOver=cTabIndexPlusBtn)) then
   begin
     Hint:= FHintForPlus;
     FTabIndexHinted:= -1;
@@ -2520,7 +2513,7 @@ begin
     Application.ActivateHint(Mouse.CursorPos);
   end
   else
-  if ShowHint and IsX then
+  if ShowHint and (IsX or (FTabIndexOver=cTabIndexCloseBtn)) then
   begin
     Hint:= FHintForX;
     FTabIndexHinted:= -1;
