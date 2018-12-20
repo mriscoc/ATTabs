@@ -355,7 +355,7 @@ end;
 
 procedure TForm1.btnDelClick(Sender: TObject);
 begin
-  t_top.DeleteTab(1, true, false);
+  t_top.DeleteTab(t_top.TabIndex, true, false);
 end;
 
 procedure TForm1.btnColorClick(Sender: TObject);
