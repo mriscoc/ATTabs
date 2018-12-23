@@ -1,4 +1,7 @@
 
+2018.12.23
+- fix: calculate index of mouse-over tab also on each Paint, because user can add/del tabs by keyboard 
+
 2018.12.17
 + add: prop OptHintForX
 + add: prop OptHintForPlus
