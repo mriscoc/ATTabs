@@ -51,7 +51,7 @@ object Form1: TForm1
     Height = 25
     Top = 320
     Width = 113
-    Caption = 'add tab'
+    Caption = '&add tab'
     OnClick = btnAddClick
     TabOrder = 16
   end
@@ -60,7 +60,7 @@ object Form1: TForm1
     Height = 25
     Top = 320
     Width = 75
-    Caption = 'del'
+    Caption = '&delete tab'
     OnClick = btnDelClick
     TabOrder = 17
   end
