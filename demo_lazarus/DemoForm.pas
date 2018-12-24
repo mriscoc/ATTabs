@@ -109,7 +109,7 @@ uses
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   //avoid drag on click arrows
-  DragManager.DragImmediate:= false;
+  Mouse.DragImmediate:= false;
 
   t_top:= TATTabs.Create(Self);
   t_top.Parent:= Self;
