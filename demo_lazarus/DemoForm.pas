@@ -110,6 +110,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   //avoid drag on click arrows
   Mouse.DragImmediate:= false;
+  Mouse.DragThreshold:= 20;
 
   t_top:= TATTabs.Create(Self);
   t_top.Parent:= Self;

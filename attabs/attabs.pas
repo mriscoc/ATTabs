@@ -503,6 +503,7 @@ type
     procedure DoTabDrop;
     procedure DoTabDropToOtherControl(ATarget: TControl; const APnt: TPoint);
     function GetTabTick(AIndex: integer): Int64;
+    function _IsDrag: boolean;
 
   public
     constructor Create(AOnwer: TComponent); override;
@@ -1736,9 +1737,11 @@ begin
     P.Y+FOptSpaceXSize);
 end;
 
-function _IsDrag: boolean;
+function TATTabs._IsDrag: boolean;
 begin
-  Result:= Mouse.IsDragging;
+  Result:=
+    //Mouse.IsDragging; //don't work good in Lazarus 1.8..2.0
+    Dragging;
 end;
 
 procedure TATTabs.GetTabXProps(AIndex: integer; const ARect: TRect;
