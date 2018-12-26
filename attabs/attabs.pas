@@ -2514,7 +2514,7 @@ begin
   // so use DragMode=manual and DragStart.
   if FMouseDown and not _IsDrag then
   begin
-    DragManager.DragStart(Self, false, Mouse.DragThreshold);
+    BeginDrag(false, Mouse.DragThreshold);
     Exit
   end;
 
