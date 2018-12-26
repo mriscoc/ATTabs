@@ -273,7 +273,7 @@ const
   _InitOptMouseMiddleClickClose = true;
   _InitOptMouseDoubleClickClose = true;
   _InitOptMouseDoubleClickPlus = false;
-  _InitOptMouseDragEnabled = {$ifdef fpc} true {$else} false {$endif};
+  _InitOptMouseDragEnabled = true;
   _InitOptMouseDragOutEnabled = true;
 
 type
@@ -2512,7 +2512,7 @@ begin
 
   // LCL dragging with DragMode=automatic is started too early.
   // so use DragMode=manual and DragStart.
-  if FMouseDown and not _IsDrag then
+  if OptMouseDragEnabled and FMouseDown and not _IsDrag then
   begin
     BeginDrag(false, Mouse.DragThreshold);
     Exit
@@ -3117,11 +3117,24 @@ end;
 
 procedure TATTabs.DragOver(Source: TObject; X, Y: integer; State: TDragState;
   var Accept: Boolean);
+var
+  IsX: Boolean;  
 begin
   if Source is TATTabs then
+  begin
     Accept:=
       FOptMouseDragEnabled and
-      FOptMouseDragOutEnabled
+      FOptMouseDragOutEnabled;
+
+    // Delphi 7 don't call MouseMove during dragging
+    {$ifndef fpc}
+    if Accept then
+    begin
+      FTabIndexDrop:= GetTabAt(X, Y, IsX);
+      Invalidate;
+    end;
+    {$endif}
+  end    
   else
     inherited;
 end;
