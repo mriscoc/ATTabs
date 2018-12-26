@@ -1008,6 +1008,7 @@ begin
   Caption:= '';
   ControlStyle:= ControlStyle+[csOpaque];
   DoubleBuffered:= IsDoubleBufferedNeeded;
+  DragMode:= dmManual; //required Manual
 
   Width:= 400;
   Height:= 35;
@@ -1739,9 +1740,7 @@ end;
 
 function TATTabs._IsDrag: boolean;
 begin
-  Result:=
-    //Mouse.IsDragging; //don't work good in Lazarus 1.8..2.0
-    Dragging;
+  Result:= Dragging;
 end;
 
 procedure TATTabs.GetTabXProps(AIndex: integer; const ARect: TRect;
@@ -2510,6 +2509,14 @@ begin
   if TabCount=0 then exit;
   FTabIndexOver:= GetTabAt(X, Y, IsX);
   FTabIndexDrop:= FTabIndexOver;
+
+  // LCL dragging with DragMode=automatic is started too early.
+  // so use DragMode=manual and DragStart.
+  if FMouseDown and not _IsDrag then
+  begin
+    DragManager.DragStart(Self, false, Mouse.DragThreshold);
+    Exit
+  end;
 
   if ShowHint and ((FTabIndexOver=cTabIndexPlus) or (FTabIndexOver=cTabIndexPlusBtn)) then
   begin

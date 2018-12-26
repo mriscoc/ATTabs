@@ -127,7 +127,6 @@ begin
   t_top.OptShowXButtons:= atbxShowAll;
   t_top.Height:= 48;
   t_top.OptTabHeight:= 38;
-  t_top.DragMode:= dmAutomatic; //enable drag-drop
   t_top.Images:= ImageList1;
   t_top.OptVarWidth:= true;
   t_top.ShowHint:= true;
