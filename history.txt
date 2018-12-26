@@ -1,6 +1,7 @@
 
 2018.12.26
-- fix: workaround for Lazarus drag-drop bug: drag-drop starts too early, so simple click on [x] icon shows drag-drop mark
++ add: drag-drop now works in Delphi (tested on D7)
+- workaround for Lazarus drag-drop: it starts too early, so simple click on [x] icon shows drag-drop mark
 
 2018.12.23
 - fix: calculate index of mouse-over tab also on each Paint, because user can add/del tabs by keyboard 
