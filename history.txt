@@ -1,4 +1,7 @@
 
+2018.12.28
+- fix: flickering of hints when mouse moves over x,<,> buttons
+
 2018.12.26
 + add: drag-drop now works in Delphi (tested on D7)
 - workaround for Lazarus drag-drop: it starts too early, so simple click on [x] icon shows drag-drop mark
