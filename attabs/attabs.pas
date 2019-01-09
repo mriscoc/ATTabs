@@ -2328,7 +2328,7 @@ begin
     if PtInRect(RectTab, Pnt) then
     begin
       Result:= i;
-      APressedX:= PtInRect(GetTabRect_X(RectTab), Pnt);
+      APressedX:= IsShowX(i) and PtInRect(GetTabRect_X(RectTab), Pnt);
       Exit;
     end;
   end;
@@ -2395,11 +2395,6 @@ begin
   FMouseDragBegins:= false;
 
   FTabIndexOver:= GetTabAt(X, Y, IsX);
-
-  //maybe X is hidden
-  if (FTabIndexOver>=0) and IsX then
-    if not IsShowX(FTabIndexOver) then
-      IsX:= false;
 
   //activate tab only if not X clicked
   if not IsX then
@@ -2513,9 +2508,6 @@ begin
   if TabCount=0 then exit;
   FTabIndexOver:= GetTabAt(X, Y, IsX);
   FTabIndexDrop:= FTabIndexOver;
-
-  if (FTabIndexOver>=0) and IsX and not IsShowX(FTabIndexOver) then
-    IsX:= false;
 
   // LCL dragging with DragMode=automatic is started too early.
   // so use DragMode=manual and DragStart.
