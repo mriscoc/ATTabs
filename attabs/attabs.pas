@@ -2511,6 +2511,9 @@ begin
   FTabIndexOver:= GetTabAt(X, Y, IsX);
   FTabIndexDrop:= FTabIndexOver;
 
+  if (FTabIndexOver>=0) and IsX and not IsShowX(FTabIndexOver) then
+    IsX:= false;
+
   // LCL dragging with DragMode=automatic is started too early.
   // so use DragMode=manual and DragStart.
   if OptMouseDragEnabled and FMouseDown and not _IsDrag then
