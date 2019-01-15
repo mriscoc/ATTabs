@@ -305,32 +305,32 @@ end;
 
 procedure TfmTest.m1Click(Sender: TObject);
 begin
-  MoveTabTo(1);
+  MoveTabTo(0);
 end;
 
 procedure TfmTest.m2Click(Sender: TObject);
 begin
-  MoveTabTo(2);
+  MoveTabTo(1);
 end;
 
 procedure TfmTest.m3Click(Sender: TObject);
 begin
-  MoveTabTo(3);
+  MoveTabTo(2);
 end;
 
 procedure TfmTest.m4Click(Sender: TObject);
 begin
-  MoveTabTo(4);
+  MoveTabTo(3);
 end;
 
 procedure TfmTest.togroup51Click(Sender: TObject);
 begin
-  MoveTabTo(5);
+  MoveTabTo(4);
 end;
 
 procedure TfmTest.togroup61Click(Sender: TObject);
 begin
-  MoveTabTo(6);
+  MoveTabTo(5);
 end;
 
 procedure TfmTest.TreeDragDrop(Sender, Source: TObject; X, Y: Integer);
