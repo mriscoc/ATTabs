@@ -2020,6 +2020,15 @@ begin
     Pages[i].Tabs.Images:= AValue;
 end;
 
+function _FixOdd(N: integer): integer; inline;
+//this is to fix shifting of splitter pos, if position is saved to config / restored later
+begin
+  if Odd(N) then
+    Result:= N+1
+  else
+    Result:= N;
+end;
+
 procedure TATGroups.GetSizes(out APanelSize: TPoint; out APageSize: TATGroupsPoints);
 var
   i: integer;
@@ -2036,12 +2045,12 @@ begin
     exit
   end;
 
-  APanelSize.x:= Panel1.Width * 100 div Width;
-  APanelSize.y:= Panel1.Height * 100 div Height;
+  APanelSize.x:= _FixOdd(Panel1.Width * 100 div Width);
+  APanelSize.y:= _FixOdd(Panel1.Height * 100 div Height);
   for i in TATGroupsNums do
   begin
-    APageSize[i].x:= Pages[i].Width * 100 div Width;
-    APageSize[i].y:= Pages[i].Height * 100 div Height;
+    APageSize[i].x:= _FixOdd(Pages[i].Width * 100 div Width);
+    APageSize[i].y:= _FixOdd(Pages[i].Height * 100 div Height);
   end;
 end;
 
@@ -2053,8 +2062,8 @@ begin
   Panel1.Height:= APanelSize.y * Height div 100;
   for i in TATGroupsNums do
   begin
-    Pages[i].Width:= APageSize[i].x * Width div 100;
-    Pages[i].Height:= APageSize[i].y * Height div 100;
+    Pages[i].Width:= Min(8000, APageSize[i].x * Width div 100);
+    Pages[i].Height:= Min(8000, APageSize[i].y * Height div 100);
   end;
 end;
 
