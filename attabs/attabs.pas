@@ -241,7 +241,7 @@ const
   _InitOptSpaceXRight = 10;
   _InitOptSpaceXInner = 3;
   _InitOptSpaceXSize = 12;
-  _InitOptSpaceXIncrementRound = 2;
+  _InitOptSpaceXIncrementRound = 1;
   _InitOptArrowSize = 4;
   _InitOptArrowSpaceLeft = 4;
   _InitOptColoredBandSize = 4;
@@ -1477,12 +1477,9 @@ var
   PX1, PX2, PX3, PX4, PXX1, PXX2: TPoint;
   RectRound, RectBitmap: TRect;
 begin
-  C.Brush.Color:= IfThen(ATabCloseBg<>clNone, ATabCloseBg, ATabBg);
-  C.FillRect(R);
-
   if FOptShowXRounded then
   begin
-    if ATabCloseBorder<>clNone then
+    if ATabCloseBg<>clNone then
     begin
       RectRound:= R;
       InflateRect(RectRound, FOptSpaceXIncrementRound, FOptSpaceXIncrementRound);
@@ -1492,7 +1489,7 @@ begin
       RectBitmap.Right:= FBitmapRound.Width;
       RectBitmap.Bottom:= RectBitmap.Right;
 
-      FBitmapRound.Canvas.Brush.Color:= ATabBg;
+      FBitmapRound.Canvas.Brush.Color:= IfThen(FOptShowFlat, FColorBg, ATabBg);
       FBitmapRound.Canvas.FillRect(RectBitmap);
 
       FBitmapRound.Canvas.Brush.Color:= ATabCloseBg;
@@ -1500,15 +1497,20 @@ begin
       FBitmapRound.Canvas.Ellipse(RectBitmap);
 
       C.StretchDraw(RectRound, FBitmapRound);
+    end
+    else
+    begin
+      C.Brush.Color:= ATabBg;
+      C.FillRect(R);
     end;
   end
   else
   begin
+    C.Brush.Color:= IfThen(ATabCloseBg<>clNone, ATabCloseBg, ATabBg);
+    C.FillRect(R);
     C.Pen.Color:= IfThen(ATabCloseBorder<>clNone, ATabCloseBorder, ATabBg);
     C.Rectangle(R);
   end;
-
-  C.Brush.Color:= ATabBg;
 
   //paint cross by 2 polygons, each has 6 points (3 points at line edge)
   C.Brush.Color:= ATabCloseXMark;
