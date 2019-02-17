@@ -410,6 +410,7 @@ type
     FScrollPos: integer;
     FImages: TImageList;
     FBitmap: TBitmap;
+    FBitmapAngle: TBitmap;
     FBitmapRound: TBitmap;
 
     FRectArrowDown: TRect;
@@ -895,15 +896,13 @@ type
 procedure DrawTriangleRectFramed(C: TCanvas;
   AX, AY, ASizeX, ASizeY, AScale: integer;
   ATriKind: TATMissedPoint;
-  AColorFill, AColorLine: TColor);
+  AColorFill, AColorLine: TColor;
+  b: TBitmap);
 var
-  b: TBitmap;
   p0, p1, p2, p3: TPoint;
   line1, line2: TPoint;
   ar: array[0..2] of TPoint;
 begin
-  b:= TBitmap.Create;
-  try
     BitmapSetSize(b, ASizeX*AScale, ASizeY*AScale);
 
     p0:= Point(0, 0);
@@ -938,9 +937,6 @@ begin
     b.Canvas.Pen.Width:= 1;
 
     CanvasStretchDraw(C, Rect(AX, AY, AX+ASizeX, AY+ASizeY), b);
-  finally
-    b.Free;
-  end;
 end;
 
 function _ShortenStringEx(C: TCanvas;
@@ -1142,6 +1138,9 @@ begin
   FBitmap.PixelFormat:= pf24bit;
   BitmapSetSize(FBitmap, 1600, 60);
 
+  FBitmapAngle:= TBitmap.Create;
+  FBitmapAngle.PixelFormat:= pf24bit;
+
   FBitmapRound:= TBitmap.Create;
   FBitmapRound.PixelFormat:= pf24bit;
   BitmapSetSize(FBitmapRound, _InitRoundedBitmapSize, _InitRoundedBitmapSize);
@@ -1177,6 +1176,7 @@ begin
   FreeAndNil(FCaptionList);
   FreeAndNil(FTabList);
   FreeAndNil(FBitmapRound);
+  FreeAndNil(FBitmapAngle);
   FreeAndNil(FBitmap);
   inherited;
 end;
@@ -1421,7 +1421,8 @@ begin
             cSmoothScale,
             ampnTopLeft,
             AColorBg,
-            AColorBorder);
+            AColorBorder,
+            FBitmapAngle);
           DrawTriangleRectFramed(C,
             ARect.Right-1,
             ARect.Top,
@@ -1430,7 +1431,8 @@ begin
             cSmoothScale,
             ampnTopRight,
             AColorBg,
-            AColorBorder);
+            AColorBorder,
+            FBitmapAngle);
         end;
       atpBottom:
         begin
@@ -1442,7 +1444,8 @@ begin
             cSmoothScale,
             ampnBottomLeft,
             AColorBg,
-            AColorBorder);
+            AColorBorder,
+            FBitmapAngle);
           DrawTriangleRectFramed(C,
             ARect.Right-1,
             ARect.Top+IfThen(not ATabActive, 1),
@@ -1451,7 +1454,8 @@ begin
             cSmoothScale,
             ampnBottomRight,
             AColorBg,
-            AColorBorder);
+            AColorBorder,
+            FBitmapAngle);
         end;
     end;
 
