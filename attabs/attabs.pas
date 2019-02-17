@@ -861,6 +861,29 @@ begin
 end;
 
 
+procedure CanvasStretchDraw(C: TCanvas; const R: TRect; Bmp: TBitmap); {$ifdef fpc}inline;{$endif}
+begin
+  {$ifdef fpc}
+  C.StretchDraw(R, Bmp);
+  {$else}
+  //Delphi: StretchDraw cannot draw smooth
+  StretchBlt(
+    C.Handle, R.Left, R.Top, R.Right-R.Left, R.Bottom-R.Top,
+    Bmp.Canvas.Handle, 0, 0, Bmp.Width, Bmp.Height,
+    C.CopyMode);
+  {$endif}
+end;
+
+procedure BitmapSetSize(b: TBitmap; W, H: integer); {$ifdef fpc}inline;{$endif}
+begin
+  {$ifdef fpc}
+  b.SetSize(W, H);
+  {$else}
+  b.Width:= W;
+  b.Height:= H;
+  {$endif}
+end;
+
 type
   TATMissedPoint = (
     ampnTopLeft,
@@ -881,12 +904,7 @@ var
 begin
   b:= TBitmap.Create;
   try
-    {$ifdef fpc}
-    b.SetSize(ASizeX*AScale, ASizeY*AScale);
-    {$else}
-    b.Width:= ASizeX*AScale;
-    b.Height:= ASizeY*AScale;
-    {$endif}
+    BitmapSetSize(b, ASizeX*AScale, ASizeY*AScale);
 
     p0:= Point(0, 0);
     p1:= Point(b.Width, 0);
@@ -919,15 +937,7 @@ begin
     b.Canvas.LineTo(line2.X, line2.Y);
     b.Canvas.Pen.Width:= 1;
 
-    {$ifdef fpc}
-    C.StretchDraw(Rect(AX, AY, AX+ASizeX, AY+ASizeY), b);
-    {$else}
-    //Delphi: StretchDraw cannot draw smooth
-    StretchBlt(
-      C.Handle, AX, AY, ASizeX, ASizeY,
-      b.Canvas.Handle, 0, 0, b.Width, b.Height,
-      C.CopyMode);
-    {$endif}
+    CanvasStretchDraw(C, Rect(AX, AY, AX+ASizeX, AY+ASizeY), b);
   finally
     b.Free;
   end;
@@ -1130,13 +1140,11 @@ begin
 
   FBitmap:= TBitmap.Create;
   FBitmap.PixelFormat:= pf24bit;
-  FBitmap.Width:= 1600;
-  FBitmap.Height:= 60;
+  BitmapSetSize(FBitmap, 1600, 60);
 
   FBitmapRound:= TBitmap.Create;
   FBitmapRound.PixelFormat:= pf24bit;
-  FBitmapRound.Width:= _InitRoundedBitmapSize;
-  FBitmapRound.Height:= _InitRoundedBitmapSize;
+  BitmapSetSize(FBitmapRound, _InitRoundedBitmapSize, _InitRoundedBitmapSize);
 
   FTabIndex:= 0;
   FTabIndexOver:= -1;
@@ -1496,7 +1504,7 @@ begin
       FBitmapRound.Canvas.Pen.Color:= ATabCloseBorder;
       FBitmapRound.Canvas.Ellipse(RectBitmap);
 
-      C.StretchDraw(RectRound, FBitmapRound);
+      CanvasStretchDraw(C, RectRound, FBitmapRound);
     end
     else
     begin
@@ -2629,10 +2637,7 @@ procedure TATTabs.Resize;
 begin
   inherited;
   if Assigned(FBitmap) then
-  begin
-    FBitmap.Width:= Max(FBitmap.Width, Width);
-    FBitmap.Height:= Max(FBitmap.Height, Height);
-  end;
+    BitmapSetSize(FBitmap, Max(FBitmap.Width, Width), Max(FBitmap.Height, Height));
   Invalidate;
 end;
 
